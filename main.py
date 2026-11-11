@@ -187,9 +187,14 @@ def self_test(d: str):
         if not items:
             print("   → 키 값, 그리고 .env 의 NAVER_API_MODE(hub/legacy)가 키를 받은 곳과 맞는지 확인하세요.")
         import trend as tr
-        snap = tr.fetch(config.WATCH_BRANDS[:5] or ["메디큐브"], d, "20")
-        print(f"3) 쇼핑인사이트 (관심 브랜드 관심도)\n   {'✅ 성공: ' + ', '.join(snap['series']) if snap and snap['series'] else '❌ 실패 → API HUB Application 에 쇼핑인사이트가 추가됐는지 확인'}")
-        ok &= bool(snap and snap["series"])
+        wb = config.WATCH_BRANDS[:5] or ["메디큐브"]
+        for view, label, hint in [("beauty", "3) 쇼핑인사이트 (화장품 관심도)", "쇼핑인사이트"),
+                                  ("device", "4) 쇼핑인사이트 (디바이스 관심도)", "쇼핑인사이트"),
+                                  ("brand", "5) 검색어트렌드 (브랜드 전체 화제성)", "검색어트렌드")]:
+            snap = tr.fetch(view, wb, d, "20")
+            good = bool(snap and snap["series"])
+            print(f"{label}\n   {'✅ 성공: ' + ', '.join(snap['series']) if good else '❌ 실패 → API HUB Application 에 ' + hint + '가 추가됐는지 확인'}")
+            ok &= good
         if config.NAVER_API_MODE == "legacy":
             b = br.lookup("메디큐브 마스크팩")
             print(f"3) 네이버 쇼핑 검색 (브랜드 판별)\n   {'✅ 성공' if b else '⚠️ 판별 못 함'}: 메디큐브 마스크팩 → {b}")

@@ -183,6 +183,7 @@ section#brief{padding-top:48px}
 .watchbtn[aria-pressed="true"]{background:var(--pill);color:var(--pillfg)}
 
 /* 관심도 추이 */
+#btViews button{white-space:nowrap}
 .btrend{background:var(--paper);border-radius:16px;padding:22px;margin-top:14px}
 .bt-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:10px}
 .bt-head h3{font-size:16px;font-weight:700;margin:0 0 2px}
@@ -452,10 +453,11 @@ footer p{margin:0 0 6px;max-width:72ch}
     <ul class="watchlist" id="watchList"></ul>
     <div class="btrend" id="bTrend" hidden>
       <div class="bt-head">
-        <div><h3>관심도 추이</h3>
-          <p class="sub">순위와 상관없이, 네이버 쇼핑에서 각 브랜드 이름을 검색해 클릭한 양을 비교해요. 최근 30일 중 가장 높은 날을 100으로 둔 상대값이에요.</p></div>
-        <div class="agetabs" id="btTabs" role="group" aria-label="연령대"></div>
+        <div><h3>관심도 추이 <span class="wmeta">순위와 상관없이 비교</span></h3>
+          <p class="sub" id="btSub"></p></div>
+        <div class="seg" id="btViews" role="group" aria-label="보기"></div>
       </div>
+      <div class="agetabs" id="btTabs" role="group" aria-label="연령대" style="margin-bottom:8px"></div>
       <div class="chart" id="btChart"></div>
       <div class="hlegend" id="btLegend"></div>
       <p class="bt-sum" id="btSum"></p>
@@ -902,7 +904,7 @@ footer p{margin:0 0 6px;max-width:72ch}
     const series = ages.map(a => ({a, pts: dates.map(d => at(d, a)?.rk ?? null)}));
     const seen = series.some(sr => sr.pts.some(v => v != null));
     if (!seen){
-      const inBT = BT.all && BT.all.series && Object.keys(BT.all.series).some(n => norm(n) === q);
+      const inBT = Object.values(BTALL).some(v => v.all && v.all.series && Object.keys(v.all.series).some(n => norm(n) === q));
       $("histSum").replaceChildren(`‘${histKw}’${jo(histKw,"은","는")} 저장된 ${dates.length}일 동안 어느 연령대의 ${LIMIT}위 안에도 없었어요. ` +
         (inBT ? "순위 밖에서의 관심도 흐름은 관심 브랜드의 ‘관심도 추이’에서 볼 수 있어요. "
               : relList.length ? "대신 이 단어가 들어간 검색어는 아래에 있어요. " : "띄어쓰기나 다른 표현으로도 검색해 보세요. "),
@@ -1175,10 +1177,18 @@ footer p{margin:0 0 6px;max-width:72ch}
   $("watchIn").addEventListener("keydown", e => { if (e.key === "Enter") addWatchFromInput(); });
 
   /* ---------- 관심도 추이 ---------- */
-  const BT = DATA.btrend || {};
+  const BTALL = DATA.btrend || {};
+  const BTV = [["brand", "브랜드 전체 화제성", "네이버 통합검색에서 브랜드 이름과 대표 제품명(예: 에이지알, 제로모공패드)을 검색한 양이에요. 화장품·디바이스를 모두 포함해요."],
+               ["beauty", "화장품 구매 관심", "네이버 쇼핑 화장품/미용 분야에서 브랜드 이름으로 검색해 상품을 클릭한 양이에요."],
+               ["device", "디바이스 구매 관심", "네이버 쇼핑 디지털/가전 분야(뷰티 디바이스 포함)에서 검색해 상품을 클릭한 양이에요. 메디큐브는 ‘에이지알’로 찾아요."]];
+  let btView = BTV.map(v => v[0]).find(v => BTALL[v]) || "brand";
+  let BT = BTALL[btView] || {};
   const BCOL = ["#D86784", "#5B8DB8", "#D9A13B", "#4F9A78", "#8A5CC2"];
   let btAge = "all";
   function renderBTrend(){
+    const views = BTV.filter(v => BTALL[v[0]]);
+    $("btViews").replaceChildren(...views.map(([v, label]) => h("button",{"aria-pressed": String(btView === v), onclick:() => { btView = v; BT = BTALL[v] || {}; renderBTrend(); }}, label)));
+    $("btSub").textContent = (BTV.find(v => v[0] === btView) || [,,""])[2] + " 최근 30일 중 가장 높은 값을 100으로 둔 상대값이라, 같은 그래프 안에서만 비교해요.";
     const box = $("bTrend"), keys = ["all", ...ages].filter(a => BT[a] && Object.keys(BT[a].series || {}).length);
     box.hidden = !keys.length; if (!keys.length) return;
     if (!keys.includes(btAge)) btAge = keys[0];
