@@ -20,6 +20,7 @@ from datetime import date, datetime, timedelta, timezone
 
 import config
 import brands
+import trend
 import db
 import events
 import report
@@ -185,6 +186,10 @@ def self_test(d: str):
         ok &= bool(items)
         if not items:
             print("   → 키 값, 그리고 .env 의 NAVER_API_MODE(hub/legacy)가 키를 받은 곳과 맞는지 확인하세요.")
+        import trend as tr
+        snap = tr.fetch(config.WATCH_BRANDS[:5] or ["메디큐브"], d, "20")
+        print(f"3) 쇼핑인사이트 (관심 브랜드 관심도)\n   {'✅ 성공: ' + ', '.join(snap['series']) if snap and snap['series'] else '❌ 실패 → API HUB Application 에 쇼핑인사이트가 추가됐는지 확인'}")
+        ok &= bool(snap and snap["series"])
         if config.NAVER_API_MODE == "legacy":
             b = br.lookup("메디큐브 마스크팩")
             print(f"3) 네이버 쇼핑 검색 (브랜드 판별)\n   {'✅ 성공' if b else '⚠️ 판별 못 함'}: 메디큐브 마스크팩 → {b}")
@@ -289,6 +294,8 @@ def main():
             collect_and_analyze(conn, d, ages, args.demo)
             print(f"  팝업·행사: {events.collect(conn, d, args.demo)}건 확인")
             print(f"  브랜드 판별: 새 검색어 {brands.update(conn, d, ages, args.demo)}개")
+        if targets:
+            print(f"  관심 브랜드 관심도 추이: {trend.update(conn, targets[-1], args.demo)}개 연령 갱신")
 
     dates = db.report_dates(conn)
     # 새 날짜가 생기면 바로 앞 날짜의 '다음날' 링크도 갱신해야 하므로 함께 다시 그림

@@ -11,6 +11,7 @@ from datetime import datetime, timedelta, timezone
 import config
 import db
 import trends
+import trend
 
 SITE_DIR = config.BASE_DIR / "site"
 TEMPLATE = config.BASE_DIR / "site_template.html"
@@ -93,7 +94,8 @@ def build_site(conn, ages: list[str], demo: bool = False) -> str:
         "pcats": cat_names,
         "pcat": {k: cat_names.index(c) for k, c in pcat.items()},
         "notes": read_notes(demo, dates),
-        "watch": config.WATCH_BRANDS or (["메디큐브", "롬앤", "토리든"] if demo else []),
+        "btrend": trend.load(conn),
+        "watch": config.WATCH_BRANDS,
     }
     blob = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     html = TEMPLATE.read_text(encoding="utf-8").replace("/*__DATA__*/", f"window.SITE_DATA={blob};", 1)

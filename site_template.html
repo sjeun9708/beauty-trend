@@ -182,6 +182,16 @@ section#brief{padding-top:48px}
 .watchbtn{border:1px solid var(--ink);background:transparent;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:600}
 .watchbtn[aria-pressed="true"]{background:var(--pill);color:var(--pillfg)}
 
+/* 관심도 추이 */
+.btrend{background:var(--paper);border-radius:16px;padding:22px;margin-top:14px}
+.bt-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+.bt-head h3{font-size:16px;font-weight:700;margin:0 0 2px}
+.bt-head .sub{font-size:13px;color:var(--soft);margin:0;max-width:60ch}
+.bt-sum{font-size:14px;margin:12px 0 0;line-height:1.7}
+.bt-sum b{font-weight:700}
+.bt-sum .up{color:var(--up);font-weight:700} .bt-sum .dn{color:var(--down);font-weight:700}
+.agetabs button.sm{padding:4px 11px 4px 9px;font-size:13px}
+
 /* 주간 흐름 */
 .wkgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .wkcol{background:var(--paper);border-radius:16px;padding:18px}
@@ -440,6 +450,16 @@ footer p{margin:0 0 6px;max-width:72ch}
       </div>
     </div>
     <ul class="watchlist" id="watchList"></ul>
+    <div class="btrend" id="bTrend" hidden>
+      <div class="bt-head">
+        <div><h3>관심도 추이</h3>
+          <p class="sub">순위와 상관없이, 네이버 쇼핑에서 각 브랜드 이름을 검색해 클릭한 양을 비교해요. 최근 30일 중 가장 높은 날을 100으로 둔 상대값이에요.</p></div>
+        <div class="agetabs" id="btTabs" role="group" aria-label="연령대"></div>
+      </div>
+      <div class="chart" id="btChart"></div>
+      <div class="hlegend" id="btLegend"></div>
+      <p class="bt-sum" id="btSum"></p>
+    </div>
     <p class="empty" id="watchEmpty" hidden>아직 등록한 브랜드가 없어요. 위 칸에 브랜드 이름을 넣거나, 브랜드를 검색한 뒤 ‘관심 브랜드에 추가’를 누르세요.</p>
   </section>
 
@@ -882,8 +902,11 @@ footer p{margin:0 0 6px;max-width:72ch}
     const series = ages.map(a => ({a, pts: dates.map(d => at(d, a)?.rk ?? null)}));
     const seen = series.some(sr => sr.pts.some(v => v != null));
     if (!seen){
-      $("histSum").textContent = `‘${histKw}’${jo(histKw,"은","는")} 저장된 ${dates.length}일 동안 어느 연령대의 ${LIMIT}위 안에도 없었어요.` +
-        (relList.length ? " 대신 이 단어가 들어간 검색어는 아래에 있어요." : " 띄어쓰기나 다른 표현으로도 검색해 보세요. 상품 자체는 네이버 쇼핑에서 볼 수 있어요.");
+      const inBT = BT.all && BT.all.series && Object.keys(BT.all.series).some(n => norm(n) === q);
+      $("histSum").replaceChildren(`‘${histKw}’${jo(histKw,"은","는")} 저장된 ${dates.length}일 동안 어느 연령대의 ${LIMIT}위 안에도 없었어요. ` +
+        (inBT ? "순위 밖에서의 관심도 흐름은 관심 브랜드의 ‘관심도 추이’에서 볼 수 있어요. "
+              : relList.length ? "대신 이 단어가 들어간 검색어는 아래에 있어요. " : "띄어쓰기나 다른 표현으로도 검색해 보세요. "),
+        inBT ? h("button",{class:"more-link", onclick:() => $("bTrend").scrollIntoView()}, "관심도 추이 보기") : "");
       $("chartTitle").textContent = ""; $("chart").replaceChildren(); $("hLegend").replaceChildren(); return;
     }
     const best = now.filter(x => x.cur).sort((x,y) => x.cur.rk - y.cur.rk)[0];
@@ -941,7 +964,7 @@ footer p{margin:0 0 6px;max-width:72ch}
     }
     box.append(svg, tip);
   }
-  let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => histKw && renderHistory(), 150); });
+  let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { histKw && renderHistory(); renderBTrend(); }, 150); });
 
   /* ---------- 지난 기록 ---------- */
   function renderArchive(){
@@ -1151,6 +1174,46 @@ footer p{margin:0 0 6px;max-width:72ch}
   $("watchBtn").onclick = addWatchFromInput;
   $("watchIn").addEventListener("keydown", e => { if (e.key === "Enter") addWatchFromInput(); });
 
+  /* ---------- 관심도 추이 ---------- */
+  const BT = DATA.btrend || {};
+  const BCOL = ["#D86784", "#5B8DB8", "#D9A13B", "#4F9A78", "#8A5CC2"];
+  let btAge = "all";
+  function renderBTrend(){
+    const box = $("bTrend"), keys = ["all", ...ages].filter(a => BT[a] && Object.keys(BT[a].series || {}).length);
+    box.hidden = !keys.length; if (!keys.length) return;
+    if (!keys.includes(btAge)) btAge = keys[0];
+    $("btTabs").replaceChildren(...keys.map(a => h("button",{class:"sm", "aria-pressed": String(btAge === a), onclick:() => { btAge = a; renderBTrend(); }},
+      a === "all" ? null : h("i",{style:`background:${SHADE[a][0]}`}), a === "all" ? (T ? `전체 ${T}` : "전체") : AGE_NAME[a])));
+    const snap = BT[btAge], names = Object.keys(snap.series), dts = snap.dates;
+    const col = n => BCOL[names.indexOf(n) % BCOL.length];
+    // 차트: 위로 갈수록 관심도가 높음
+    const el = $("btChart"); el.replaceChildren();
+    const W = Math.max(280, el.clientWidth || 600), H = W < 500 ? 200 : 240, m = {l:34, r:12, t:12, b:26};
+    const x = i => m.l + i * (W - m.l - m.r) / Math.max(1, dts.length - 1), y = v => m.t + (100 - v) * (H - m.t - m.b) / 100;
+    const NS = "http://www.w3.org/2000/svg", S = (t, at) => { const e = document.createElementNS(NS, t); for (const k in at) e.setAttribute(k, at[k]); return e; };
+    const svg = S("svg",{viewBox:`0 0 ${W} ${H}`, role:"img", "aria-label":"관심 브랜드 관심도 추이"});
+    const g = S("g",{class:"grid"}), ax = S("g",{class:"axis"});
+    [0, 25, 50, 75, 100].forEach(v => { g.append(S("line",{x1:m.l, x2:W-m.r, y1:y(v), y2:y(v)})); const t = S("text",{x:m.l-6, y:y(v)+4, "text-anchor":"end"}); t.textContent = v; ax.append(t); });
+    const step = Math.ceil(dts.length / Math.floor((W - m.l - m.r) / 56)), last = dts.length - 1;
+    dts.forEach((d, i) => { if (i !== last && (i % step || last - i < step)) return; const t = S("text",{x:x(i), y:H-6, "text-anchor":"middle"}); t.textContent = shortDate(d); ax.append(t); });
+    svg.append(g, ax);
+    names.forEach(n => {
+      const d = snap.series[n].map((v, i) => (i ? "L" : "M") + x(i).toFixed(1) + "," + y(v).toFixed(1)).join("");
+      svg.append(S("path",{d, fill:"none", stroke:col(n), "stroke-width": n === names[0] ? 3 : 2, "stroke-linejoin":"round", opacity: n === names[0] ? 1 : .85}));
+    });
+    el.append(svg);
+    $("btLegend").replaceChildren(...names.map(n => h("span",{}, h("i",{style:`background:${col(n)}`}), n)));
+    // 요약: 최근 7일 평균과 그 전 7일 대비
+    const avg = a => a.length ? a.reduce((p, c) => p + c, 0) / a.length : 0;
+    const rows = names.map(n => { const v = snap.series[n], now = avg(v.slice(-7)), before = avg(v.slice(-14, -7));
+      return {n, now, ch: before ? (now - before) / before * 100 : null}; }).sort((a, b) => b.now - a.now);
+    const who2 = btAge === "all" ? (T ? `전체 ${T}` : "전체") : who(btAge);
+    $("btSum").replaceChildren(`${who2} 기준 최근 7일 평균 관심도: `, ...rows.flatMap((r, i) => [
+      i ? " · " : "", h("b",{style:`color:${col(r.n)}`}, r.n), ` ${Math.round(r.now)}`,
+      r.ch == null ? "" : h("span",{class: r.ch >= 0 ? "up" : "dn"}, ` (${r.ch >= 0 ? "▲" : "▼"}${Math.abs(Math.round(r.ch))}%)`)]),
+      h("br"), h("span",{class:"wmeta"}, `괄호는 그 전 7일 대비 변화예요. 데이터 기준일 ${snap.fetched}.`));
+  }
+
   /* ---------- 주간 흐름 ---------- */
   let wkAge = null;
   function renderWeekly(){
@@ -1186,7 +1249,7 @@ footer p{margin:0 0 6px;max-width:72ch}
   function renderAll(){
     $("heroTitle").textContent = T ? `${T}들이 가장 많이 검색한 뷰티 키워드` : `가장 많이 검색한 뷰티 키워드`;
     $("riseTitle").textContent = `${when()} 가장 크게 오른 키워드`;
-    renderDatebar(); renderSwatches(); renderBrief(); renderWatch(); renderWeekly(); renderRanking(); renderRising(); renderCats(); renderBrandRank(); renderEvents(); renderCommon(); renderNotes(); renderArchive(); renderHistory(); }
+    renderDatebar(); renderSwatches(); renderBrief(); renderWatch(); renderBTrend(); renderWeekly(); renderRanking(); renderRising(); renderCats(); renderBrandRank(); renderEvents(); renderCommon(); renderNotes(); renderArchive(); renderHistory(); }
 
   $("brand").querySelector(".brand-mark").replaceChildren(...AGES.map(a => h("i",{style:`background:${SHADE[a][0]}`})));
   $("brand").onclick = e => { e.preventDefault(); scrollTo({top:0}); };
