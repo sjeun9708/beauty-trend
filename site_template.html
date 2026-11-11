@@ -1,0 +1,1211 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>검색 스와치 · 연령별 뷰티 검색 트렌드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#F5F3F7; --paper:#FFFFFF; --ink:#2B1F2E; --soft:#6F6474; --line:#E5DEE9;
+  --up:#C23A62; --down:#4E78A6; --pill:#2B1F2E; --pillfg:#F5F3F7; --focus:#8A5CC2;
+  --font:Pretendard,"IBM Plex Sans KR",-apple-system,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+  --l10:#EDB0BE; --l20:#E38CA2; --l30:#D86784; --l40:#B9445F; --l50:#8F2F49; --l60:#5E1E31;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark; --bg:#171219; --paper:#211A24; --ink:#F1EAF3; --soft:#A79CAC; --line:#372D3B;
+  --up:#F07D9C; --down:#8FB4DD; --pill:#F1EAF3; --pillfg:#171219; --focus:#B996E8;
+  --l10:#FBE3E8; --l20:#F4B8C6; --l30:#EC8DA5; --l40:#E06688; --l50:#C8466C; --l60:#A8345A;
+}}
+:root[data-theme="dark"]{color-scheme:dark; --bg:#171219; --paper:#211A24; --ink:#F1EAF3; --soft:#A79CAC;
+  --line:#372D3B; --up:#F07D9C; --down:#8FB4DD; --pill:#F1EAF3; --pillfg:#171219; --focus:#B996E8;
+  --l10:#FBE3E8; --l20:#F4B8C6; --l30:#EC8DA5; --l40:#E06688; --l50:#C8466C; --l60:#A8345A;}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px);scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;word-break:keep-all}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:6px}
+h1,h2,h3{margin:0;letter-spacing:-.02em}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* 상단바 */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:20px;height:60px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;letter-spacing:-.03em;text-decoration:none;color:var(--ink)}
+.brand-mark{display:grid;grid-template-columns:repeat(6,5px);height:18px;border-radius:3px;overflow:hidden}
+.brand-mark i{display:block}
+.menu{display:flex;gap:2px;margin-left:auto}
+.menu button{border:0;background:transparent;padding:8px 12px;border-radius:999px;font-size:14px;font-weight:500;color:var(--soft)}
+.menu button:hover{color:var(--ink);background:var(--paper)}
+.target{font-size:12px;font-weight:600;background:var(--pill);color:var(--pillfg);border-radius:999px;padding:3px 10px}
+.demo{font-size:12px;font-weight:600;color:var(--up);border:1px solid currentColor;border-radius:999px;padding:2px 9px}
+
+/* 히어로 */
+.hero{padding:44px 0 0}
+.datebar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.datebar button{border:1px solid var(--line);background:var(--paper);border-radius:999px;width:36px;height:36px;font-size:18px;line-height:1}
+.datebar button:disabled{opacity:.35;cursor:default}
+.datebar select{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:7px 14px;font-weight:600}
+.datebar .latest{font-size:13px;color:var(--soft);margin-left:4px}
+.hero h1{font-size:clamp(30px,4.6vw,48px);font-weight:700;line-height:1.18;margin:22px 0 10px;max-width:14em;text-wrap:balance}
+.hero p.lead{margin:0;color:var(--soft);max-width:52ch}
+.swatches{display:grid;grid-template-columns:repeat(6,1fr);align-items:end;margin:36px 0 0;border-radius:0 0 20px 20px;overflow:hidden}
+.sw{position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;text-align:left;min-height:200px;
+  padding:18px 16px;border:0;border-radius:18px 18px 0 0;background:var(--sw);color:var(--swfg);transition:min-height .25s ease}
+.sw[aria-pressed="true"]{min-height:236px}
+.sw[aria-pressed="true"]::after{content:"";position:absolute;left:16px;right:16px;top:16px;height:3px;border-radius:3px;background:currentColor}
+.sw-age{font-weight:600;font-size:14px;opacity:.85}
+.sw-top{font-weight:700;font-size:clamp(17px,2vw,24px);line-height:1.25;letter-spacing:-.03em}
+.sw-meta{font-size:12px;opacity:.8}
+.sw:hover .sw-top{text-decoration:underline;text-underline-offset:4px}
+@media (prefers-reduced-motion:reduce){.sw{transition:none}}
+
+/* 섹션 공통 */
+section.block{padding:72px 0 0}
+.sec-head{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.sec-head h2{font-size:clamp(22px,2.6vw,28px);font-weight:700}
+.sec-head p{margin:4px 0 0;color:var(--soft);font-size:14px}
+
+/* 브리핑 */
+section#brief{padding-top:48px}
+.brief-card{display:grid;grid-template-columns:1.7fr 1fr;gap:0;background:var(--paper);border-radius:20px;overflow:hidden;
+  box-shadow:0 1px 0 var(--line)}
+.brief-main{padding:28px 30px}
+.eyebrow{margin:0 0 4px;font-size:13px;font-weight:600;color:var(--up)}
+.brief-main h2{font-size:clamp(22px,2.6vw,28px);font-weight:700;margin-bottom:14px}
+.brief-list{list-style:none;margin:0;padding:0;counter-reset:b}
+.brief-list li{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:baseline;padding:14px 0;border-top:1px solid var(--line)}
+.brief-list li::before{counter-increment:b;content:counter(b);font-weight:700;font-size:20px;color:var(--soft);font-variant-numeric:tabular-nums;width:18px}
+.brief-list p{margin:0;font-size:16px;line-height:1.55}
+.brief-list .btg{display:inline-block;font-size:12px;font-weight:700;color:var(--pillfg);background:var(--pill);border-radius:999px;padding:1px 9px;margin-right:8px;vertical-align:2px}
+.more-link{border:0;background:none;font-size:13px;font-weight:600;color:var(--soft);text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+.more-link:hover{color:var(--ink)}
+.note{background:color-mix(in srgb,#EA98AC 20%,var(--paper));padding:24px 24px 20px;display:flex;flex-direction:column;gap:10px}
+.note h3{font-size:16px;font-weight:700}
+.note-pub{margin:0;font-size:14px;white-space:pre-wrap;background:var(--paper);border-radius:10px;padding:10px 12px}
+.note textarea{width:100%;resize:vertical;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--paper);font-size:14px;line-height:1.55}
+.note-act{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--soft)}
+.note-act button{border:1px solid var(--ink);background:transparent;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:600}
+.note-export{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px !important}
+
+/* 품목 */
+.catrows{display:grid;gap:10px;background:var(--paper);border-radius:16px;padding:20px}
+.catrow{display:grid;grid-template-columns:104px 1fr 230px;gap:14px;align-items:center}
+.catage{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px}
+.catage i{width:12px;height:12px;border-radius:50%}
+.catbar{display:flex;height:30px;border-radius:8px;overflow:hidden;gap:2px}
+.catbar button{border:0;padding:0;min-width:3px;position:relative;transition:filter .15s}
+.catbar button:hover{filter:brightness(1.08)}
+.catbar button[aria-pressed="true"]{outline:3px solid var(--ink);outline-offset:-3px}
+.catnote{font-size:13px;color:var(--soft)}
+.catnote em{font-style:normal;color:var(--up);font-weight:600}
+.legend.catlegend{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));margin-top:14px}
+.catdetail{margin-top:18px}
+.catdetail h3{font-size:16px;font-weight:700;margin:0 0 10px}
+
+/* 브랜드 랭킹 */
+.brlist{list-style:none;margin:0;padding:0;background:var(--paper);border-radius:16px;overflow:hidden}
+.brrow{display:grid;grid-template-columns:30px 130px 1fr 86px minmax(150px,240px) 44px;gap:14px;align-items:center;width:100%;
+  border:0;border-bottom:1px solid var(--line);background:none;padding:12px 18px;text-align:left}
+.brlist li:last-child .brrow{border-bottom:0}
+.brrow:hover .brname{text-decoration:underline;text-underline-offset:4px}
+.brk{font-weight:700;color:var(--soft);font-variant-numeric:tabular-nums}
+.brlist li:nth-child(-n+3) .brk{color:var(--ink)}
+.brname{font-weight:700;font-size:16px;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brbar{height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.brbar i{display:block;height:100%;border-radius:5px;background:#D86784}
+.brn{font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+.brbest{font-size:12px;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brrow .chg{text-align:right}
+
+/* 노트 모아보기 */
+.notelist{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.notelist li{background:var(--paper);border-radius:14px;padding:16px 18px;display:grid;grid-template-columns:120px 1fr;gap:16px}
+.notelist button{border:0;background:none;padding:0;text-align:left;font-weight:700;color:var(--ink)}
+.notelist button:hover{text-decoration:underline;text-underline-offset:4px}
+.notelist p{margin:0;white-space:pre-wrap;font-size:14px}
+.notelist small{display:block;font-size:11px;color:var(--soft);font-weight:600;margin-top:2px}
+.day .pen{color:var(--up);font-weight:700;margin-left:4px}
+
+@media (max-width:760px){
+  .brief-card{grid-template-columns:1fr}
+  .brief-main{padding:22px 18px}
+  .brief-list li{grid-template-columns:auto 1fr}
+  .brief-list .more-link{grid-column:2;justify-self:start}
+  .catrow{grid-template-columns:1fr;gap:6px}
+  .catrows{padding:16px}
+  .brrow{grid-template-columns:26px 1fr 60px 40px;gap:8px;padding:12px 14px}
+  .brbar,.brbest{display:none}
+  .notelist li{grid-template-columns:1fr;gap:6px}
+}
+
+/* 접기 */
+.fold summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:12px}
+.fold summary::-webkit-details-marker{display:none}
+.fold summary h2{font-size:clamp(22px,2.6vw,28px);font-weight:700}
+.fold summary p{margin:4px 0 0;color:var(--soft);font-size:14px}
+.fold summary::after{content:"펼치기 ▾";font-size:13px;font-weight:600;color:var(--soft);white-space:nowrap;border:1px solid var(--line);border-radius:999px;padding:5px 12px}
+.fold[open] summary::after{content:"접기 ▴"}
+
+/* 관심 브랜드 */
+.watch-add{display:flex;gap:6px;align-items:center}
+.watch-add .find{min-width:180px}
+.watchlist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.wcard.main{box-shadow:inset 0 0 0 2px #D86784}
+.wtag{font-size:12px;font-weight:700;color:var(--up)}
+.wcard{background:var(--paper);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:10px}
+.wtop{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.wname{border:0;background:none;padding:0;font-size:19px;font-weight:700;letter-spacing:-.02em;text-align:left}
+.wname:hover{text-decoration:underline;text-underline-offset:4px}
+.wx{border:0;background:none;color:var(--soft);font-size:13px;padding:2px 4px}
+.wx:hover{color:var(--ink)}
+.wmeta{font-size:13px;color:var(--soft)}
+.wmeta b{color:var(--ink)}
+.wages{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
+.wages span{display:flex;flex-direction:column;align-items:center;white-space:nowrap;border-radius:8px;padding:6px 2px;background:var(--bg);border-top:4px solid var(--sh);font-size:11px;color:var(--soft)}
+.wages b{font-size:15px;color:var(--ink);font-variant-numeric:tabular-nums}
+.wages .no b{color:var(--soft);font-weight:500}
+.spark{display:block;width:100%;height:40px}
+.wmix{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--soft)}
+.wmix span{display:flex;align-items:center;gap:5px}
+.wmix i{width:9px;height:9px;border-radius:3px}
+.wfoot{display:flex;justify-content:space-between;font-size:12px;color:var(--soft)}
+.watchbtn{border:1px solid var(--ink);background:transparent;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:600}
+.watchbtn[aria-pressed="true"]{background:var(--pill);color:var(--pillfg)}
+
+/* 주간 흐름 */
+.wkgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.wkcol{background:var(--paper);border-radius:16px;padding:18px}
+.wkcol h3{font-size:15px;font-weight:700;margin:0 0 2px}
+.wkcol .sub{font-size:12px;color:var(--soft);margin:0 0 10px}
+.wkcol ol{list-style:none;margin:0;padding:0}
+.wkcol li{display:flex;justify-content:space-between;gap:8px;align-items:baseline;padding:7px 0;border-top:1px solid var(--line);font-size:14px}
+.wkcol li button{border:0;background:none;padding:0;font-weight:600;text-align:left}
+.wkcol li button:hover{text-decoration:underline;text-underline-offset:3px}
+.wkcol li span{font-size:12px;color:var(--soft);white-space:nowrap;font-variant-numeric:tabular-nums}
+.wkcol li span b{color:var(--up)} .wkcol li span b.dn{color:var(--down)}
+.wkcol .none{font-size:13px;color:var(--soft);padding:8px 0}
+@media (max-width:760px){
+  .wkgrid{grid-template-columns:1fr}
+  .watch-add{width:100%} .watch-add .find{flex:1;min-width:0}
+  .watchlist{grid-template-columns:1fr}
+}
+
+/* 연령 탭 */
+.agetabs{display:flex;gap:6px;flex-wrap:wrap}
+.agetabs button{display:flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--paper);
+  border-radius:999px;padding:6px 14px 6px 8px;font-size:14px;font-weight:600}
+.agetabs button i{width:14px;height:14px;border-radius:50%}
+.agetabs button[aria-pressed="true"]{background:var(--pill);color:var(--pillfg);border-color:var(--pill)}
+
+.summary{display:grid;grid-template-columns:1.35fr 1fr;gap:28px;padding:28px;background:var(--paper);
+  border-radius:16px;border-top:6px solid var(--shade);margin-top:16px}
+.summary h3{font-size:20px;font-weight:700;margin-bottom:12px}
+.ins{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.ins li{padding-left:18px;position:relative}
+.ins li::before{content:"";position:absolute;left:0;top:.62em;width:8px;height:8px;border-radius:50%;background:var(--shade)}
+.mix h4{font-size:15px;font-weight:600;margin:0 0 12px}
+.bar{display:flex;height:14px;border-radius:7px;overflow:hidden;gap:2px;background:var(--line)}
+.legend{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;font-size:13px}
+.legend li{display:flex;align-items:center;gap:8px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:3px;flex:none}
+.legend b{margin-left:auto;font-weight:600;color:var(--soft);font-variant-numeric:tabular-nums}
+
+.tools{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:32px 0 6px}
+.seg{display:flex;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{border:0;background:transparent;padding:6px 14px;border-radius:999px;font-size:13px;font-weight:600;color:var(--soft)}
+.seg button[aria-pressed="true"]{background:var(--pill);color:var(--pillfg)}
+.find{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:7px 14px;min-width:220px}
+
+.rank{list-style:none;margin:0;padding:0}
+.row{display:grid;grid-template-columns:44px minmax(150px,230px) 1fr;gap:16px;align-items:start;padding:16px 4px;border-bottom:1px solid var(--line)}
+.rk{font-weight:700;font-size:17px;font-variant-numeric:tabular-nums;color:var(--soft)}
+.kwcol{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.kw{font-weight:600;font-size:16px;letter-spacing:-.02em}
+.kwbtn{border:0;background:none;padding:0;text-align:left}
+.kwbtn:hover .kw{text-decoration:underline;text-underline-offset:4px}
+.row.top .rk{color:var(--ink)}
+.row.top .kw{font-size:19px;font-weight:700}
+.chg{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.chg.up{color:var(--up)} .chg.down{color:var(--down)} .chg.same{color:var(--soft)}
+.chg.new{background:var(--pill);color:var(--pillfg);padding:1px 7px;border-radius:999px;font-size:11px}
+.chg.surge{background:color-mix(in srgb,var(--up) 14%,transparent);padding:1px 7px;border-radius:999px}
+.cat{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--soft)}
+.reason{margin:4px 0 0;max-width:62ch}
+.reason.low{color:var(--soft)}
+.src{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.src a{font-size:12px;color:var(--ink);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:2px 10px;background:var(--paper)}
+.src a:hover{border-color:var(--soft)}
+.src a{display:inline-flex;gap:4px;max-width:100%;min-width:0}
+.src a .t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:26ch}
+.note{display:inline-block;margin-top:6px;font-size:12px;color:var(--soft)}
+.empty{color:var(--soft);padding:24px 4px}
+.more{display:block;margin:16px auto 0;border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:9px 20px;font-weight:600}
+
+/* 급상승 */
+.rise{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.rise li{background:var(--paper);border-radius:14px;padding:16px;border-left:6px solid var(--shade);display:flex;flex-direction:column;gap:6px}
+.rise .r1{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.rise .kw{font-size:18px}
+.rise .who{font-size:13px;color:var(--soft)}
+.rise .reason{font-size:14px;margin:0}
+.rise .src{margin-top:auto;padding-top:6px}
+.rlink{color:inherit;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.rlink:hover{text-decoration-color:currentColor;color:var(--ink)}
+
+/* 팝업·행사: 입장권 모양 */
+.areas{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 16px}
+.areas button{border:1px solid var(--line);background:transparent;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:600;color:var(--soft)}
+.areas button[aria-pressed="true"]{border-color:var(--ink);color:var(--ink)}
+.tickets{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+.ticket{display:grid;grid-template-columns:96px 1fr;background:var(--paper);border-radius:14px;position:relative;min-height:150px}
+.stub{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;padding:14px 8px;text-align:center;
+  border-radius:14px 0 0 14px;border-right:2px dashed var(--bg);background:var(--stub);color:var(--stubfg)}
+.stub b{font-size:19px;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.stub small{font-size:12px;opacity:.85}
+.ticket::before,.ticket::after{content:"";position:absolute;left:87px;width:18px;height:18px;border-radius:50%;background:var(--bg)}
+.ticket::before{top:-9px} .ticket::after{bottom:-9px}
+.t-on{--stub:#D86784;--stubfg:#fff} .t-last{--stub:#8F2F49;--stubfg:#fff}
+.t-soon{--stub:transparent;--stubfg:var(--ink)} .t-soon .stub{box-shadow:inset 0 0 0 1.5px var(--line)}
+.tbody{padding:16px 18px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.tname{font-weight:700;font-size:16px;letter-spacing:-.02em;line-height:1.35}
+.tmeta{font-size:13px;color:var(--soft)}
+.tsum{font-size:14px;margin:4px 0 0}
+.ttags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:8px;align-items:center}
+.ttags span{font-size:12px;font-weight:600;border:1px solid var(--line);border-radius:6px;padding:1px 7px;color:var(--soft)}
+.ttags .hit{border-color:var(--up);color:var(--up)}
+.ttags a{font-size:12px;color:var(--ink);margin-left:auto;text-decoration:underline;text-underline-offset:3px}
+.ev-note{font-size:13px;color:var(--soft);margin:14px 0 0}
+@media (max-width:760px){.tickets{grid-template-columns:1fr}}
+
+/* 공통 */
+.common{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:4px 28px}
+.common li{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);font-weight:600}
+.dots{display:flex;gap:4px}
+.dots i{width:10px;height:10px;border-radius:50%;border:1px solid var(--line)}
+
+/* 검색 */
+.bigsearch{display:flex;margin:28px 0 0;max-width:640px;background:var(--paper);border:2px solid var(--ink);border-radius:999px;padding:4px;
+  box-shadow:0 6px 20px color-mix(in srgb,var(--ink) 8%,transparent)}
+.bigsearch input{flex:1;min-width:0;border:0;background:transparent;padding:10px 18px;font-size:17px;outline:none}
+.bigsearch button{border:0;background:var(--ink);color:var(--bg);border-radius:999px;padding:10px 24px;font-weight:700;font-size:15px}
+.bigsearch:focus-within{outline:2px solid var(--focus);outline-offset:3px}
+.go{border:0;background:var(--pill);color:var(--pillfg);border-radius:999px;padding:7px 18px;font-weight:700}
+.ranknow{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:4px 0 18px}
+.rn{border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:2px;background:var(--bg);border-top:5px solid var(--sh)}
+.rn .a{font-size:12px;color:var(--soft);font-weight:600}
+.rn b{font-size:24px;font-weight:700;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1.2}
+.rn b small{font-size:14px;font-weight:600}
+.rn.out b{font-size:15px;color:var(--soft);font-weight:600;padding:5px 0}
+.related{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 20px}
+.related .lab{font-size:13px;color:var(--soft);margin-right:4px}
+.related button{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:4px 12px;font-size:13px;font-weight:600}
+.related button small{color:var(--soft);font-weight:500;margin-left:4px}
+.related button:hover{border-color:var(--soft)}
+.rk-kw{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rk-n{font-size:11px;color:var(--soft)}
+.related .brandchip{background:var(--pill);color:var(--pillfg);border-color:var(--pill)}
+.related .shop{font-size:13px;font-weight:600;color:var(--ink);margin-left:auto;text-decoration:underline;text-underline-offset:3px;padding:4px 2px}
+.btag{font-size:11px;font-weight:600;color:var(--soft);border:1px solid var(--line);border-radius:5px;padding:0 6px;cursor:pointer;background:none}
+.btag:hover{border-color:var(--soft);color:var(--ink)}
+.chart-title{font-size:15px;font-weight:600;margin:0 0 8px}
+@media (max-width:760px){.ranknow{grid-template-columns:repeat(3,1fr)}.bigsearch input{font-size:16px;padding:9px 14px}.bigsearch button{padding:9px 18px}}
+
+/* 키워드 추이 */
+.hist{background:var(--paper);border-radius:16px;padding:24px}
+.hist-top{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.hist-top .find{min-width:260px}
+.hist-sum{color:var(--soft);font-size:14px;margin:6px 0 14px}
+.chart{position:relative}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart .axis text{font-size:11px;fill:var(--soft)}
+.chart .grid line{stroke:var(--line)}
+.tip{position:absolute;pointer-events:none;background:var(--pill);color:var(--pillfg);font-size:12px;padding:6px 10px;
+  border-radius:8px;white-space:nowrap;transform:translate(-50%,-110%)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chips button{border:1px solid var(--line);background:transparent;border-radius:999px;padding:3px 11px;font-size:13px}
+.chips button:hover{border-color:var(--soft)}
+.hlegend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--soft);margin-top:10px}
+.hlegend span{display:flex;align-items:center;gap:6px}
+.hlegend i{width:14px;height:4px;border-radius:2px}
+
+/* 기록 */
+.month h3{font-size:17px;font-weight:700;margin:28px 0 6px}
+.days{list-style:none;margin:0;padding:0}
+.day{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:center;width:100%;padding:12px 4px;border:0;
+  border-bottom:1px solid var(--line);background:none;text-align:left}
+.day:hover b{text-decoration:underline;text-underline-offset:4px}
+.day[aria-current="true"] b::after{content:" · 보는 중";font-size:12px;font-weight:600;color:var(--up)}
+.d{display:flex;flex-direction:column;font-size:13px;color:var(--soft)}
+.d b{font-size:17px;color:var(--ink);font-weight:700}
+.minis{display:grid;grid-template-columns:repeat(6,1fr);border-radius:10px;overflow:hidden}
+.mini{font-size:12px;font-weight:600;padding:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+footer{margin:96px 0 0;padding:28px 0 48px;border-top:2px solid var(--ink);color:var(--soft);font-size:13px}
+footer p{margin:0 0 6px;max-width:72ch}
+
+@media (max-width:760px){
+  .wrap{padding:0 16px}
+  .menu{display:none}
+  .hero{padding-top:28px}
+  .swatches{grid-template-columns:repeat(3,1fr);border-radius:16px}
+  .sw,.sw[aria-pressed="true"]{min-height:118px;border-radius:0}
+  .summary{grid-template-columns:1fr;padding:20px}
+  .row{grid-template-columns:36px 1fr;gap:4px 12px}
+  .why{grid-column:2}
+  .find,.hist-top .find{min-width:0;flex:1}
+  .day{grid-template-columns:1fr;gap:8px}
+  .minis{grid-template-columns:repeat(3,1fr)}
+  section.block{padding-top:56px}
+  .hist{padding:16px}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#" id="brand"><span class="brand-mark" aria-hidden="true"></span>검색 스와치</a>
+    <span class="target" id="targetBadge" hidden></span>
+    <span class="demo" id="demoBadge" hidden>데모 데이터</span>
+    <nav class="menu" aria-label="바로가기">
+      <button data-go="brief">브리핑</button>
+      <button data-go="watch">관심 브랜드</button>
+      <button data-go="weekly">주간</button>
+      <button data-go="ranking">순위</button>
+      <button data-go="cats">품목</button>
+      <button data-go="brandRank">브랜드</button>
+      <button data-go="events">행사</button>
+      <button data-go="history">검색</button>
+      <button data-go="notes">노트</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="datebar">
+      <button id="prevDay" aria-label="전날">‹</button>
+      <label class="sr" for="datePick">날짜 선택</label>
+      <select id="datePick"></select>
+      <button id="nextDay" aria-label="다음날">›</button>
+      <span class="latest" id="latestNote"></span>
+    </div>
+    <h1 id="heroTitle">가장 많이 검색한 뷰티 키워드</h1>
+    <p class="lead">네이버 쇼핑 화장품/미용 인기 검색어를 연령대별로 1~50위까지 모으고, 최근 뉴스와 블로그를 근거로 왜 많이 찾았는지 정리했어요. 스와치를 누르면 그 연령대의 순위로 이동합니다.</p>
+    <form class="bigsearch" id="bigSearch" role="search">
+      <label class="sr" for="bigQ">키워드 검색</label>
+      <input id="bigQ" type="search" list="kwList" autocomplete="off" placeholder="키워드나 브랜드를 검색해 보세요 (예: 틴트, 메디큐브)">
+      <button type="submit">검색</button>
+    </form>
+    <datalist id="kwList"></datalist>
+    <div class="swatches" id="swatches" role="group" aria-label="연령대별 1위"></div>
+  </section>
+
+  <section class="block" id="brief" aria-labelledby="briefTitle">
+    <div class="brief-card">
+      <div class="brief-main">
+        <p class="eyebrow" id="briefDate"></p>
+        <h2 id="briefTitle">오늘의 3줄 브리핑</h2>
+        <ol class="brief-list" id="briefList"></ol>
+      </div>
+      <div class="note">
+        <h3>마케터 노트</h3>
+        <p class="note-pub" id="notePub" hidden></p>
+        <label class="sr" for="noteText">이날의 해석</label>
+        <textarea id="noteText" rows="5" placeholder="오늘 순위를 보고 든 생각을 한두 줄 적어 보세요. 이 브라우저에 자동 저장돼요."></textarea>
+        <div class="note-act"><span id="noteSaved"></span><button id="noteCopy">노트 파일용으로 복사</button></div>
+        <textarea id="noteExport" class="note-export" rows="5" readonly hidden aria-label="복사할 노트"></textarea>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="watch" aria-labelledby="watchTitle">
+    <div class="sec-head">
+      <div><h2 id="watchTitle">관심 브랜드</h2>
+        <p>지원 브랜드와 비교 브랜드를 나란히 두고 매일 지켜봐요. 숫자는 연령대별 그 브랜드 검색어의 최고 순위예요.</p></div>
+      <div class="watch-add">
+        <label class="sr" for="watchIn">브랜드 추가</label>
+        <input class="find" id="watchIn" list="brandList" placeholder="브랜드 이름 추가" autocomplete="off">
+        <datalist id="brandList"></datalist>
+        <button class="go" id="watchBtn">추가</button>
+      </div>
+    </div>
+    <ul class="watchlist" id="watchList"></ul>
+    <p class="empty" id="watchEmpty" hidden>아직 등록한 브랜드가 없어요. 위 칸에 브랜드 이름을 넣거나, 브랜드를 검색한 뒤 ‘관심 브랜드에 추가’를 누르세요.</p>
+  </section>
+
+  <section class="block" id="weekly" aria-labelledby="wkTitle">
+    <div class="sec-head">
+      <div><h2 id="wkTitle">이번 주 흐름</h2><p id="wkLead"></p></div>
+      <div class="agetabs" id="wkTabs" role="group" aria-label="연령대"></div>
+    </div>
+    <div class="wkgrid" id="wkGrid"></div>
+  </section>
+
+  <section class="block" id="ranking" aria-labelledby="rankTitle">
+    <div class="sec-head">
+      <div><h2 id="rankTitle">연령별 인기 검색어</h2><p id="rankSub"></p></div>
+      <div class="agetabs" id="ageTabs" role="group" aria-label="연령대"></div>
+    </div>
+    <div class="summary" id="summary"></div>
+    <div class="tools">
+      <div class="seg" role="group" aria-label="보기">
+        <button aria-pressed="true" data-f="all">전체</button>
+        <button aria-pressed="false" data-f="rising" id="risingBtn">새로 뜬 키워드</button>
+      </div>
+      <input class="find" id="rankFind" type="search" placeholder="이 순위에서 키워드 찾기" aria-label="순위에서 키워드 찾기">
+    </div>
+    <ol class="rank" id="rankList"></ol>
+    <p class="empty" id="rankEmpty" hidden></p>
+    <button class="more" id="moreBtn" hidden>21~50위 더 보기</button>
+  </section>
+
+  <section class="block" id="rising" aria-labelledby="riseTitle">
+    <div class="sec-head"><div><h2 id="riseTitle">오늘 가장 크게 오른 키워드</h2>
+      <p>전 연령을 통틀어 새로 진입했거나 순위가 가장 많이 오른 키워드예요.</p></div></div>
+    <ul class="rise" id="riseList"></ul>
+  </section>
+
+  <section class="block" id="cats" aria-labelledby="catTitle">
+    <div class="sec-head"><div><h2 id="catTitle">연령별 인기 품목</h2>
+      <p>연령대마다 상위 100개 검색어를 품목별로 나눴어요. 막대의 색 칸을 누르면 그 품목의 검색어가 아래에 나와요.</p></div></div>
+    <div class="catrows" id="catRows"></div>
+    <ul class="legend catlegend" id="catLegend"></ul>
+    <div class="catdetail" id="catDetail"></div>
+  </section>
+
+  <section class="block" id="brandRank" aria-labelledby="brTitle">
+    <div class="sec-head">
+      <div><h2 id="brTitle">브랜드 랭킹</h2>
+        <p id="brLead">순위 안에 든 상품 검색어가 많은 브랜드 순서예요. 오른쪽 숫자는 어제보다 늘거나 줄어든 검색어 수예요.</p></div>
+      <div class="agetabs" id="brTabs" role="group" aria-label="연령대"></div>
+    </div>
+    <ol class="brlist" id="brList"></ol>
+    <p class="empty" id="brEmpty" hidden>이날은 브랜드로 묶인 검색어가 없어요.</p>
+  </section>
+
+  <section class="block" id="events" aria-labelledby="evTitle">
+    <div class="sec-head">
+      <div><h2 id="evTitle">뷰티 팝업·행사</h2><p id="evSub"></p></div>
+      <div class="seg" role="group" aria-label="행사 상태">
+        <button aria-pressed="true" data-ev="all">전체</button>
+        <button aria-pressed="false" data-ev="on">진행 중</button>
+        <button aria-pressed="false" data-ev="soon">곧 오픈</button>
+      </div>
+    </div>
+    <div class="areas" id="evAreas" role="group" aria-label="지역"></div>
+    <ul class="tickets" id="evList"></ul>
+    <p class="empty" id="evEmpty" hidden>이날 진행 중이거나 곧 열리는 뷰티 행사가 없어요.</p>
+    <p class="ev-note" id="evNote"></p>
+  </section>
+
+  <section class="block" id="common" aria-labelledby="commonTitle">
+    <details class="fold">
+      <summary><span><h2 id="commonTitle">세대를 가리지 않고 찾은 키워드</h2>
+        <p>4개 이상 연령대의 50위 안에 동시에 오른 키워드예요. 점은 10대부터 60대 이상 순서입니다.</p></span></summary>
+      <ul class="common" id="commonList"></ul>
+      <button class="more" id="commonMore" hidden></button>
+    </details>
+  </section>
+
+  <section class="block" id="history" aria-labelledby="histTitle">
+    <div class="sec-head"><div><h2 id="histTitle">키워드 검색</h2>
+      <p id="histLead">키워드를 검색하면 연령대별로 지금 몇 위인지, 그동안 어떻게 움직였는지 보여줘요.</p></div></div>
+    <div class="hist">
+      <div class="hist-top">
+        <label class="sr" for="histFind">키워드</label>
+        <input class="find" id="histFind" type="search" list="kwList" placeholder="예: 틴트, 메디큐브" autocomplete="off">
+        <button class="go" id="histGo">검색</button>
+      </div>
+      <p class="hist-sum" id="histSum"></p>
+      <div class="ranknow" id="rankNow"></div>
+      <div class="related" id="related"></div>
+      <h3 class="chart-title" id="chartTitle"></h3>
+      <div class="chart" id="chart"></div>
+      <div class="hlegend" id="hLegend"></div>
+      <div class="chips" id="histChips" aria-label="급상승 키워드로 보기"></div>
+    </div>
+  </section>
+
+  <section class="block" id="notes" aria-labelledby="notesTitle">
+    <div class="sec-head"><div><h2 id="notesTitle">마케터 노트 모아보기</h2>
+      <p>날짜마다 남긴 해석이에요. 포트폴리오에 공개하려면 노트를 복사해 notes.md 에 붙여넣고 다시 실행하세요.</p></div></div>
+    <ul class="notelist" id="noteList"></ul>
+  </section>
+
+  <section class="block" id="archive" aria-labelledby="archTitle">
+    <details class="fold">
+      <summary><span><h2 id="archTitle">지난 기록</h2>
+        <p>날짜를 누르면 그날의 순위로 바뀌어요. 색 막대는 각 연령대의 그날 1위 키워드입니다.</p></span></summary>
+      <div id="archList"></div>
+    </details>
+  </section>
+
+  <footer>
+    <p>순위는 네이버 데이터랩 쇼핑인사이트의 화장품/미용 인기 검색어이며, 네이버 로그인 사용자 기준의 상대 지표입니다.</p>
+    <p id="methodNote">이유는 AI가 수집된 기사와 블로그 글만 근거로 작성했어요. 흐린 글씨는 근거가 약한 분석입니다.</p>
+    <p><b>이 데이터로 알 수 있는 것:</b> 네이버 쇼핑에서 연령대별로 무엇을 많이 검색했는지, 그 순위가 어떻게 움직이는지, 같은 시기에 어떤 기사·글이 나왔는지.
+      <b>알 수 없는 것:</b> 실제 판매량, 올리브영 등 다른 채널의 순위, 인스타그램·틱톡 화제성, 검색량의 절대 크기. 원인은 근거 글을 바탕으로 한 추정이에요.</p>
+    <p>개인이 만든 비상업적 프로젝트이며, 순위 출처는 네이버 데이터랩입니다.</p>
+    <p id="genNote"></p>
+  </footer>
+</main>
+
+<script>
+/*__DATA__*/
+(function(){
+  const DATA = window.SITE_DATA;
+  const AGES = ["10","20","30","40","50","60"];
+  const AGE_NAME = {"10":"10대","20":"20대","30":"30대","40":"40대","50":"50대","60":"60대 이상"};
+  const SHADE = {"10":["#F4C7D0","#4A1E2B"],"20":["#EA98AC","#4A1E2B"],"30":["#D86784","#FFFFFF"],
+                 "40":["#B9445F","#FFFFFF"],"50":["#8F2F49","#FFFFFF"],"60":["#5E1E31","#FFFFFF"]};
+  const CAT = {"셀럽/광고":"#D9577A","시즌/날씨":"#5B8DB8","할인/행사":"#D9A13B","성분/기술 트렌드":"#4F9A78",
+               "SNS 바이럴":"#8A5CC2","신제품 출시":"#2E9AA0","스테디셀러":"#A08C7A","원인 불명확":"#B3ADB6"};
+  const WD = "일월화수목금토";
+  const dates = DATA.dates.slice().sort();
+  const ages = AGES.filter(a => dates.some(d => DATA.days[d].ages[a]));
+  const $ = id => document.getElementById(id);
+
+  const state = {date: dates[dates.length-1], age: ages[0], filter: "all", q: "", expanded: false};
+
+  /* ---------- 도우미 ---------- */
+  function h(tag, attrs, ...kids){
+    const el = document.createElement(tag);
+    for (const [k,v] of Object.entries(attrs||{})){
+      if (v == null || v === false) continue;
+      if (k === "class") el.className = v;
+      else if (k === "style") el.style.cssText = v;
+      else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+      else el.setAttribute(k, v === true ? "" : v);
+    }
+    for (const c of kids.flat()) if (c != null && c !== false) el.append(c.nodeType ? c : String(c));
+    return el;
+  }
+  const dt = d => new Date(d + "T00:00:00");
+  const longDate = d => { const x = dt(d); return `${x.getFullYear()}년 ${x.getMonth()+1}월 ${x.getDate()}일 ${WD[x.getDay()]}요일`; };
+  const shortDate = d => { const x = dt(d); return `${x.getMonth()+1}/${x.getDate()}`; };
+  const day = () => DATA.days[state.date];
+  const an = (d, kw) => (DATA.days[d].an[kw] || {c:"원인 불명확", r:"분석 정보가 없습니다.", f:"low", s:[]});
+  const rising = r => r.st === "NEW" || r.st === "SURGE";
+  const T = DATA.target || "";
+  const who = a => T ? `${AGE_NAME[a]} ${T}` : AGE_NAME[a];
+  const LIMIT = DATA.collect || 50;
+  // 해당 날짜·연령의 순위 (1~50위는 rows, 51위부터는 tail에 순서대로 저장)
+  function rankOf(d, a, kw){
+    const g = DATA.days[d]?.ages[a]; if (!g) return null;
+    const r = g.rows.find(x => x.kw === kw); if (r) return r.rk;
+    const i = (g.tail || []).indexOf(kw); return i >= 0 ? g.rows.length + 1 + i : null;
+  }
+  function kwsOf(d, a){ const g = DATA.days[d]?.ages[a]; return g ? g.rows.map(r => r.kw).concat(g.tail || []) : []; }
+  const when = () => state.date === dates[dates.length-1] ? "오늘" : "이날";
+
+  function chg(r){
+    const c = Math.abs(r.ch || 0);
+    if (r.st === "NEW") return h("span",{class:"chg new"},"NEW");
+    if (r.st === "SURGE" || r.st === "UP") return h("span",{class:"chg up"+(r.st==="SURGE"?" surge":""), title:`전일 ${r.pv}위`},`▲${c}`);
+    if (r.st === "DOWN") return h("span",{class:"chg down", title:`전일 ${r.pv}위`},`▼${c}`);
+    return h("span",{class:"chg same", title:"전일과 같은 순위"},"–");
+  }
+  // 이유 문장의 '대표 근거: 제목' 부분을 눌러서 바로 원문으로 갈 수 있게
+  function reasonEl(a, cls){
+    const p = h("p",{class:cls + (a.f === "low" ? " low" : "")});
+    const i = a.r.indexOf("대표 근거:"), s0 = a.s[0];
+    if (i >= 0 && s0 && s0[1]){
+      p.append(a.r.slice(0, i) + "대표 근거: ",
+        h("a",{class:"rlink", href:s0[1], target:"_blank", rel:"noopener", title:"원문 열기"}, a.r.slice(i + 6).trim().replace(/\.{2,}$/, "…"), " ↗"));
+    } else p.append(a.r);
+    return p;
+  }
+  const srcLinks = a => a.s.length ? h("div",{class:"src"}, a.s.map(s => h("a",{href:s[1]||"#", target:"_blank", rel:"noopener", title:s[0]},
+    h("span",{class:"t"}, s[0]), h("span",{"aria-hidden":"true"}, "↗")))) : null;
+  const catChip = c => h("span",{class:"cat"}, h("i",{class:"dot", style:`background:${CAT[c]||"#B3ADB6"}`}), c);
+
+  /* ---------- 날짜 ---------- */
+  function renderDatebar(){
+    const sel = $("datePick");
+    if (!sel.options.length){
+      for (const d of dates.slice().reverse()) sel.append(h("option",{value:d}, longDate(d)));
+      sel.addEventListener("change", () => setDate(sel.value));
+    }
+    sel.value = state.date;
+    const i = dates.indexOf(state.date);
+    $("prevDay").disabled = i <= 0;
+    $("nextDay").disabled = i >= dates.length-1;
+    $("latestNote").textContent = i === dates.length-1 ? "가장 최근 날짜예요" : "";
+  }
+  function setDate(d, push=true){
+    if (!DATA.days[d]) return;
+    state.date = d; state.expanded = false; commonOpen = false; catSel = null;
+    if (!DATA.days[d].ages[state.age]) state.age = ages.find(a => DATA.days[d].ages[a]);
+    if (push) history.replaceState(null, "", "#d" + d.replaceAll("-",""));
+    renderAll();
+  }
+  $("prevDay").onclick = () => setDate(dates[dates.indexOf(state.date)-1]);
+  $("nextDay").onclick = () => setDate(dates[dates.indexOf(state.date)+1]);
+
+  /* ---------- 히어로 스와치 ---------- */
+  function renderSwatches(){
+    const box = $("swatches"); box.replaceChildren();
+    for (const a of ages){
+      const g = day().ages[a]; if (!g) continue;
+      const [bg, fg] = SHADE[a];
+      box.append(h("button",{class:"sw", "aria-pressed": String(a===state.age), style:`--sw:${bg};--swfg:${fg}`,
+        onclick:() => { setAge(a); $("ranking").scrollIntoView(); }},
+        h("span",{class:"sw-age"}, AGE_NAME[a]),
+        h("span",{class:"sw-top"}, g.rows[0] ? g.rows[0].kw : "-"),
+        h("span",{class:"sw-meta"}, `새로 뜬 ${g.rows.filter(rising).length}개`)));
+    }
+  }
+
+  /* ---------- 연령별 순위 ---------- */
+  function setAge(a){ state.age = a; state.expanded = false; renderSwatches(); renderRanking(); }
+
+  function renderRanking(){
+    const g = day().ages[state.age];
+    const [shade] = SHADE[state.age];
+    $("rankSub").textContent = `${longDate(state.date)} 기준 ${who(state.age)} 1~${g.rows.length}위`;
+
+    const tabs = $("ageTabs"); tabs.replaceChildren();
+    for (const a of ages) if (day().ages[a])
+      tabs.append(h("button",{"aria-pressed":String(a===state.age), onclick:()=>setAge(a)},
+        h("i",{style:`background:${SHADE[a][0]}`}), AGE_NAME[a]));
+
+    // 요약
+    const counts = {};
+    for (const r of g.rows){ const c = an(state.date, r.kw).c; counts[c] = (counts[c]||0)+1; }
+    const order = Object.keys(CAT).filter(c => counts[c]);
+    const total = g.rows.length || 1;
+    const sum = $("summary"); sum.style.setProperty("--shade", shade); sum.replaceChildren(
+      h("div",{}, h("h3",{}, `${who(state.age)}${T ? "은" : "는"} ${when()} 이걸 찾았어요`),
+        h("ul",{class:"ins"}, (g.ins.length ? g.ins : ["오늘은 인사이트를 만들지 못했습니다."]).map(x => h("li",{},x)))),
+      h("div",{class:"mix"}, h("h4",{},"검색이 늘어난 이유"),
+        h("div",{class:"bar", role:"img", "aria-label": order.map(c=>`${c} ${counts[c]}개`).join(", ")},
+          order.map(c => h("span",{style:`flex:${counts[c]};background:${CAT[c]}`, title:`${c} ${counts[c]}개`}))),
+        h("ul",{class:"legend"}, order.map(c => h("li",{}, h("i",{class:"dot",style:`background:${CAT[c]}`}), c,
+          h("b",{}, `${Math.round(counts[c]*100/total)}%`))))));
+
+    $("risingBtn").textContent = `새로 뜬 키워드 ${g.rows.filter(rising).length}`;
+    document.querySelectorAll(".seg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.f===state.filter)));
+
+    // 리스트
+    const q = state.q.trim().toLowerCase();
+    let rows = g.rows.filter(r => (state.filter==="all" || rising(r)) && (!q || r.kw.toLowerCase().includes(q)));
+    const limited = !state.expanded && state.filter==="all" && !q && rows.length > 20;
+    const shown = limited ? rows.slice(0,20) : rows;
+    $("rankList").replaceChildren(...shown.map(r => {
+      const a = an(state.date, r.kw);
+      return h("li",{class:"row"+(r.rk<=3?" top":"")},
+        h("span",{class:"rk"}, r.rk),
+        h("div",{class:"kwcol"},
+          h("button",{class:"kwbtn", title:"이 키워드의 추이 보기", onclick:()=>showHistory(r.kw)}, h("span",{class:"kw"}, r.kw)),
+          chg(r),
+          BR[r.kw] && !r.kw.includes(BR[r.kw]) ? h("button",{class:"btag", title:"이 브랜드 전체 보기", onclick:()=>showHistory(BR[r.kw])}, BR[r.kw]) : null),
+        h("div",{class:"why"}, catChip(a.c),
+          reasonEl(a, "reason"),
+          srcLinks(a),
+          a.u ? h("span",{class:"note"},"지난 분석 유지") : null));
+    }));
+    $("moreBtn").hidden = !limited;
+    $("moreBtn").textContent = `21~${rows.length}위 더 보기`;
+    const empty = $("rankEmpty");
+    empty.hidden = rows.length > 0;
+    empty.textContent = q ? `‘${state.q}’가 들어간 키워드가 이 순위에 없어요.` : "오늘은 새로 진입했거나 급상승한 키워드가 없어요.";
+  }
+  document.querySelectorAll(".seg button").forEach(b => b.onclick = () => { state.filter = b.dataset.f; renderRanking(); });
+  $("rankFind").addEventListener("input", e => { state.q = e.target.value; renderRanking(); });
+  $("moreBtn").onclick = () => { state.expanded = true; renderRanking(); };
+
+  /* ---------- 급상승 ---------- */
+  function topRisers(n){
+    const out = [];
+    for (const a of ages){ const g = day().ages[a]; if (!g) continue;
+      for (const r of g.rows) if (rising(r)) out.push({...r, age:a, score: r.st==="NEW" ? 51 - r.rk : r.ch}); }
+    out.sort((x,y) => y.score - x.score || x.rk - y.rk);
+    const seen = new Set(), res = [];
+    for (const r of out){ const k = r.kw + r.age; if (seen.has(k)) continue; seen.add(k); res.push(r); if (res.length>=n) break; }
+    return res;
+  }
+  function renderRising(){
+    const list = topRisers(8);
+    $("riseList").replaceChildren(...(list.length ? list.map(r => {
+      const a = an(state.date, r.kw);
+      return h("li",{style:`--shade:${SHADE[r.age][0]}`},
+        h("div",{class:"r1"}, h("button",{class:"kwbtn", onclick:()=>showHistory(r.kw)}, h("span",{class:"kw"}, r.kw)), chg(r)),
+        h("span",{class:"who"}, `${who(r.age)} ${r.rk}위`),
+        catChip(a.c),
+        reasonEl(a, "reason"),
+        srcLinks(a));
+    }) : [h("li",{}, "오늘은 크게 오른 키워드가 없어요.")]));
+  }
+
+  /* ---------- 팝업·행사 ---------- */
+  const EVENTS = DATA.events || [];
+  const ev = {f:"all", area:""};
+  function evStatus(e){
+    const r = dt(state.date), s = dt(e.s), en = e.e ? dt(e.e) : null, DAY = 864e5;
+    if (s > r){ const n = Math.round((s-r)/DAY); return n <= 21 ? {k:"soon", b:`D-${n}`, sm:"오픈 예정", o:1000+n} : null; }
+    if (en && en < r) return null;
+    if (!en) return {k:"on", b:"진행 중", sm:"종료일 미정", o:500};
+    const left = Math.round((en-r)/DAY);
+    return left === 0 ? {k:"last", b:"오늘 마감", sm:"마지막 날", o:0} : {k:"on", b:"진행 중", sm:`${left}일 남음`, o:left};
+  }
+  function brandHit(e){
+    if (!e.b || e.b.length < 2) return null;
+    for (const a of ages){ const r = day().ages[a]?.rows.find(x => x.kw.includes(e.b)); if (r) return `${who(a)} 검색 ${r.rk}위`; }
+    return null;
+  }
+  function renderEvents(){
+    const live = EVENTS.map(e => ({e, st: evStatus(e)})).filter(x => x.st);
+    const areas = [...new Set(live.map(x => x.e.a))].sort((a,b) => a==="기타" ? 1 : b==="기타" ? -1 : a.localeCompare(b));
+    if (ev.area && !areas.includes(ev.area)) ev.area = "";
+    $("evAreas").replaceChildren(...(areas.length > 1 ? ["", ...areas].map(a => h("button",{"aria-pressed":String(ev.area===a),
+      onclick:()=>{ ev.area = a; renderEvents(); }}, a || "모든 지역")) : []));
+    const on = live.filter(x => x.st.k !== "soon").length, soon = live.length - on;
+    $("evSub").textContent = `${longDate(state.date)} 기준 진행 중 ${on}곳, 3주 안에 오픈 ${soon}곳`;
+    document.querySelectorAll("[data-ev]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.ev===ev.f)));
+    const list = live.filter(x => (ev.f==="all" || (ev.f==="soon" ? x.st.k==="soon" : x.st.k!=="soon")) && (!ev.area || x.e.a===ev.area))
+                     .sort((x,y) => x.st.o - y.st.o);
+    $("evList").replaceChildren(...list.map(({e, st}) => {
+      const hit = brandHit(e);
+      return h("li",{class:`ticket t-${st.k}`},
+        h("div",{class:"stub"}, h("b",{}, st.b), h("small",{}, st.sm)),
+        h("div",{class:"tbody"},
+          h("span",{class:"tname"}, e.n),
+          h("span",{class:"tmeta"}, `${e.p || "장소 미정"} · ${shortDate(e.s)} ~ ${e.e ? shortDate(e.e) : "미정"}`),
+          e.sm ? h("p",{class:"tsum"}, e.sm) : null,
+          h("div",{class:"ttags"}, h("span",{}, e.a), e.bk ? h("span",{}, e.bk) : null, hit ? h("span",{class:"hit"}, hit) : null,
+            e.src && e.src[1] ? h("a",{href:e.src[1], target:"_blank", rel:"noopener"}, "출처 보기") : null)));
+    }));
+    $("evEmpty").hidden = list.length > 0;
+    $("evNote").textContent = (DATA.demo ? "행사 정보는 2026년 11월 10일에 웹에서 확인한 실제 일정이에요. " : "")
+      + "일정과 혜택은 바뀔 수 있으니 방문 전에 공식 안내를 확인하세요.";
+  }
+  document.querySelectorAll("[data-ev]").forEach(b => b.onclick = () => { ev.f = b.dataset.ev; renderEvents(); });
+
+  /* ---------- 공통 ---------- */
+  let commonOpen = false;
+  $("commonMore").onclick = () => { commonOpen = true; renderCommon(); };
+  function renderCommon(){
+    const all = day().common || [];
+    const c = commonOpen ? all : all.slice(0, 16);
+    $("commonMore").hidden = commonOpen || all.length <= 16;
+    $("commonMore").textContent = `${all.length}개 모두 보기`;
+    $("commonList").replaceChildren(...(c.length ? c.map(([kw, as]) => h("li",{},
+      h("button",{class:"kwbtn", onclick:()=>showHistory(kw)}, h("span",{}, kw)),
+      h("span",{class:"dots", "aria-label": as.map(a=>AGE_NAME[a]).join(", ")},
+        ages.map(a => h("i",{style:`background:${as.includes(a) ? SHADE[a][0] : "transparent"}`, title:AGE_NAME[a]})))))
+      : [h("li",{}, "오늘은 여러 세대가 함께 찾은 키워드가 없어요.")]));
+  }
+
+  /* ---------- 키워드 검색 ---------- */
+  let histKw = "";
+  function showHistory(kw, scroll=true){
+    histKw = kw.trim(); if (!histKw) return;
+    $("histFind").value = histKw; $("bigQ").value = histKw; renderHistory();
+    if (scroll) $("history").scrollIntoView();
+  }
+  $("bigSearch").addEventListener("submit", e => { e.preventDefault(); showHistory($("bigQ").value); });
+  $("histGo").onclick = () => showHistory($("histFind").value, false);
+  $("histFind").addEventListener("keydown", e => { if (e.key === "Enter") showHistory(e.target.value, false); });
+
+  function jo(w, withB, withoutB){ const c = w.charCodeAt(w.length-1);
+    const b = c >= 0xAC00 && c <= 0xD7A3 ? (c - 0xAC00) % 28 !== 0 : /[lmnr0136789]$/i.test(w); return b ? withB : withoutB; }
+  const norm = t => t.replace(/\s+/g, "").toLowerCase();
+  const BR = DATA.brands || {};                       // 검색어 → 브랜드
+  const BRANDS = [...new Set(Object.values(BR))];
+  // 브랜드 이름이 2글자 이하(예: 톰)면 '톰포드'에 걸리지 않도록 단어 맨 앞에 따로 쓰인 경우만 인정
+  const isBrandKw = (k, b) => BR[k] === b || (b.length <= 2 ? new RegExp(`^${b.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(\\s|$)`).test(k) : norm(k).includes(norm(b)));
+  function brandHits(d, a, b){ return kwsOf(d, a).map((k, i) => ({k, rk: i+1})).filter(x => isBrandKw(x.k, b)); }
+  const shopUrl = q => "https://search.shopping.naver.com/search/all?query=" + encodeURIComponent(q);
+
+  function renderHistory(){
+    const dl = $("kwList");
+    if (!dl.options.length){
+      const all = new Set(BRANDS); for (const a of ages) kwsOf(state.date, a).forEach(k => all.add(k));
+      dl.replaceChildren(...[...all].sort().map(k => h("option",{value:k})));
+    }
+    $("histLead").textContent = `키워드나 브랜드 이름을 검색하면 연령대별로 몇 위인지(${LIMIT}위까지), 그동안 어떻게 움직였는지 보여줘요.`;
+    $("histChips").replaceChildren(h("span",{class:"hist-sum", style:"margin:0 4px 0 0"}, `${when()} 급상승:`),
+      ...topRisers(6).map(r => r.kw).filter((k,i,a)=>a.indexOf(k)===i).map(k => h("button",{onclick:()=>showHistory(k)}, k)));
+
+    if (!histKw) histKw = topRisers(1)[0]?.kw || day().ages[state.age].rows[0].kw;
+    $("histFind").value = histKw;
+    const q = norm(histKw);
+    const brand = BRANDS.find(b => norm(b) === q) || null;     // 브랜드 이름으로 검색했는지
+    const i = dates.indexOf(state.date), prevD = i > 0 ? dates[i-1] : null;
+
+    // 순위를 구하는 방법: 키워드면 그 키워드의 순위, 브랜드면 그 브랜드 검색어 중 가장 높은 순위
+    const at = brand
+      ? (d, a) => { const l = brandHits(d, a, brand); return l.length ? {rk: l[0].rk, k: l[0].k, n: l.length} : null; }
+      : (d, a) => { const rk = rankOf(d, a, histKw); return rk ? {rk} : null; };
+
+    // 1) 연령별 현재 순위
+    const now = ages.map(a => ({a, cur: at(state.date, a), prv: prevD ? at(prevD, a) : undefined}));
+    $("rankNow").replaceChildren(...now.map(({a, cur, prv}) => {
+      let c = null;
+      if (cur && prv === null) c = h("span",{class:"chg new"}, "NEW");
+      else if (cur && prv) c = prv.rk > cur.rk ? h("span",{class:"chg up"}, `▲${prv.rk-cur.rk}`) : prv.rk < cur.rk ? h("span",{class:"chg down"}, `▼${cur.rk-prv.rk}`) : h("span",{class:"chg same"}, "–");
+      return h("div",{class:"rn" + (cur ? "" : " out"), style:`--sh:${SHADE[a][0]}`},
+        h("span",{class:"a"}, who(a)),
+        cur ? h("b",{}, cur.rk, h("small",{}, "위")) : h("b",{}, `${LIMIT}위 밖`),
+        brand && cur ? h("span",{class:"rk-kw", title:cur.k}, cur.k) : null,
+        brand && cur ? h("span",{class:"rk-n"}, `검색어 ${cur.n}개 순위권`) : c);
+    }));
+
+    // 2) 관련 검색어: 브랜드면 그 브랜드 상품 검색어 전부, 키워드면 그 단어가 들어간 검색어
+    const rel = new Map();
+    for (const a of ages) kwsOf(state.date, a).forEach((k, idx) => {
+      const ok = brand ? isBrandKw(k, brand)
+                       : norm(k) !== q && (norm(k).includes(q) || (q.length >= 3 && q.includes(norm(k))));
+      if (ok){ const rk = idx + 1; if (!rel.has(k) || rel.get(k).rk > rk) rel.set(k, {rk, a}); }
+    });
+    const relAll = [...rel.entries()].sort((x,y) => x[1].rk - y[1].rk);
+    const relList = relAll.slice(0, brand ? 24 : 12);
+    const ownBrand = !brand && BR[histKw] ? BR[histKw] : null;
+    $("related").replaceChildren(...[
+      ...(relList.length ? [h("span",{class:"lab"}, brand ? `${brand} 상품 검색어 ${relAll.length}개` : `‘${histKw}’${jo(histKw,"이","가")} 들어간 검색어`),
+        ...relList.map(([k, v]) => h("button",{onclick:()=>showHistory(k, false), title:`${who(v.a)} ${v.rk}위`}, k, h("small",{}, `${v.rk}위`)))] : []),
+      ownBrand ? h("button",{class:"brandchip", onclick:()=>showHistory(ownBrand, false)}, `브랜드 ${ownBrand} 전체 보기`) : null,
+      brand ? h("button",{class:"watchbtn", "aria-pressed": String(isWatched(brand)), onclick:() => toggleWatch(brand)}, isWatched(brand) ? "★ 관심 브랜드" : "☆ 관심 브랜드에 추가") : null,
+      h("a",{class:"shop", href:shopUrl(histKw), target:"_blank", rel:"noopener"}, `네이버 쇼핑에서 ‘${histKw}’ 상품 보기 ↗`)].filter(Boolean));
+
+    // 3) 요약 + 추이
+    const series = ages.map(a => ({a, pts: dates.map(d => at(d, a)?.rk ?? null)}));
+    const seen = series.some(sr => sr.pts.some(v => v != null));
+    if (!seen){
+      $("histSum").textContent = `‘${histKw}’${jo(histKw,"은","는")} 저장된 ${dates.length}일 동안 어느 연령대의 ${LIMIT}위 안에도 없었어요.` +
+        (relList.length ? " 대신 이 단어가 들어간 검색어는 아래에 있어요." : " 띄어쓰기나 다른 표현으로도 검색해 보세요. 상품 자체는 네이버 쇼핑에서 볼 수 있어요.");
+      $("chartTitle").textContent = ""; $("chart").replaceChildren(); $("hLegend").replaceChildren(); return;
+    }
+    const best = now.filter(x => x.cur).sort((x,y) => x.cur.rk - y.cur.rk)[0];
+    const days = series.map(sr => ({a: sr.a, n: sr.pts.filter(v => v != null).length}));
+    const steady = days.filter(x => x.n === dates.length).map(x => AGE_NAME[x.a]);
+    const steadyTxt = steady.length === ages.length ? "모든 연령대" : steady.join(", ");
+    const head = !best ? `${longDate(state.date)}에는 모든 연령대에서 ${LIMIT}위 밖이에요. `
+      : brand ? `${longDate(state.date)} 기준 ${brand} 상품 검색어 ${relAll.length}개가 ${LIMIT}위 안에 있어요. 가장 높은 건 ${who(best.a)}의 ‘${best.cur.k}’ ${best.cur.rk}위예요. `
+              : `${longDate(state.date)} 기준 가장 높은 순위는 ${who(best.a)} ${best.cur.rk}위예요. `;
+    $("histSum").textContent = head + (steady.length
+      ? `${steadyTxt}에서 저장된 ${dates.length}일 내내 ${LIMIT}위 안에 있었으니, 꾸준히 찾는 스테디 ${brand ? "브랜드" : "키워드"}예요.`
+      : `${dates.length}일 중 ${Math.max(...days.map(x=>x.n))}일 동안 ${LIMIT}위 안에 들었어요.`);
+    $("chartTitle").textContent = brand ? `최근 ${dates.length}일 ${brand} 검색어 최고 순위` : `최근 ${dates.length}일 순위 변화`;
+    drawChart(series);
+    $("hLegend").replaceChildren(...series.filter(sr => sr.pts.some(v=>v!=null)).map(sr =>
+      h("span",{}, h("i",{style:`background:var(--l${sr.a})`}), AGE_NAME[sr.a])));
+  }
+
+  function drawChart(series){
+    const box = $("chart"); box.replaceChildren();
+    const W = Math.max(280, box.clientWidth), H = W < 500 ? 220 : 280;
+    const m = {l:40, r:12, t:12, b:26};
+    const x = i => m.l + (dates.length === 1 ? (W-m.l-m.r)/2 : i * (W-m.l-m.r)/(dates.length-1));
+    const worst = Math.max(...series.flatMap(sr => sr.pts.filter(v => v != null)));
+    const MAX = [10, 50, 100, 200, 300, 500].find(n => n >= worst) || 500;
+    const y = v => m.t + (v-1) * (H-m.t-m.b)/(MAX-1);
+    const NS = "http://www.w3.org/2000/svg";
+    const s = (tag, at) => { const el = document.createElementNS(NS, tag); for (const k in at) el.setAttribute(k, at[k]); return el; };
+    const svg = s("svg",{viewBox:`0 0 ${W} ${H}`, role:"img", "aria-label":`${histKw} 연령대별 순위 추이`});
+    const grid = s("g",{class:"grid"}), axis = s("g",{class:"axis"});
+    const ticks = MAX <= 50 ? [1,10,20,30,40,50].filter(v => v <= MAX) : [1, ...[1,2,3,4,5].map(k => Math.round(MAX*k/5))];
+    for (const v of ticks){
+      grid.append(s("line",{x1:m.l, x2:W-m.r, y1:y(v), y2:y(v)}));
+      const t = s("text",{x:m.l-8, y:y(v)+4, "text-anchor":"end"}); t.textContent = v + "위"; axis.append(t);
+    }
+    const step = Math.ceil(dates.length / Math.floor((W-m.l-m.r)/56));
+    const last = dates.length-1;
+    dates.forEach((d,i) => { if (i !== last && (i % step || last - i < step)) return;
+      const t = s("text",{x:x(i), y:H-6, "text-anchor":"middle"}); t.textContent = shortDate(d); axis.append(t); });
+    svg.append(grid, axis);
+    const tip = h("div",{class:"tip", hidden:true});
+    for (const sr of series){
+      const col = `var(--l${sr.a})`; let path = "", pen = false;
+      sr.pts.forEach((v,i) => { if (v==null){ pen=false; return; } path += (pen?"L":"M") + x(i) + "," + y(v); pen = true; });
+      if (path) svg.append(s("path",{d:path, fill:"none", stroke:col, "stroke-width":2.5, "stroke-linejoin":"round", "stroke-linecap":"round"}));
+      sr.pts.forEach((v,i) => { if (v==null) return;
+        const c = s("circle",{cx:x(i), cy:y(v), r:4, fill:col, stroke:"var(--paper)", "stroke-width":1.5, tabindex:0});
+        const show = () => { tip.hidden = false; tip.textContent = `${shortDate(dates[i])} ${AGE_NAME[sr.a]} ${v}위`;
+          tip.style.left = (x(i)/W*100)+"%"; tip.style.top = (y(v)/H*box.clientHeight)+"px"; };
+        c.addEventListener("pointerenter", show); c.addEventListener("focus", show);
+        c.addEventListener("pointerleave", () => tip.hidden = true); c.addEventListener("blur", () => tip.hidden = true);
+        c.addEventListener("click", show);
+        svg.append(c);
+      });
+    }
+    box.append(svg, tip);
+  }
+  let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => histKw && renderHistory(), 150); });
+
+  /* ---------- 지난 기록 ---------- */
+  function renderArchive(){
+    const months = {};
+    for (const d of dates.slice().reverse()){ const x = dt(d); (months[`${x.getFullYear()}년 ${x.getMonth()+1}월`] ||= []).push(d); }
+    $("archList").replaceChildren(...Object.entries(months).map(([m, ds]) => h("div",{class:"month"}, h("h3",{}, m),
+      h("ul",{class:"days"}, ds.map(d => { const x = dt(d), g = DATA.days[d];
+        const n = ages.reduce((s,a) => s + (g.ages[a]?.rows.filter(rising).length||0), 0);
+        return h("li",{}, h("button",{class:"day", "aria-current": String(d===state.date),
+            onclick:() => { setDate(d); scrollTo({top:0}); }},
+          h("span",{class:"d"}, h("b",{}, `${x.getDate()}일`, (NOTES[d] || getLocal(d)) ? h("span",{class:"pen", title:"노트 있음"}, "✎") : null), `${WD[x.getDay()]}요일 · 새로 뜬 ${n}개`),
+          h("span",{class:"minis"}, ages.map(a => h("span",{class:"mini", style:`background:${SHADE[a][0]};color:${SHADE[a][1]}`,
+            title:`${AGE_NAME[a]} 1위`}, g.ages[a]?.rows[0]?.kw || "-")))));
+      })))));
+  }
+
+  /* ---------- 품목 ---------- */
+  const PC = DATA.pcats || ["기타"], PCAT = DATA.pcat || {};
+  const PCOL = {"선케어":"#E8A33B","클렌징":"#5B8DB8","베이스":"#D2A07F","마스크팩":"#7FB8C9","헤어":"#8C6A4F","바디":"#9FB35E",
+                "향수":"#B98AC9","네일":"#3E8E8C","뷰티디바이스":"#59627F","립":"#D9577A","아이·브로우":"#6B5B95",
+                "치크·하이라이터":"#F08FA8","스킨케어":"#4F9A78","기타":"#C9C3CC"};
+  const pcOf = k => PC[PCAT[k]] ?? "기타";
+  const CAT_N = Math.min(100, LIMIT);
+  function catShare(d, a){
+    const ks = kwsOf(d, a).slice(0, CAT_N), c = {};
+    ks.forEach(k => { const p = pcOf(k); c[p] = (c[p] || 0) + 1; });
+    return {c, n: ks.length || 1};
+  }
+  const topCat = c => PC.filter(x => x !== "기타" && c[x]).sort((x,y) => c[y] - c[x])[0];
+  let catSel = null;
+  function renderCats(){
+    const i = dates.indexOf(state.date), prevD = i > 0 ? dates[i-1] : null, used = new Set();
+    $("catRows").replaceChildren(...ages.filter(a => day().ages[a]).map(a => {
+      const {c, n} = catShare(state.date, a), p = prevD ? catShare(prevD, a).c : null;
+      const order = PC.filter(x => c[x]); order.forEach(x => used.add(x));
+      let up = null;
+      if (p){ const g = PC.filter(x => x !== "기타").map(x => [x, (c[x]||0) - (p[x]||0)]).sort((x,y) => y[1]-x[1])[0]; if (g && g[1] > 0) up = `${g[0]} +${g[1]}`; }
+      const tc = topCat(c);
+      return h("div",{class:"catrow"},
+        h("span",{class:"catage"}, h("i",{style:`background:${SHADE[a][0]}`}), AGE_NAME[a]),
+        h("div",{class:"catbar", role:"group", "aria-label":`${AGE_NAME[a]} 품목 비중`}, order.map(x => h("button",{
+          style:`flex:${c[x]};background:${PCOL[x] || "#C9C3CC"}`, title:`${x} ${c[x]}개 (${Math.round(c[x]*100/n)}%)`,
+          "aria-label":`${x} ${c[x]}개`, "aria-pressed": String(!!catSel && catSel.a === a && catSel.c === x),
+          onclick:() => { catSel = {a, c:x}; renderCats(); }}))),
+        h("span",{class:"catnote"}, tc ? `1위 ${tc} ${Math.round(c[tc]*100/n)}%` : "", up ? h("em",{}, ` · 어제보다 ${up}`) : null));
+    }));
+    $("catLegend").replaceChildren(...PC.filter(x => used.has(x)).map(x => h("li",{}, h("i",{class:"dot", style:`background:${PCOL[x]}`}), x)));
+    if (!catSel || !day().ages[catSel.a]){ const a = state.age, tc = topCat(catShare(state.date, a).c); catSel = tc ? {a, c:tc} : null; }
+    if (catSel){
+      const ks = kwsOf(state.date, catSel.a).slice(0, CAT_N).map((k, i) => ({k, rk: i+1})).filter(x => pcOf(x.k) === catSel.c);
+      $("catDetail").replaceChildren(h("h3",{}, `${who(catSel.a)} · ${catSel.c} 검색어 ${ks.length}개 (상위 ${CAT_N}위 중)`),
+        h("div",{class:"related"}, ks.slice(0, 24).map(x => h("button",{onclick:() => showHistory(x.k)}, x.k, h("small",{}, `${x.rk}위`)))));
+    } else $("catDetail").replaceChildren();
+  }
+
+  /* ---------- 브랜드 랭킹 ---------- */
+  function brandTable(d, a){
+    const m = new Map();
+    for (const ag of (a ? [a] : ages)) kwsOf(d, ag).forEach((k, i) => {
+      const b = BR[k]; if (!b) return;
+      const e = m.get(b) || {b, kws: new Set(), best: Infinity, bestA: null, bestK: null};
+      e.kws.add(k); if (i + 1 < e.best){ e.best = i + 1; e.bestA = ag; e.bestK = k; }
+      m.set(b, e);
+    });
+    return [...m.values()].map(e => ({...e, n: e.kws.size})).sort((x,y) => y.n - x.n || x.best - y.best);
+  }
+  let brAge = "";
+  function renderBrandRank(){
+    $("brLead").textContent = `${LIMIT}위 안에 든 상품 검색어가 많은 브랜드 순서예요. 오른쪽 숫자는 어제보다 늘거나 줄어든 검색어 수예요.`;
+    $("brTabs").replaceChildren(...["", ...ages].map(a => h("button",{"aria-pressed": String(brAge === a), onclick:() => { brAge = a; renderBrandRank(); }},
+      a ? h("i",{style:`background:${SHADE[a][0]}`}) : null, a ? AGE_NAME[a] : "전체")));
+    const i = dates.indexOf(state.date), prevD = i > 0 ? dates[i-1] : null;
+    const now = brandTable(state.date, brAge || null).slice(0, 15);
+    const prev = prevD ? new Map(brandTable(prevD, brAge || null).map(e => [e.b, e.n])) : null;
+    const max = now[0]?.n || 1;
+    $("brList").replaceChildren(...now.map((e, idx) => {
+      const g = prev ? e.n - (prev.get(e.b) ?? 0) : null;
+      return h("li",{}, h("button",{class:"brrow", onclick:() => showHistory(e.b), title:`${e.b} 검색 결과 보기`},
+        h("span",{class:"brk"}, idx + 1),
+        h("span",{class:"brname"}, e.b),
+        h("span",{class:"brbar"}, h("i",{style:`width:${e.n / max * 100}%`})),
+        h("span",{class:"brn"}, `검색어 ${e.n}개`),
+        h("span",{class:"brbest"}, `최고 ${brAge ? "" : AGE_NAME[e.bestA] + " "}${e.best}위 · ${e.bestK}`),
+        g == null ? h("span",{class:"chg same"}, "") : g > 0 ? h("span",{class:"chg up"}, `+${g}`) : g < 0 ? h("span",{class:"chg down"}, `${g}`) : h("span",{class:"chg same"}, "–")));
+    }));
+    $("brEmpty").hidden = now.length > 0;
+  }
+
+  /* ---------- 3줄 브리핑 ---------- */
+  function renderBrief(){
+    $("briefTitle").textContent = `${when()}의 3줄 브리핑`;
+    $("briefDate").textContent = longDate(state.date) + (T ? ` · ${T} 타깃` : "");
+    const items = [];
+    const r = topRisers(1)[0];
+    if (r){
+      const a = an(state.date, r.kw), how = r.st === "NEW" ? "새로 진입해" : `${r.ch}계단 올라`;
+      items.push({tag:"급상승", text:`${who(r.age)}에서 ‘${r.kw}’${jo(r.kw,"이","가")} ${how} ${r.rk}위가 됐어요. ` +
+        (a.c !== "원인 불명확" ? `${a.c} 영향으로 보여요.` : "뚜렷한 원인은 아직 찾지 못했어요."), go:() => showHistory(r.kw)});
+    } else items.push({tag:"급상승", text:"크게 오른 키워드가 없는 조용한 하루예요.", go:() => $("ranking").scrollIntoView()});
+
+    const i = dates.indexOf(state.date), prevD = i > 0 ? dates[i-1] : null;
+    const now = brandTable(state.date, null);
+    if (now.length){
+      const prev = prevD ? new Map(brandTable(prevD, null).map(e => [e.b, e.n])) : null;
+      const lead = now[0];
+      const gain = prev ? now.map(e => ({...e, g: e.n - (prev.get(e.b) ?? 0)})).sort((x,y) => y.g - x.g || x.best - y.best)[0] : null;
+      items.push({tag:"브랜드", text:`가장 많이 검색된 브랜드는 ‘${lead.b}’예요. 상품 검색어 ${lead.n}개가 순위권이고 최고는 ${who(lead.bestA)} ${lead.best}위예요.` +
+        (gain && gain.g > 0 && gain.b !== lead.b ? ` ‘${gain.b}’는 어제보다 검색어가 ${gain.g}개 늘었어요.` : ""), go:() => $("brandRank").scrollIntoView()});
+    }
+    const ranked = ages.filter(a => day().ages[a]).map(a => { const c = catShare(state.date, a).c;
+      return [AGE_NAME[a], PC.filter(x => x !== "기타" && c[x]).sort((x,y) => c[y] - c[x])]; }).filter(([, l]) => l.length);
+    const say = (pairs) => { const g = new Map(); pairs.forEach(([a, c]) => g.set(c, [...(g.get(c) || []), a]));
+      return [...g.entries()].map(([c, as]) => { const w = as.join("·"); return `${w}${jo(w, "은", "는")} ${c}`; }).join(", "); };
+    if (ranked.length){
+      const firsts = new Set(ranked.map(([, l]) => l[0]));
+      if (firsts.size === 1){
+        const c1 = [...firsts][0], seconds = ranked.filter(([, l]) => l[1]).map(([a, l]) => [a, l[1]]);
+        items.push({tag:"품목", text:`모든 연령대에서 ${c1}${jo(c1, "이", "가")} 가장 많아요. 그다음으로 ${say(seconds)}${jo(say(seconds), "을", "를")} 많이 찾았어요.`, go:() => $("cats").scrollIntoView()});
+      } else items.push({tag:"품목", text:`연령별로 가장 많이 찾은 품목은 ${say(ranked.map(([a, l]) => [a, l[0]]))}${jo(say(ranked.map(([a, l]) => [a, l[0]])), "이에요", "예요")}.`, go:() => $("cats").scrollIntoView()});
+    }
+    $("briefList").replaceChildren(...items.slice(0, 3).map(it => h("li",{},
+      h("p",{}, h("span",{class:"btg"}, it.tag), it.text), h("button",{class:"more-link", onclick:it.go}, "자세히"))));
+    renderNote();
+  }
+
+  /* ---------- 마케터 노트 ---------- */
+  const NOTES = DATA.notes || {}, LS = "note:";
+  const getLocal = d => { try { return localStorage.getItem(LS + d) || ""; } catch(e){ return ""; } };
+  const setLocal = (d, v) => { try { v ? localStorage.setItem(LS + d, v) : localStorage.removeItem(LS + d); return true; } catch(e){ return false; } };
+  function localNotes(){ const out = {}; try { for (let i = 0; i < localStorage.length; i++){ const k = localStorage.key(i); if (k && k.startsWith(LS)) out[k.slice(LS.length)] = localStorage.getItem(k); } } catch(e){} return out; }
+  function renderNote(){
+    const pub = NOTES[state.date];
+    $("notePub").hidden = !pub; $("notePub").textContent = pub || "";
+    $("noteText").value = getLocal(state.date); $("noteSaved").textContent = ""; $("noteExport").hidden = true;
+  }
+  let noteTimer;
+  $("noteText").addEventListener("input", e => { clearTimeout(noteTimer); const d = state.date, v = e.target.value.trim();
+    noteTimer = setTimeout(() => { $("noteSaved").textContent = setLocal(d, v) ? "이 브라우저에 저장됐어요" : "이 브라우저에서는 저장할 수 없어요"; renderNotes(); renderArchive(); }, 400); });
+  $("noteCopy").onclick = async () => {
+    const all = localNotes(), txt = Object.keys(all).sort().map(d => `## ${d}\n${all[d]}\n`).join("\n");
+    const box = $("noteExport"); box.value = txt || "아직 적은 노트가 없어요."; box.hidden = false; box.select();
+    try { await navigator.clipboard.writeText(txt); $("noteSaved").textContent = "복사했어요. notes.md 에 붙여넣으세요."; }
+    catch(e){ $("noteSaved").textContent = "아래 글을 직접 복사해서 notes.md 에 붙여넣으세요."; }
+  };
+  function renderNotes(){
+    const loc = localNotes(), ds = [...new Set([...Object.keys(NOTES), ...Object.keys(loc)])].sort().reverse();
+    $("noteList").replaceChildren(...(ds.length ? ds.map(d => h("li",{},
+      h("div",{}, h("button",{onclick:() => { setDate(d); $("brief").scrollIntoView(); }}, longDate(d).replace(/^\d{4}년 /, "")),
+        h("small",{}, NOTES[d] ? "공개 노트" : "내 브라우저에만 저장")),
+      h("p",{}, [NOTES[d], loc[d]].filter(Boolean).join("\n\n"))))
+      : [h("li",{}, h("span",{}, ""), h("p",{}, "아직 노트가 없어요. 브리핑 옆 노트 칸에 그날의 해석을 적어 보세요."))]));
+  }
+
+  /* ---------- 관심 브랜드 ---------- */
+  const WATCH_PUB = DATA.watch || [];
+  const getWatchLocal = () => { try { return JSON.parse(localStorage.getItem("watch") || "[]"); } catch(e){ return []; } };
+  const setWatchLocal = l => { try { localStorage.setItem("watch", JSON.stringify(l)); return true; } catch(e){ return false; } };
+  const watchList = () => [...new Set([...WATCH_PUB, ...getWatchLocal()])];
+  const isWatched = b => watchList().some(x => norm(x) === norm(b));
+  function toggleWatch(b){
+    const l = getWatchLocal();
+    if (isWatched(b)){ setWatchLocal(l.filter(x => norm(x) !== norm(b))); }
+    else setWatchLocal([...l, b]);
+    renderWatch(); if (histKw) renderHistory();
+  }
+  function brandBest(d, b){
+    let best = null, n = new Set();
+    for (const a of ages) kwsOf(d, a).forEach((k, i) => { if (isBrandKw(k, b)){ n.add(k); if (!best || i + 1 < best.rk) best = {rk: i + 1, a, k}; } });
+    return {best, n: n.size};
+  }
+  function spark(vals){
+    const W = 300, H = 40, okv = vals.filter(v => v != null); if (!okv.length) return null;
+    const mx = Math.max(...okv, 10), x = i => vals.length === 1 ? W/2 : i * W / (vals.length - 1), y = v => 4 + (v - 1) * (H - 8) / Math.max(1, mx - 1);
+    let d = "", pen = false; vals.forEach((v, i) => { if (v == null){ pen = false; return; } d += (pen ? "L" : "M") + x(i).toFixed(1) + "," + y(v).toFixed(1); pen = true; });
+    const NS = "http://www.w3.org/2000/svg", svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("class", "spark"); svg.setAttribute("preserveAspectRatio", "none");
+    svg.setAttribute("role", "img"); svg.setAttribute("aria-label", "최근 최고 순위 추이 (위로 갈수록 높은 순위)");
+    const p = document.createElementNS(NS, "path"); p.setAttribute("d", d); p.setAttribute("fill", "none"); p.setAttribute("stroke", "#D86784");
+    p.setAttribute("stroke-width", "2.5"); p.setAttribute("vector-effect", "non-scaling-stroke"); p.setAttribute("stroke-linejoin", "round"); svg.append(p);
+    return svg;
+  }
+  function renderWatch(){
+    const bl = $("brandList"); if (!bl.options.length) bl.replaceChildren(...BRANDS.slice().sort().map(b => h("option",{value:b})));
+    const list = watchList(), i = dates.indexOf(state.date), weekAgo = i >= 7 ? dates[i - 7] : null;
+    const recent = dates.slice(Math.max(0, i - 13), i + 1);
+    $("watchList").replaceChildren(...list.map(b => {
+      const {best, n} = brandBest(state.date, b), wk = weekAgo ? brandBest(weekAgo, b).n : null;
+      const local = !WATCH_PUB.includes(b);
+      const main = WATCH_PUB[0] === b;
+      return h("li",{class:"wcard" + (main ? " main" : "")},
+        h("div",{class:"wtop"}, h("button",{class:"wname", onclick:() => showHistory(b)}, b),
+          local ? h("button",{class:"wx", title:"관심 브랜드에서 빼기", onclick:() => toggleWatch(b)}, "빼기") : main ? h("span",{class:"wtag"}, "지원 브랜드") : h("span",{class:"wmeta"}, "비교 브랜드")),
+        h("p",{class:"wmeta", style:"margin:0"}, best ? h("span",{}, "상품 검색어 ", h("b",{}, `${n}개`), ` 순위권 · 최고 ${who(best.a)} ${best.rk}위 ‘${best.k}’`) : `${when()}은 순위권에 든 검색어가 없어요.`),
+        (() => { const ks = new Set(); ages.forEach(a => brandHits(state.date, a, b).forEach(x => ks.add(x.k)));
+          const c = {}; ks.forEach(k => { const p = pcOf(k); c[p] = (c[p] || 0) + 1; });
+          const parts = Object.entries(c).sort((x,y) => y[1] - x[1]);
+          return parts.length ? h("div",{class:"wmix"}, parts.map(([p, n]) => h("span",{}, h("i",{style:`background:${PCOL[p] || "#C9C3CC"}`}), `${p} ${n}`))) : null; })(),
+        h("div",{class:"wages"}, ages.map(a => { const l = brandHits(state.date, a, b);
+          return h("span",{class: l.length ? "" : "no", style:`--sh:${SHADE[a][0]}`}, AGE_NAME[a].replace("대 이상", "+"), h("b",{}, l.length ? l[0].rk : "–")); })),
+        spark(recent.map(d => brandBest(d, b).best?.rk ?? null)),
+        h("div",{class:"wfoot"}, h("span",{}, `최근 ${recent.length}일 최고 순위`),
+          h("span",{}, wk == null ? "" : n - wk > 0 ? `일주일 전보다 검색어 +${n - wk}` : n - wk < 0 ? `일주일 전보다 검색어 ${n - wk}` : "일주일 전과 같음")));
+    }));
+    $("watchEmpty").hidden = list.length > 0;
+  }
+  function addWatchFromInput(){ const v = $("watchIn").value.trim(); if (!v) return; if (!isWatched(v)) toggleWatch(v); $("watchIn").value = ""; }
+  $("watchBtn").onclick = addWatchFromInput;
+  $("watchIn").addEventListener("keydown", e => { if (e.key === "Enter") addWatchFromInput(); });
+
+  /* ---------- 주간 흐름 ---------- */
+  let wkAge = null;
+  function renderWeekly(){
+    if (!wkAge || !day().ages[wkAge]) wkAge = state.age;
+    $("wkTabs").replaceChildren(...ages.filter(a => day().ages[a]).map(a => h("button",{"aria-pressed": String(wkAge === a), onclick:() => { wkAge = a; renderWeekly(); }},
+      h("i",{style:`background:${SHADE[a][0]}`}), AGE_NAME[a])));
+    const i = dates.indexOf(state.date), cur = dates.slice(Math.max(0, i - 6), i + 1), prev = dates.slice(Math.max(0, i - 13), Math.max(0, i - 6));
+    $("wkLead").textContent = prev.length >= 3
+      ? `${shortDate(cur[0])}~${shortDate(cur[cur.length - 1])}(이번 주)와 ${shortDate(prev[0])}~${shortDate(prev[prev.length - 1])}(지난주)의 평균 순위를 비교했어요. 하루짜리 반짝 변동은 걸러져요.`
+      : `주간 비교는 기록이 2주 쌓이면 정확해져요. 지금은 ${dates.slice(0, i + 1).length}일치예요.`;
+    if (prev.length < 3){ $("wkGrid").replaceChildren(); return; }
+    const OUT = LIMIT + 1, a = wkAge;
+    const avg = (ds, k) => ds.reduce((s, d) => s + (rankOf(d, a, k) ?? OUT), 0) / ds.length;
+    const cnt = (ds, k) => ds.filter(d => rankOf(d, a, k)).length;
+    // 화면에 보여 줄 평균은 순위권에 든 날만으로 계산 (정렬은 빠진 날을 ${LIMIT+1}위로 쳐서 공정하게)
+    const seenAvg = (ds, k) => { const v = ds.map(d => rankOf(d, a, k)).filter(Boolean); return v.length ? v.reduce((x, y) => x + y, 0) / v.length : null; };
+    const pool = new Set(); [...cur, ...prev].forEach(d => kwsOf(d, a).forEach(k => pool.add(k)));
+    const rows = [...pool].map(k => ({k, c: avg(cur, k), p: avg(prev, k), nc: cnt(cur, k), np: cnt(prev, k), sc: seenAvg(cur, k), sp: seenAvg(prev, k)}));
+    const fmt = v => v == null ? "순위 밖" : `${Math.round(v)}위`;
+    const gap = r => (r.sp ?? OUT) - (r.sc ?? OUT);
+    const up = rows.filter(r => r.nc >= 4 && r.np >= 2 && r.p - r.c >= 3 && gap(r) > 0).sort((x,y) => gap(y) - gap(x)).slice(0, 8);
+    const fresh = rows.filter(r => r.nc >= Math.min(5, cur.length) - 1 && r.np <= 1).sort((x,y) => x.c - y.c).slice(0, 8);
+    const down = rows.filter(r => r.np >= 4 && r.c - r.p >= 3 && gap(r) < 0).sort((x,y) => gap(x) - gap(y)).slice(0, 8);
+    const col = (title, sub, list, line) => h("div",{class:"wkcol"}, h("h3",{}, title), h("p",{class:"sub"}, sub),
+      list.length ? h("ol",{}, list.map(r => h("li",{}, h("button",{onclick:() => showHistory(r.k)}, r.k), line(r)))) : h("p",{class:"none"}, "해당하는 키워드가 없어요."));
+    $("wkGrid").replaceChildren(
+      col("꾸준히 오른 키워드", "평균 순위(순위권에 든 날 기준) 지난주 → 이번 주", up, r => h("span",{}, `${fmt(r.sp)} → ${fmt(r.sc)} `, h("b",{}, `▲${Math.max(1, Math.round((r.sp ?? OUT) - (r.sc ?? OUT)))}`))),
+      col("이번 주 새로 자리 잡은 키워드", "지난주엔 거의 없다가 이번 주 대부분 순위권", fresh, r => h("span",{}, `평균 ${fmt(r.sc)} · 7일 중 ${r.nc}일`)),
+      col("주춤한 키워드", "평균 순위(순위권에 든 날 기준) 지난주 → 이번 주", down, r => h("span",{}, `${fmt(r.sp)} → ${fmt(r.sc)} `, h("b",{class:"dn"}, `▼${Math.max(1, Math.round((r.sc ?? OUT) - (r.sp ?? OUT)))}`))));
+  }
+
+  /* ---------- 시작 ---------- */
+  function renderAll(){
+    $("heroTitle").textContent = T ? `${T}들이 가장 많이 검색한 뷰티 키워드` : `가장 많이 검색한 뷰티 키워드`;
+    $("riseTitle").textContent = `${when()} 가장 크게 오른 키워드`;
+    renderDatebar(); renderSwatches(); renderBrief(); renderWatch(); renderWeekly(); renderRanking(); renderRising(); renderCats(); renderBrandRank(); renderEvents(); renderCommon(); renderNotes(); renderArchive(); renderHistory(); }
+
+  $("brand").querySelector(".brand-mark").replaceChildren(...AGES.map(a => h("i",{style:`background:${SHADE[a][0]}`})));
+  $("brand").onclick = e => { e.preventDefault(); scrollTo({top:0}); };
+  document.querySelectorAll(".menu button").forEach(b => b.onclick = () => $(b.dataset.go).scrollIntoView());
+  $("demoBadge").hidden = !DATA.demo;
+  if (DATA.mode === "free") $("methodNote").textContent = "이유는 최근 기사와 블로그 글에 자주 나온 단어를 바탕으로 자동 분류했어요. 출처를 눌러 직접 확인할 수 있고, 흐린 글씨는 근거가 약한 분석입니다.";
+  if (T){ $("targetBadge").hidden = false; $("targetBadge").textContent = `${T} 타깃`;
+    $("rankTitle").textContent = `연령별 ${T} 인기 검색어`;
+    document.querySelector(".hero .lead").textContent = `네이버 쇼핑 화장품/미용 인기 검색어 중 ${T} 검색을 연령대별로 매일 모아, 무엇이 왜 뜨는지 정리했어요. 실제 판매량이나 SNS 화제성이 아니라 ‘네이버 쇼핑 검색 관심도’ 기준이에요.`;
+    document.querySelector("footer p").textContent = `순위는 네이버 데이터랩 쇼핑인사이트의 화장품/미용 인기 검색어 중 ${T} 검색 기준이며, 네이버 로그인 사용자 기준의 상대 지표입니다.`;
+    document.title = `검색 스와치 · ${T} 연령별 뷰티 검색 트렌드`; }
+  $("genNote").textContent = `최근 ${dates.length}일치 기록 · 마지막 업데이트 ${DATA.generated}`;
+
+  function fromHash(){ const m = location.hash.match(/^#d(\d{4})(\d{2})(\d{2})$/); return m ? `${m[1]}-${m[2]}-${m[3]}` : null; }
+  addEventListener("hashchange", () => { const d = fromHash(); if (d && d !== state.date) setDate(d, false); });
+  const start = fromHash(); if (start && DATA.days[start]) state.date = start;
+  if (!dates.length){ document.querySelector("main").replaceChildren(h("p",{class:"empty"},"아직 저장된 기록이 없어요. python main.py 를 실행하면 첫 기록이 생깁니다.")); return; }
+  renderAll();
+})();
+</script>
+</body>
+</html>

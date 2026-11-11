@@ -1,0 +1,2 @@
+# ANALYZER=claude (유료 Claude 분석)을 쓸 때만 추가로 설치
+anthropic>=0.40
