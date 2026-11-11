@@ -1,0 +1,1211 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>검색 스와치 · 연령별 뷰티 검색 트렌드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#F5F3F7; --paper:#FFFFFF; --ink:#2B1F2E; --soft:#6F6474; --line:#E5DEE9;
+  --up:#C23A62; --down:#4E78A6; --pill:#2B1F2E; --pillfg:#F5F3F7; --focus:#8A5CC2;
+  --font:Pretendard,"IBM Plex Sans KR",-apple-system,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+  --l10:#EDB0BE; --l20:#E38CA2; --l30:#D86784; --l40:#B9445F; --l50:#8F2F49; --l60:#5E1E31;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark; --bg:#171219; --paper:#211A24; --ink:#F1EAF3; --soft:#A79CAC; --line:#372D3B;
+  --up:#F07D9C; --down:#8FB4DD; --pill:#F1EAF3; --pillfg:#171219; --focus:#B996E8;
+  --l10:#FBE3E8; --l20:#F4B8C6; --l30:#EC8DA5; --l40:#E06688; --l50:#C8466C; --l60:#A8345A;
+}}
+:root[data-theme="dark"]{color-scheme:dark; --bg:#171219; --paper:#211A24; --ink:#F1EAF3; --soft:#A79CAC;
+  --line:#372D3B; --up:#F07D9C; --down:#8FB4DD; --pill:#F1EAF3; --pillfg:#171219; --focus:#B996E8;
+  --l10:#FBE3E8; --l20:#F4B8C6; --l30:#EC8DA5; --l40:#E06688; --l50:#C8466C; --l60:#A8345A;}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px);scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;word-break:keep-all}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:6px}
+h1,h2,h3{margin:0;letter-spacing:-.02em}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* 상단바 */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:20px;height:60px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;letter-spacing:-.03em;text-decoration:none;color:var(--ink)}
+.brand-mark{display:grid;grid-template-columns:repeat(6,5px);height:18px;border-radius:3px;overflow:hidden}
+.brand-mark i{display:block}
+.menu{display:flex;gap:2px;margin-left:auto}
+.menu button{border:0;background:transparent;padding:8px 12px;border-radius:999px;font-size:14px;font-weight:500;color:var(--soft)}
+.menu button:hover{color:var(--ink);background:var(--paper)}
+.target{font-size:12px;font-weight:600;background:var(--pill);color:var(--pillfg);border-radius:999px;padding:3px 10px}
+.demo{font-size:12px;font-weight:600;color:var(--up);border:1px solid currentColor;border-radius:999px;padding:2px 9px}
+
+/* 히어로 */
+.hero{padding:44px 0 0}
+.datebar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.datebar button{border:1px solid var(--line);background:var(--paper);border-radius:999px;width:36px;height:36px;font-size:18px;line-height:1}
+.datebar button:disabled{opacity:.35;cursor:default}
+.datebar select{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:7px 14px;font-weight:600}
+.datebar .latest{font-size:13px;color:var(--soft);margin-left:4px}
+.hero h1{font-size:clamp(30px,4.6vw,48px);font-weight:700;line-height:1.18;margin:22px 0 10px;max-width:14em;text-wrap:balance}
+.hero p.lead{margin:0;color:var(--soft);max-width:52ch}
+.swatches{display:grid;grid-template-columns:repeat(6,1fr);align-items:end;margin:36px 0 0;border-radius:0 0 20px 20px;overflow:hidden}
+.sw{position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;text-align:left;min-height:200px;
+  padding:18px 16px;border:0;border-radius:18px 18px 0 0;background:var(--sw);color:var(--swfg);transition:min-height .25s ease}
+.sw[aria-pressed="true"]{min-height:236px}
+.sw[aria-pressed="true"]::after{content:"";position:absolute;left:16px;right:16px;top:16px;height:3px;border-radius:3px;background:currentColor}
+.sw-age{font-weight:600;font-size:14px;opacity:.85}
+.sw-top{font-weight:700;font-size:clamp(17px,2vw,24px);line-height:1.25;letter-spacing:-.03em}
+.sw-meta{font-size:12px;opacity:.8}
+.sw:hover .sw-top{text-decoration:underline;text-underline-offset:4px}
+@media (prefers-reduced-motion:reduce){.sw{transition:none}}
+
+/* 섹션 공통 */
+section.block{padding:72px 0 0}
+.sec-head{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.sec-head h2{font-size:clamp(22px,2.6vw,28px);font-weight:700}
+.sec-head p{margin:4px 0 0;color:var(--soft);font-size:14px}
+
+/* 브리핑 */
+section#brief{padding-top:48px}
+.brief-card{display:grid;grid-template-columns:1.7fr 1fr;gap:0;background:var(--paper);border-radius:20px;overflow:hidden;
+  box-shadow:0 1px 0 var(--line)}
+.brief-main{padding:28px 30px}
+.eyebrow{margin:0 0 4px;font-size:13px;font-weight:600;color:var(--up)}
+.brief-main h2{font-size:clamp(22px,2.6vw,28px);font-weight:700;margin-bottom:14px}
+.brief-list{list-style:none;margin:0;padding:0;counter-reset:b}
+.brief-list li{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:baseline;padding:14px 0;border-top:1px solid var(--line)}
+.brief-list li::before{counter-increment:b;content:counter(b);font-weight:700;font-size:20px;color:var(--soft);font-variant-numeric:tabular-nums;width:18px}
+.brief-list p{margin:0;font-size:16px;line-height:1.55}
+.brief-list .btg{display:inline-block;font-size:12px;font-weight:700;color:var(--pillfg);background:var(--pill);border-radius:999px;padding:1px 9px;margin-right:8px;vertical-align:2px}
+.more-link{border:0;background:none;font-size:13px;font-weight:600;color:var(--soft);text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+.more-link:hover{color:var(--ink)}
+.note{background:color-mix(in srgb,#EA98AC 20%,var(--paper));padding:24px 24px 20px;display:flex;flex-direction:column;gap:10px}
+.note h3{font-size:16px;font-weight:700}
+.note-pub{margin:0;font-size:14px;white-space:pre-wrap;background:var(--paper);border-radius:10px;padding:10px 12px}
+.note textarea{width:100%;resize:vertical;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--paper);font-size:14px;line-height:1.55}
+.note-act{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--soft)}
+.note-act button{border:1px solid var(--ink);background:transparent;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:600}
+.note-export{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px !important}
+
+/* 품목 */
+.catrows{display:grid;gap:10px;background:var(--paper);border-radius:16px;padding:20px}
+.catrow{display:grid;grid-template-columns:104px 1fr 230px;gap:14px;align-items:center}
+.catage{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px}
+.catage i{width:12px;height:12px;border-radius:50%}
+.catbar{display:flex;height:30px;border-radius:8px;overflow:hidden;gap:2px}
+.catbar button{border:0;padding:0;min-width:3px;position:relative;transition:filter .15s}
+.catbar button:hover{filter:brightness(1.08)}
+.catbar button[aria-pressed="true"]{outline:3px solid var(--ink);outline-offset:-3px}
+.catnote{font-size:13px;color:var(--soft)}
+.catnote em{font-style:normal;color:var(--up);font-weight:600}
+.legend.catlegend{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));margin-top:14px}
+.catdetail{margin-top:18px}
+.catdetail h3{font-size:16px;font-weight:700;margin:0 0 10px}
+
+/* 브랜드 랭킹 */
+.brlist{list-style:none;margin:0;padding:0;background:var(--paper);border-radius:16px;overflow:hidden}
+.brrow{display:grid;grid-template-columns:30px 130px 1fr 86px minmax(150px,240px) 44px;gap:14px;align-items:center;width:100%;
+  border:0;border-bottom:1px solid var(--line);background:none;padding:12px 18px;text-align:left}
+.brlist li:last-child .brrow{border-bottom:0}
+.brrow:hover .brname{text-decoration:underline;text-underline-offset:4px}
+.brk{font-weight:700;color:var(--soft);font-variant-numeric:tabular-nums}
+.brlist li:nth-child(-n+3) .brk{color:var(--ink)}
+.brname{font-weight:700;font-size:16px;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brbar{height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.brbar i{display:block;height:100%;border-radius:5px;background:#D86784}
+.brn{font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+.brbest{font-size:12px;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brrow .chg{text-align:right}
+
+/* 노트 모아보기 */
+.notelist{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.notelist li{background:var(--paper);border-radius:14px;padding:16px 18px;display:grid;grid-template-columns:120px 1fr;gap:16px}
+.notelist button{border:0;background:none;padding:0;text-align:left;font-weight:700;color:var(--ink)}
+.notelist button:hover{text-decoration:underline;text-underline-offset:4px}
+.notelist p{margin:0;white-space:pre-wrap;font-size:14px}
+.notelist small{display:block;font-size:11px;color:var(--soft);font-weight:600;margin-top:2px}
+.day .pen{color:var(--up);font-weight:700;margin-left:4px}
+
+@media (max-width:760px){
+  .brief-card{grid-template-columns:1fr}
+  .brief-main{padding:22px 18px}
+  .brief-list li{grid-template-columns:auto 1fr}
+  .brief-list .more-link{grid-column:2;justify-self:start}
+  .catrow{grid-template-columns:1fr;gap:6px}
+  .catrows{padding:16px}
+  .brrow{grid-template-columns:26px 1fr 60px 40px;gap:8px;padding:12px 14px}
+  .brbar,.brbest{display:none}
+  .notelist li{grid-template-columns:1fr;gap:6px}
+}
+
+/* 접기 */
+.fold summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:12px}
+.fold summary::-webkit-details-marker{display:none}
+.fold summary h2{font-size:clamp(22px,2.6vw,28px);font-weight:700}
+.fold summary p{margin:4px 0 0;color:var(--soft);font-size:14px}
+.fold summary::after{content:"펼치기 ▾";font-size:13px;font-weight:600;color:var(--soft);white-space:nowrap;border:1px solid var(--line);border-radius:999px;padding:5px 12px}
+.fold[open] summary::after{content:"접기 ▴"}
+
+/* 관심 브랜드 */
+.watch-add{display:flex;gap:6px;align-items:center}
+.watch-add .find{min-width:180px}
+.watchlist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.wcard.main{box-shadow:inset 0 0 0 2px #D86784}
+.wtag{font-size:12px;font-weight:700;color:var(--up)}
+.wcard{background:var(--paper);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:10px}
+.wtop{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.wname{border:0;background:none;padding:0;font-size:19px;font-weight:700;letter-spacing:-.02em;text-align:left}
+.wname:hover{text-decoration:underline;text-underline-offset:4px}
+.wx{border:0;background:none;color:var(--soft);font-size:13px;padding:2px 4px}
+.wx:hover{color:var(--ink)}
+.wmeta{font-size:13px;color:var(--soft)}
+.wmeta b{color:var(--ink)}
+.wages{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
+.wages span{display:flex;flex-direction:column;align-items:center;white-space:nowrap;border-radius:8px;padding:6px 2px;background:var(--bg);border-top:4px solid var(--sh);font-size:11px;color:var(--soft)}
+.wages b{font-size:15px;color:var(--ink);font-variant-numeric:tabular-nums}
+.wages .no b{color:var(--soft);font-weight:500}
+.spark{display:block;width:100%;height:40px}
+.wmix{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--soft)}
+.wmix span{display:flex;align-items:center;gap:5px}
+.wmix i{width:9px;height:9px;border-radius:3px}
+.wfoot{display:flex;justify-content:space-between;font-size:12px;color:var(--soft)}
+.watchbtn{border:1px solid var(--ink);background:transparent;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:600}
+.watchbtn[aria-pressed="true"]{background:var(--pill);color:var(--pillfg)}
+
+/* 주간 흐름 */
+.wkgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.wkcol{background:var(--paper);border-radius:16px;padding:18px}
+.wkcol h3{font-size:15px;font-weight:700;margin:0 0 2px}
+.wkcol .sub{font-size:12px;color:var(--soft);margin:0 0 10px}
+.wkcol ol{list-style:none;margin:0;padding:0}
+.wkcol li{display:flex;justify-content:space-between;gap:8px;align-items:baseline;padding:7px 0;border-top:1px solid var(--line);font-size:14px}
+.wkcol li button{border:0;background:none;padding:0;font-weight:600;text-align:left}
+.wkcol li button:hover{text-decoration:underline;text-underline-offset:3px}
+.wkcol li span{font-size:12px;color:var(--soft);white-space:nowrap;font-variant-numeric:tabular-nums}
+.wkcol li span b{color:var(--up)} .wkcol li span b.dn{color:var(--down)}
+.wkcol .none{font-size:13px;color:var(--soft);padding:8px 0}
+@media (max-width:760px){
+  .wkgrid{grid-template-columns:1fr}
+  .watch-add{width:100%} .watch-add .find{flex:1;min-width:0}
+  .watchlist{grid-template-columns:1fr}
+}
+
+/* 연령 탭 */
+.agetabs{display:flex;gap:6px;flex-wrap:wrap}
+.agetabs button{display:flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--paper);
+  border-radius:999px;padding:6px 14px 6px 8px;font-size:14px;font-weight:600}
+.agetabs button i{width:14px;height:14px;border-radius:50%}
+.agetabs button[aria-pressed="true"]{background:var(--pill);color:var(--pillfg);border-color:var(--pill)}
+
+.summary{display:grid;grid-template-columns:1.35fr 1fr;gap:28px;padding:28px;background:var(--paper);
+  border-radius:16px;border-top:6px solid var(--shade);margin-top:16px}
+.summary h3{font-size:20px;font-weight:700;margin-bottom:12px}
+.ins{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.ins li{padding-left:18px;position:relative}
+.ins li::before{content:"";position:absolute;left:0;top:.62em;width:8px;height:8px;border-radius:50%;background:var(--shade)}
+.mix h4{font-size:15px;font-weight:600;margin:0 0 12px}
+.bar{display:flex;height:14px;border-radius:7px;overflow:hidden;gap:2px;background:var(--line)}
+.legend{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;font-size:13px}
+.legend li{display:flex;align-items:center;gap:8px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:3px;flex:none}
+.legend b{margin-left:auto;font-weight:600;color:var(--soft);font-variant-numeric:tabular-nums}
+
+.tools{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:32px 0 6px}
+.seg{display:flex;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{border:0;background:transparent;padding:6px 14px;border-radius:999px;font-size:13px;font-weight:600;color:var(--soft)}
+.seg button[aria-pressed="true"]{background:var(--pill);color:var(--pillfg)}
+.find{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:7px 14px;min-width:220px}
+
+.rank{list-style:none;margin:0;padding:0}
+.row{display:grid;grid-template-columns:44px minmax(150px,230px) 1fr;gap:16px;align-items:start;padding:16px 4px;border-bottom:1px solid var(--line)}
+.rk{font-weight:700;font-size:17px;font-variant-numeric:tabular-nums;color:var(--soft)}
+.kwcol{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.kw{font-weight:600;font-size:16px;letter-spacing:-.02em}
+.kwbtn{border:0;background:none;padding:0;text-align:left}
+.kwbtn:hover .kw{text-decoration:underline;text-underline-offset:4px}
+.row.top .rk{color:var(--ink)}
+.row.top .kw{font-size:19px;font-weight:700}
+.chg{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.chg.up{color:var(--up)} .chg.down{color:var(--down)} .chg.same{color:var(--soft)}
+.chg.new{background:var(--pill);color:var(--pillfg);padding:1px 7px;border-radius:999px;font-size:11px}
+.chg.surge{background:color-mix(in srgb,var(--up) 14%,transparent);padding:1px 7px;border-radius:999px}
+.cat{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--soft)}
+.reason{margin:4px 0 0;max-width:62ch}
+.reason.low{color:var(--soft)}
+.src{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.src a{font-size:12px;color:var(--ink);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:2px 10px;background:var(--paper)}
+.src a:hover{border-color:var(--soft)}
+.src a{display:inline-flex;gap:4px;max-width:100%;min-width:0}
+.src a .t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:26ch}
+.note{display:inline-block;margin-top:6px;font-size:12px;color:var(--soft)}
+.empty{color:var(--soft);padding:24px 4px}
+.more{display:block;margin:16px auto 0;border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:9px 20px;font-weight:600}
+
+/* 급상승 */
+.rise{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.rise li{background:var(--paper);border-radius:14px;padding:16px;border-left:6px solid var(--shade);display:flex;flex-direction:column;gap:6px}
+.rise .r1{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.rise .kw{font-size:18px}
+.rise .who{font-size:13px;color:var(--soft)}
+.rise .reason{font-size:14px;margin:0}
+.rise .src{margin-top:auto;padding-top:6px}
+.rlink{color:inherit;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.rlink:hover{text-decoration-color:currentColor;color:var(--ink)}
+
+/* 팝업·행사: 입장권 모양 */
+.areas{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 16px}
+.areas button{border:1px solid var(--line);background:transparent;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:600;color:var(--soft)}
+.areas button[aria-pressed="true"]{border-color:var(--ink);color:var(--ink)}
+.tickets{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+.ticket{display:grid;grid-template-columns:96px 1fr;background:var(--paper);border-radius:14px;position:relative;min-height:150px}
+.stub{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;padding:14px 8px;text-align:center;
+  border-radius:14px 0 0 14px;border-right:2px dashed var(--bg);background:var(--stub);color:var(--stubfg)}
+.stub b{font-size:19px;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.stub small{font-size:12px;opacity:.85}
+.ticket::before,.ticket::after{content:"";position:absolute;left:87px;width:18px;height:18px;border-radius:50%;background:var(--bg)}
+.ticket::before{top:-9px} .ticket::after{bottom:-9px}
+.t-on{--stub:#D86784;--stubfg:#fff} .t-last{--stub:#8F2F49;--stubfg:#fff}
+.t-soon{--stub:transparent;--stubfg:var(--ink)} .t-soon .stub{box-shadow:inset 0 0 0 1.5px var(--line)}
+.tbody{padding:16px 18px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.tname{font-weight:700;font-size:16px;letter-spacing:-.02em;line-height:1.35}
+.tmeta{font-size:13px;color:var(--soft)}
+.tsum{font-size:14px;margin:4px 0 0}
+.ttags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:8px;align-items:center}
+.ttags span{font-size:12px;font-weight:600;border:1px solid var(--line);border-radius:6px;padding:1px 7px;color:var(--soft)}
+.ttags .hit{border-color:var(--up);color:var(--up)}
+.ttags a{font-size:12px;color:var(--ink);margin-left:auto;text-decoration:underline;text-underline-offset:3px}
+.ev-note{font-size:13px;color:var(--soft);margin:14px 0 0}
+@media (max-width:760px){.tickets{grid-template-columns:1fr}}
+
+/* 공통 */
+.common{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:4px 28px}
+.common li{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);font-weight:600}
+.dots{display:flex;gap:4px}
+.dots i{width:10px;height:10px;border-radius:50%;border:1px solid var(--line)}
+
+/* 검색 */
+.bigsearch{display:flex;margin:28px 0 0;max-width:640px;background:var(--paper);border:2px solid var(--ink);border-radius:999px;padding:4px;
+  box-shadow:0 6px 20px color-mix(in srgb,var(--ink) 8%,transparent)}
+.bigsearch input{flex:1;min-width:0;border:0;background:transparent;padding:10px 18px;font-size:17px;outline:none}
+.bigsearch button{border:0;background:var(--ink);color:var(--bg);border-radius:999px;padding:10px 24px;font-weight:700;font-size:15px}
+.bigsearch:focus-within{outline:2px solid var(--focus);outline-offset:3px}
+.go{border:0;background:var(--pill);color:var(--pillfg);border-radius:999px;padding:7px 18px;font-weight:700}
+.ranknow{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:4px 0 18px}
+.rn{border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:2px;background:var(--bg);border-top:5px solid var(--sh)}
+.rn .a{font-size:12px;color:var(--soft);font-weight:600}
+.rn b{font-size:24px;font-weight:700;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1.2}
+.rn b small{font-size:14px;font-weight:600}
+.rn.out b{font-size:15px;color:var(--soft);font-weight:600;padding:5px 0}
+.related{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 20px}
+.related .lab{font-size:13px;color:var(--soft);margin-right:4px}
+.related button{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:4px 12px;font-size:13px;font-weight:600}
+.related button small{color:var(--soft);font-weight:500;margin-left:4px}
+.related button:hover{border-color:var(--soft)}
+.rk-kw{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rk-n{font-size:11px;color:var(--soft)}
+.related .brandchip{background:var(--pill);color:var(--pillfg);border-color:var(--pill)}
+.related .shop{font-size:13px;font-weight:600;color:var(--ink);margin-left:auto;text-decoration:underline;text-underline-offset:3px;padding:4px 2px}
+.btag{font-size:11px;font-weight:600;color:var(--soft);border:1px solid var(--line);border-radius:5px;padding:0 6px;cursor:pointer;background:none}
+.btag:hover{border-color:var(--soft);color:var(--ink)}
+.chart-title{font-size:15px;font-weight:600;margin:0 0 8px}
+@media (max-width:760px){.ranknow{grid-template-columns:repeat(3,1fr)}.bigsearch input{font-size:16px;padding:9px 14px}.bigsearch button{padding:9px 18px}}
+
+/* 키워드 추이 */
+.hist{background:var(--paper);border-radius:16px;padding:24px}
+.hist-top{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.hist-top .find{min-width:260px}
+.hist-sum{color:var(--soft);font-size:14px;margin:6px 0 14px}
+.chart{position:relative}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart .axis text{font-size:11px;fill:var(--soft)}
+.chart .grid line{stroke:var(--line)}
+.tip{position:absolute;pointer-events:none;background:var(--pill);color:var(--pillfg);font-size:12px;padding:6px 10px;
+  border-radius:8px;white-space:nowrap;transform:translate(-50%,-110%)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chips button{border:1px solid var(--line);background:transparent;border-radius:999px;padding:3px 11px;font-size:13px}
+.chips button:hover{border-color:var(--soft)}
+.hlegend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--soft);margin-top:10px}
+.hlegend span{display:flex;align-items:center;gap:6px}
+.hlegend i{width:14px;height:4px;border-radius:2px}
+
+/* 기록 */
+.month h3{font-size:17px;font-weight:700;margin:28px 0 6px}
+.days{list-style:none;margin:0;padding:0}
+.day{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:center;width:100%;padding:12px 4px;border:0;
+  border-bottom:1px solid var(--line);background:none;text-align:left}
+.day:hover b{text-decoration:underline;text-underline-offset:4px}
+.day[aria-current="true"] b::after{content:" · 보는 중";font-size:12px;font-weight:600;color:var(--up)}
+.d{display:flex;flex-direction:column;font-size:13px;color:var(--soft)}
+.d b{font-size:17px;color:var(--ink);font-weight:700}
+.minis{display:grid;grid-template-columns:repeat(6,1fr);border-radius:10px;overflow:hidden}
+.mini{font-size:12px;font-weight:600;padding:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+footer{margin:96px 0 0;padding:28px 0 48px;border-top:2px solid var(--ink);color:var(--soft);font-size:13px}
+footer p{margin:0 0 6px;max-width:72ch}
+
+@media (max-width:760px){
+  .wrap{padding:0 16px}
+  .menu{display:none}
+  .hero{padding-top:28px}
+  .swatches{grid-template-columns:repeat(3,1fr);border-radius:16px}
+  .sw,.sw[aria-pressed="true"]{min-height:118px;border-radius:0}
+  .summary{grid-template-columns:1fr;padding:20px}
+  .row{grid-template-columns:36px 1fr;gap:4px 12px}
+  .why{grid-column:2}
+  .find,.hist-top .find{min-width:0;flex:1}
+  .day{grid-template-columns:1fr;gap:8px}
+  .minis{grid-template-columns:repeat(3,1fr)}
+  section.block{padding-top:56px}
+  .hist{padding:16px}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#" id="brand"><span class="brand-mark" aria-hidden="true"></span>검색 스와치</a>
+    <span class="target" id="targetBadge" hidden></span>
+    <span class="demo" id="demoBadge" hidden>데모 데이터</span>
+    <nav class="menu" aria-label="바로가기">
+      <button data-go="brief">브리핑</button>
+      <button data-go="watch">관심 브랜드</button>
+      <button data-go="weekly">주간</button>
+      <button data-go="ranking">순위</button>
+      <button data-go="cats">품목</button>
+      <button data-go="brandRank">브랜드</button>
+      <button data-go="events">행사</button>
+      <button data-go="history">검색</button>
+      <button data-go="notes">노트</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="datebar">
+      <button id="prevDay" aria-label="전날">‹</button>
+      <label class="sr" for="datePick">날짜 선택</label>
+      <select id="datePick"></select>
+      <button id="nextDay" aria-label="다음날">›</button>
+      <span class="latest" id="latestNote"></span>
+    </div>
+    <h1 id="heroTitle">가장 많이 검색한 뷰티 키워드</h1>
+    <p class="lead">네이버 쇼핑 화장품/미용 인기 검색어를 연령대별로 1~50위까지 모으고, 최근 뉴스와 블로그를 근거로 왜 많이 찾았는지 정리했어요. 스와치를 누르면 그 연령대의 순위로 이동합니다.</p>
+    <form class="bigsearch" id="bigSearch" role="search">
+      <label class="sr" for="bigQ">키워드 검색</label>
+      <input id="bigQ" type="search" list="kwList" autocomplete="off" placeholder="키워드나 브랜드를 검색해 보세요 (예: 틴트, 메디큐브)">
+      <button type="submit">검색</button>
+    </form>
+    <datalist id="kwList"></datalist>
+    <div class="swatches" id="swatches" role="group" aria-label="연령대별 1위"></div>
+  </section>
+
+  <section class="block" id="brief" aria-labelledby="briefTitle">
+    <div class="brief-card">
+      <div class="brief-main">
+        <p class="eyebrow" id="briefDate"></p>
+        <h2 id="briefTitle">오늘의 3줄 브리핑</h2>
+        <ol class="brief-list" id="briefList"></ol>
+      </div>
+      <div class="note">
+        <h3>마케터 노트</h3>
+        <p class="note-pub" id="notePub" hidden></p>
+        <label class="sr" for="noteText">이날의 해석</label>
+        <textarea id="noteText" rows="5" placeholder="오늘 순위를 보고 든 생각을 한두 줄 적어 보세요. 이 브라우저에 자동 저장돼요."></textarea>
+        <div class="note-act"><span id="noteSaved"></span><button id="noteCopy">노트 파일용으로 복사</button></div>
+        <textarea id="noteExport" class="note-export" rows="5" readonly hidden aria-label="복사할 노트"></textarea>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="watch" aria-labelledby="watchTitle">
+    <div class="sec-head">
+      <div><h2 id="watchTitle">관심 브랜드</h2>
+        <p>지원 브랜드와 비교 브랜드를 나란히 두고 매일 지켜봐요. 숫자는 연령대별 그 브랜드 검색어의 최고 순위예요.</p></div>
+      <div class="watch-add">
+        <label class="sr" for="watchIn">브랜드 추가</label>
+        <input class="find" id="watchIn" list="brandList" placeholder="브랜드 이름 추가" autocomplete="off">
+        <datalist id="brandList"></datalist>
+        <button class="go" id="watchBtn">추가</button>
+      </div>
+    </div>
+    <ul class="watchlist" id="watchList"></ul>
+    <p class="empty" id="watchEmpty" hidden>아직 등록한 브랜드가 없어요. 위 칸에 브랜드 이름을 넣거나, 브랜드를 검색한 뒤 ‘관심 브랜드에 추가’를 누르세요.</p>
+  </section>
+
+  <section class="block" id="weekly" aria-labelledby="wkTitle">
+    <div class="sec-head">
+      <div><h2 id="wkTitle">이번 주 흐름</h2><p id="wkLead"></p></div>
+      <div class="agetabs" id="wkTabs" role="group" aria-label="연령대"></div>
+    </div>
+    <div class="wkgrid" id="wkGrid"></div>
+  </section>
+
+  <section class="block" id="ranking" aria-labelledby="rankTitle">
+    <div class="sec-head">
+      <div><h2 id="rankTitle">연령별 인기 검색어</h2><p id="rankSub"></p></div>
+      <div class="agetabs" id="ageTabs" role="group" aria-label="연령대"></div>
+    </div>
+    <div class="summary" id="summary"></div>
+    <div class="tools">
+      <div class="seg" role="group" aria-label="보기">
+        <button aria-pressed="true" data-f="all">전체</button>
+        <button aria-pressed="false" data-f="rising" id="risingBtn">새로 뜬 키워드</button>
+      </div>
+      <input class="find" id="rankFind" type="search" placeholder="이 순위에서 키워드 찾기" aria-label="순위에서 키워드 찾기">
+    </div>
+    <ol class="rank" id="rankList"></ol>
+    <p class="empty" id="rankEmpty" hidden></p>
+    <button class="more" id="moreBtn" hidden>21~50위 더 보기</button>
+  </section>
+
+  <section class="block" id="rising" aria-labelledby="riseTitle">
+    <div class="sec-head"><div><h2 id="riseTitle">오늘 가장 크게 오른 키워드</h2>
+      <p>전 연령을 통틀어 새로 진입했거나 순위가 가장 많이 오른 키워드예요.</p></div></div>
+    <ul class="rise" id="riseList"></ul>
+  </section>
+
+  <section class="block" id="cats" aria-labelledby="catTitle">
+    <div class="sec-head"><div><h2 id="catTitle">연령별 인기 품목</h2>
+      <p>연령대마다 상위 100개 검색어를 품목별로 나눴어요. 막대의 색 칸을 누르면 그 품목의 검색어가 아래에 나와요.</p></div></div>
+    <div class="catrows" id="catRows"></div>
+    <ul class="legend catlegend" id="catLegend"></ul>
+    <div class="catdetail" id="catDetail"></div>
+  </section>
+
+  <section class="block" id="brandRank" aria-labelledby="brTitle">
+    <div class="sec-head">
+      <div><h2 id="brTitle">브랜드 랭킹</h2>
+        <p id="brLead">순위 안에 든 상품 검색어가 많은 브랜드 순서예요. 오른쪽 숫자는 어제보다 늘거나 줄어든 검색어 수예요.</p></div>
+      <div class="agetabs" id="brTabs" role="group" aria-label="연령대"></div>
+    </div>
+    <ol class="brlist" id="brList"></ol>
+    <p class="empty" id="brEmpty" hidden>이날은 브랜드로 묶인 검색어가 없어요.</p>
+  </section>
+
+  <section class="block" id="events" aria-labelledby="evTitle">
+    <div class="sec-head">
+      <div><h2 id="evTitle">뷰티 팝업·행사</h2><p id="evSub"></p></div>
+      <div class="seg" role="group" aria-label="행사 상태">
+        <button aria-pressed="true" data-ev="all">전체</button>
+        <button aria-pressed="false" data-ev="on">진행 중</button>
+        <button aria-pressed="false" data-ev="soon">곧 오픈</button>
+      </div>
+    </div>
+    <div class="areas" id="evAreas" role="group" aria-label="지역"></div>
+    <ul class="tickets" id="evList"></ul>
+    <p class="empty" id="evEmpty" hidden>이날 진행 중이거나 곧 열리는 뷰티 행사가 없어요.</p>
+    <p class="ev-note" id="evNote"></p>
+  </section>
+
+  <section class="block" id="common" aria-labelledby="commonTitle">
+    <details class="fold">
+      <summary><span><h2 id="commonTitle">세대를 가리지 않고 찾은 키워드</h2>
+        <p>4개 이상 연령대의 50위 안에 동시에 오른 키워드예요. 점은 10대부터 60대 이상 순서입니다.</p></span></summary>
+      <ul class="common" id="commonList"></ul>
+      <button class="more" id="commonMore" hidden></button>
+    </details>
+  </section>
+
+  <section class="block" id="history" aria-labelledby="histTitle">
+    <div class="sec-head"><div><h2 id="histTitle">키워드 검색</h2>
+      <p id="histLead">키워드를 검색하면 연령대별로 지금 몇 위인지, 그동안 어떻게 움직였는지 보여줘요.</p></div></div>
+    <div class="hist">
+      <div class="hist-top">
+        <label class="sr" for="histFind">키워드</label>
+        <input class="find" id="histFind" type="search" list="kwList" placeholder="예: 틴트, 메디큐브" autocomplete="off">
+        <button class="go" id="histGo">검색</button>
+      </div>
+      <p class="hist-sum" id="histSum"></p>
+      <div class="ranknow" id="rankNow"></div>
+      <div class="related" id="related"></div>
+      <h3 class="chart-title" id="chartTitle"></h3>
+      <div class="chart" id="chart"></div>
+      <div class="hlegend" id="hLegend"></div>
+      <div class="chips" id="histChips" aria-label="급상승 키워드로 보기"></div>
+    </div>
+  </section>
+
+  <section class="block" id="notes" aria-labelledby="notesTitle">
+    <div class="sec-head"><div><h2 id="notesTitle">마케터 노트 모아보기</h2>
+      <p>날짜마다 남긴 해석이에요. 포트폴리오에 공개하려면 노트를 복사해 notes.md 에 붙여넣고 다시 실행하세요.</p></div></div>
+    <ul class="notelist" id="noteList"></ul>
+  </section>
+
+  <section class="block" id="archive" aria-labelledby="archTitle">
+    <details class="fold">
+      <summary><span><h2 id="archTitle">지난 기록</h2>
+        <p>날짜를 누르면 그날의 순위로 바뀌어요. 색 막대는 각 연령대의 그날 1위 키워드입니다.</p></span></summary>
+      <div id="archList"></div>
+    </details>
+  </section>
+
+  <footer>
+    <p>순위는 네이버 데이터랩 쇼핑인사이트의 화장품/미용 인기 검색어이며, 네이버 로그인 사용자 기준의 상대 지표입니다.</p>
+    <p id="methodNote">이유는 AI가 수집된 기사와 블로그 글만 근거로 작성했어요. 흐린 글씨는 근거가 약한 분석입니다.</p>
+    <p><b>이 데이터로 알 수 있는 것:</b> 네이버 쇼핑에서 연령대별로 무엇을 많이 검색했는지, 그 순위가 어떻게 움직이는지, 같은 시기에 어떤 기사·글이 나왔는지.
+      <b>알 수 없는 것:</b> 실제 판매량, 올리브영 등 다른 채널의 순위, 인스타그램·틱톡 화제성, 검색량의 절대 크기. 원인은 근거 글을 바탕으로 한 추정이에요.</p>
+    <p>개인이 만든 비상업적 프로젝트이며, 순위 출처는 네이버 데이터랩입니다.</p>
+    <p id="genNote"></p>
+  </footer>
+</main>
+
+<script>
+window.SITE_DATA={"generated":"2026-11-11 11:04","demo":false,"target":"여성","mode":"free","collect":100,"dates":["2026-11-10"],"days":{"2026-11-10":{"ages":{"10":{"ins":["새로 들어왔거나 크게 오른 키워드가 48개예요. 가장 눈에 띄는 건 웨이크메이크파데(1위, 새로 진입)예요.","검색이 늘어난 이유로는 할인/행사가 7개로 가장 많아요. (웨이크메이크파데, 퓌젤리팟 등)","다른 연령대 50위 안에는 없고 10대 여성만 상위 20위 안에서 찾은 키워드: 웨이크메이크파데, 쓰리씨이마이링, 셀린토아마보앰플, 질스튜어트매그놀리아."],"rows":[{"rk":1,"kw":"웨이크메이크파데","st":"NEW","ch":null,"pv":null},{"rk":2,"kw":"쓰리씨이마이링","st":"NEW","ch":null,"pv":null},{"rk":3,"kw":"셀린토아마보앰플","st":"NEW","ch":null,"pv":null},{"rk":4,"kw":"도브바디스크럽","st":"NEW","ch":null,"pv":null},{"rk":5,"kw":"질스튜어트매그놀리아","st":"NEW","ch":null,"pv":null},{"rk":6,"kw":"나스팟컨실러","st":"NEW","ch":null,"pv":null},{"rk":7,"kw":"바닐라코컨실러21호","st":"NEW","ch":null,"pv":null},{"rk":8,"kw":"시드물","st":"NEW","ch":null,"pv":null},{"rk":9,"kw":"우레아크림","st":"NEW","ch":null,"pv":null},{"rk":10,"kw":"톰포드로즈디아말피","st":"UP","ch":2,"pv":12},{"rk":11,"kw":"퓌젤리팟","st":"NEW","ch":null,"pv":null},{"rk":12,"kw":"도브크럼블","st":"NEW","ch":null,"pv":null},{"rk":13,"kw":"스킨1004","st":"NEW","ch":null,"pv":null},{"rk":14,"kw":"지성중학생쿠션","st":"NEW","ch":null,"pv":null},{"rk":15,"kw":"캣아이마그네틱네일펜","st":"NEW","ch":null,"pv":null},{"rk":16,"kw":"펄립밤","st":"NEW","ch":null,"pv":null},{"rk":17,"kw":"퓌틴트","st":"NEW","ch":null,"pv":null},{"rk":18,"kw":"플라워노즈팔레트","st":"NEW","ch":null,"pv":null},{"rk":19,"kw":"플라워노즈향수","st":"NEW","ch":null,"pv":null},{"rk":20,"kw":"한율립밤어린쑥","st":"NEW","ch":null,"pv":null},{"rk":21,"kw":"롬앤10주년팔레트","st":"NEW","ch":null,"pv":null},{"rk":22,"kw":"마사지바","st":"NEW","ch":null,"pv":null},{"rk":23,"kw":"맥얼론타임","st":"SURGE","ch":26,"pv":49},{"rk":24,"kw":"무광핑크풀컬러네일","st":"NEW","ch":null,"pv":null},{"rk":25,"kw":"브링그린글루타치온세럼","st":"NEW","ch":null,"pv":null},{"rk":26,"kw":"삐아치크엔젤","st":"NEW","ch":null,"pv":null},{"rk":27,"kw":"손소독제","st":"NEW","ch":null,"pv":null},{"rk":28,"kw":"일본한정","st":"NEW","ch":null,"pv":null},{"rk":29,"kw":"자라로즈구르망30ml","st":"NEW","ch":null,"pv":null},{"rk":30,"kw":"중국화장품","st":"NEW","ch":null,"pv":null},{"rk":31,"kw":"카밀핸드크림선물","st":"NEW","ch":null,"pv":null},{"rk":32,"kw":"컬러그램누디블러틴트14","st":"NEW","ch":null,"pv":null},{"rk":33,"kw":"컬러토닝샴푸핑크","st":"NEW","ch":null,"pv":null},{"rk":34,"kw":"코스트코팬틴샴푸","st":"NEW","ch":null,"pv":null},{"rk":35,"kw":"클리오모감주밑서재","st":"NEW","ch":null,"pv":null},{"rk":36,"kw":"토리든","st":"NEW","ch":null,"pv":null},{"rk":37,"kw":"다이소쪽집게","st":"NEW","ch":null,"pv":null},{"rk":38,"kw":"데이지크크림소다","st":"NEW","ch":null,"pv":null},{"rk":39,"kw":"도브스크럽마카다미아","st":"NEW","ch":null,"pv":null},{"rk":40,"kw":"라끄베르클렌징티슈","st":"NEW","ch":null,"pv":null},{"rk":41,"kw":"라타파","st":"NEW","ch":null,"pv":null},{"rk":42,"kw":"록시땅선크림","st":"NEW","ch":null,"pv":null},{"rk":43,"kw":"롬앤베러댄컨투어쉐딩","st":"NEW","ch":null,"pv":null},{"rk":44,"kw":"먼작귀퍼퓸드","st":"NEW","ch":null,"pv":null},{"rk":45,"kw":"미니향수세트","st":"NEW","ch":null,"pv":null},{"rk":46,"kw":"바닐라헤어오일","st":"NEW","ch":null,"pv":null},{"rk":47,"kw":"바디로션","st":"UP","ch":4,"pv":51},{"rk":48,"kw":"바비브라운아이섀도우","st":"NEW","ch":null,"pv":null},{"rk":49,"kw":"발효화장품","st":"NEW","ch":null,"pv":null},{"rk":50,"kw":"백옥생질청결제","st":"NEW","ch":null,"pv":null}],"tail":["보로탈코바디크림","브이씨드토너","빼빼눈살패치","셀라덤유스터닝앰플","소나무진정앰플","속모증","수부지쿠션","시세이도로사리움향수","씨피원린스","아비브앰플","웨이크메이크팔레트","일리윤립밤1개","일본롬앤피치모카","장원영빗","주디돌쉐딩","지원앰플비비","칭즈","카밀핸드크림향","클레드뽀메베","킬리안돈비샤이","픽서","휴리즈바디워시","4인용바스밤만들기","cheeryep","ckonesummer","heme섀도우","joocyee팔레트","mentholatum립","primaniacs코마에다","soldejaneiro71향수","가나디틴트","고체향수만들기","꾸셀브러쉬클리너","넘버즈인5번앰플","네일팁","네일팁사이즈","노모랩크림","논픽션헤어미스트","다이소눈썹칼","다이소수분플럼핑","다이소아이라이너","다이소입큰파우더팩트","닥터브로너스립밤","닥터지수분크림","데일리모먼트핸드크림","도브스크럽카렌듈라","디올하이라이터홀리데이","디피어24미라클","또또얼굴형관리","라네즈진저브레드"]},"20":{"ins":["새로 들어왔거나 크게 오른 키워드가 47개예요. 가장 눈에 띄는 건 토너패드(1위, 새로 진입)예요.","검색이 늘어난 이유로는 시즌/날씨가 6개로 가장 많아요. (더페이스샵잉크그라피, 헤라홀리데이쿠션 등)","다른 연령대 50위 안에는 없고 20대 여성만 상위 20위 안에서 찾은 키워드: 토너패드, vdl틴트, 라카키스프루프, 더유핏브이밴드."],"rows":[{"rk":1,"kw":"토너패드","st":"NEW","ch":null,"pv":null},{"rk":2,"kw":"vdl틴트","st":"NEW","ch":null,"pv":null},{"rk":3,"kw":"라카키스프루프","st":"UP","ch":2,"pv":5},{"rk":4,"kw":"더유핏브이밴드","st":"NEW","ch":null,"pv":null},{"rk":5,"kw":"더페이스샵잉크그라피","st":"NEW","ch":null,"pv":null},{"rk":6,"kw":"쉬글램세트","st":"NEW","ch":null,"pv":null},{"rk":7,"kw":"리스네일파츠","st":"NEW","ch":null,"pv":null},{"rk":8,"kw":"헤라에코레더","st":"NEW","ch":null,"pv":null},{"rk":9,"kw":"밀본염색약","st":"NEW","ch":null,"pv":null},{"rk":10,"kw":"핸드크림","st":"NEW","ch":null,"pv":null},{"rk":11,"kw":"코링코속눈썹","st":"SURGE","ch":48,"pv":59},{"rk":12,"kw":"맥얼론타임","st":"UP","ch":1,"pv":13},{"rk":13,"kw":"아멜리","st":"NEW","ch":null,"pv":null},{"rk":14,"kw":"토리든수딩크림","st":"NEW","ch":null,"pv":null},{"rk":15,"kw":"톰포드로즈디아말피","st":"NEW","ch":null,"pv":null},{"rk":16,"kw":"픽셀네일플레이트","st":"NEW","ch":null,"pv":null},{"rk":17,"kw":"헤라홀리데이쿠션","st":"NEW","ch":null,"pv":null},{"rk":18,"kw":"롤빗","st":"NEW","ch":null,"pv":null},{"rk":19,"kw":"모공세럼","st":"NEW","ch":null,"pv":null},{"rk":20,"kw":"엠브리올리스","st":"NEW","ch":null,"pv":null},{"rk":21,"kw":"헤어팩","st":"NEW","ch":null,"pv":null},{"rk":22,"kw":"3ce무드레시피립","st":"NEW","ch":null,"pv":null},{"rk":23,"kw":"도브바디스크럽","st":"SURGE","ch":11,"pv":34},{"rk":24,"kw":"록시땅핸드크림","st":"NEW","ch":null,"pv":null},{"rk":25,"kw":"바이오더마토너","st":"NEW","ch":null,"pv":null},{"rk":26,"kw":"애크온","st":"NEW","ch":null,"pv":null},{"rk":27,"kw":"여성청결제","st":"NEW","ch":null,"pv":null},{"rk":28,"kw":"클렌징밀크","st":"SURGE","ch":33,"pv":61},{"rk":29,"kw":"네일리본파츠","st":"NEW","ch":null,"pv":null},{"rk":30,"kw":"네일파일","st":"NEW","ch":null,"pv":null},{"rk":31,"kw":"도브스크럽","st":"NEW","ch":null,"pv":null},{"rk":32,"kw":"딥디크오르페옹","st":"NEW","ch":null,"pv":null},{"rk":33,"kw":"레드립","st":"NEW","ch":null,"pv":null},{"rk":34,"kw":"루이스비드마","st":"UP","ch":3,"pv":37},{"rk":35,"kw":"마녀공장클렌징오일","st":"NEW","ch":null,"pv":null},{"rk":36,"kw":"배스앤바디웍스디즈니","st":"NEW","ch":null,"pv":null},{"rk":37,"kw":"벨벳젤","st":"SURGE","ch":41,"pv":78},{"rk":38,"kw":"세잔느무펄하라","st":"NEW","ch":null,"pv":null},{"rk":39,"kw":"수제네일팁","st":"NEW","ch":null,"pv":null},{"rk":40,"kw":"에쿠와","st":"SURGE","ch":16,"pv":56},{"rk":41,"kw":"염색차트","st":"NEW","ch":null,"pv":null},{"rk":42,"kw":"입생로랑쿠션","st":"NEW","ch":null,"pv":null},{"rk":43,"kw":"파머스바디오일","st":"NEW","ch":null,"pv":null},{"rk":44,"kw":"폴라스초이스바하","st":"NEW","ch":null,"pv":null},{"rk":45,"kw":"향좋은샴푸","st":"NEW","ch":null,"pv":null},{"rk":46,"kw":"나스블러쉬","st":"NEW","ch":null,"pv":null},{"rk":47,"kw":"나이아신아마이드","st":"NEW","ch":null,"pv":null},{"rk":48,"kw":"노딥스","st":"NEW","ch":null,"pv":null},{"rk":49,"kw":"노세범톤업선크림","st":"NEW","ch":null,"pv":null},{"rk":50,"kw":"뉴케라칼라앰플9ml","st":"NEW","ch":null,"pv":null}],"tail":["대용량노워시","립밤","마사지겔","메이크업포에버파우더","샤넬듀오드밤","샤넬듀오립","에끌라뒤땅","여드름마스크팩","올킨스실리콘패치","일리윤바디로션","정샘물쿠션","커리쉴바바수오일","클리오컬러링선립밤","헤드앤숄더샴푸","헤트라스핸드크림","네일팁","도브롤온향수","디올블러쉬","랑끄쿠션","레삐아마존스토리","롬앤피그피그","루비셀퍼프","르라보어나더13","맨소래담립밤","메이크업브러쉬","바디로션","바세린","브러쉬탈모앰플","비레디블루쿠션","세르잔느쿠션","셀프왁싱","아도안나수이","아로마오일","에스네이처토너","에이치블러틴트","오호라","올망롤빗","우유단백질광채크림","이니스프리","이더앤썬릿치크밤","자석젤","장원영빗","젤클리너","페리페라왤케포도","aztk블러셔","fu12프롬","lg데이티놀","구찌홀리데이","나스리퀴드블러쉬","네일픽셀플레이트"]},"30":{"ins":["새로 들어왔거나 크게 오른 키워드가 40개예요. 가장 눈에 띄는 건 닥터지선크림(13위, 86계단 상승)이에요.","검색이 늘어난 이유로는 시즌/날씨가 12개로 가장 많아요. (록시땅핸드크림, 디올립글로우 등)","다른 연령대 50위 안에는 없고 30대 여성만 상위 20위 안에서 찾은 키워드: 라이콘스크럽, 엔타도라, 네일픽셀플레이트, 닥터지선크림."],"rows":[{"rk":1,"kw":"라이콘스크럽","st":"NEW","ch":null,"pv":null},{"rk":2,"kw":"엔타도라","st":"NEW","ch":null,"pv":null},{"rk":3,"kw":"라로슈포제b5","st":"SURGE","ch":27,"pv":30},{"rk":4,"kw":"립밤","st":"SURGE","ch":18,"pv":22},{"rk":5,"kw":"일리윤","st":"DOWN","ch":-4,"pv":1},{"rk":6,"kw":"록시땅핸드크림","st":"UP","ch":3,"pv":9},{"rk":7,"kw":"바디로션","st":"NEW","ch":null,"pv":null},{"rk":8,"kw":"네일픽셀플레이트","st":"NEW","ch":null,"pv":null},{"rk":9,"kw":"샴푸","st":"SURGE","ch":8,"pv":17},{"rk":10,"kw":"디올립글로우","st":"SURGE","ch":38,"pv":48},{"rk":11,"kw":"도브바디워시","st":"SURGE","ch":18,"pv":29},{"rk":12,"kw":"에스티로더갈색병","st":"NEW","ch":null,"pv":null},{"rk":13,"kw":"닥터지선크림","st":"SURGE","ch":86,"pv":99},{"rk":14,"kw":"모로칸오일","st":"NEW","ch":null,"pv":null},{"rk":15,"kw":"연작베이스프렙","st":"DOWN","ch":-10,"pv":5},{"rk":16,"kw":"헤라블랙쿠션","st":"SURGE","ch":5,"pv":21},{"rk":17,"kw":"핸드크림","st":"SURGE","ch":10,"pv":27},{"rk":18,"kw":"입욕제","st":"SAME","ch":0,"pv":18},{"rk":19,"kw":"바디워시","st":"SURGE","ch":12,"pv":31},{"rk":20,"kw":"사우나모자","st":"NEW","ch":null,"pv":null},{"rk":21,"kw":"올킨스실리콘패치","st":"NEW","ch":null,"pv":null},{"rk":22,"kw":"이솝핸드크림","st":"NEW","ch":null,"pv":null},{"rk":23,"kw":"정샘물물크림","st":"DOWN","ch":-3,"pv":20},{"rk":24,"kw":"ahc아이크림","st":"DOWN","ch":-22,"pv":2},{"rk":25,"kw":"바디오일","st":"SURGE","ch":37,"pv":62},{"rk":26,"kw":"설화수자음생크림","st":"NEW","ch":null,"pv":null},{"rk":27,"kw":"일리윤바디로션","st":"DOWN","ch":-4,"pv":23},{"rk":28,"kw":"탈모샴푸","st":"NEW","ch":null,"pv":null},{"rk":29,"kw":"히스토랩","st":"NEW","ch":null,"pv":null},{"rk":30,"kw":"입생로랑쿠션","st":"DOWN","ch":-24,"pv":6},{"rk":31,"kw":"nmn토너","st":"NEW","ch":null,"pv":null},{"rk":32,"kw":"샤넬립밤","st":"NEW","ch":null,"pv":null},{"rk":33,"kw":"mts롤러","st":"NEW","ch":null,"pv":null},{"rk":34,"kw":"수제네일팁","st":"SURGE","ch":17,"pv":51},{"rk":35,"kw":"아멜리","st":"SURGE","ch":17,"pv":52},{"rk":36,"kw":"에스티로더퓨처리스트","st":"NEW","ch":null,"pv":null},{"rk":37,"kw":"이솝핸드워시","st":"NEW","ch":null,"pv":null},{"rk":38,"kw":"키스미아이라이너","st":"NEW","ch":null,"pv":null},{"rk":39,"kw":"드로에뚜젤리틴트","st":"NEW","ch":null,"pv":null},{"rk":40,"kw":"로마샴푸","st":"SURGE","ch":20,"pv":60},{"rk":41,"kw":"시드물판테놀앰플","st":"NEW","ch":null,"pv":null},{"rk":42,"kw":"시세이도파운데이션","st":"SURGE","ch":49,"pv":91},{"rk":43,"kw":"이자녹스더블티놀","st":"NEW","ch":null,"pv":null},{"rk":44,"kw":"끌레드뽀보떼","st":"DOWN","ch":-16,"pv":28},{"rk":45,"kw":"마데카크림","st":"NEW","ch":null,"pv":null},{"rk":46,"kw":"샤넬듀오립","st":"NEW","ch":null,"pv":null},{"rk":47,"kw":"알마스도브롤온","st":"SAME","ch":0,"pv":47},{"rk":48,"kw":"웰라쥬앰플","st":"NEW","ch":null,"pv":null},{"rk":49,"kw":"토리든세럼","st":"NEW","ch":null,"pv":null},{"rk":50,"kw":"트리트먼트","st":"NEW","ch":null,"pv":null}],"tail":["헤어에센스","네일필름","녹차실감","도브바디스크럽","라로슈포제","루이스비드마","바이오더마립밤","바이오던스콜라겐팩","세안밴드","세타필크림","세포랩","아베다샴푸","이자녹스데이티놀","히스토랩클렌징밀크","고운발","나스블러셔","나스파운데이션","넘버즈인","라카키스프루프","미인채쿠션","샤넬","샤넬립스틱","설화수","설화수크림","에스네이처수분크림","나스쿠션홀리데이","나이아신아마이드","네일팁","노글루속눈썹","도브비누","때비누","밀본염색약","바비브라운엑스트라립밤","바이오더마에센스로션","보나메두사","블레파졸","설화수클렌징오일","아이오페슈퍼바이탈","제이지스칼프샴푸","프리메라쿠션","핸드워시","헤라파운데이션","헤라홀리데이쿠션","가히멀티밤","그랑핸드수지살몬","닥터지수분크림","더마팩토리","레브젤누아르핑크","마스크팩","바이오더마바디로션"]},"40":{"ins":["새로 들어왔거나 크게 오른 키워드가 26개예요. 가장 눈에 띄는 건 일리윤(9위, 68계단 상승)이에요.","검색이 늘어난 이유로는 시즌/날씨가 15개로 가장 많아요. (세포랩, 록시땅핸드크림 등)","상위 10위 중 0개는 모든 연령대가 함께 찾은 키워드예요."],"rows":[{"rk":1,"kw":"세포랩","st":"UP","ch":3,"pv":4},{"rk":2,"kw":"록시땅핸드크림","st":"UP","ch":4,"pv":6},{"rk":3,"kw":"ahc아이크림","st":"DOWN","ch":-1,"pv":2},{"rk":4,"kw":"핸드크림","st":"DOWN","ch":-3,"pv":1},{"rk":5,"kw":"마데카크림","st":"UP","ch":4,"pv":9},{"rk":6,"kw":"라로슈포제b5","st":"SURGE","ch":5,"pv":11},{"rk":7,"kw":"정샘물쿠션","st":"SURGE","ch":31,"pv":38},{"rk":8,"kw":"바디워시","st":"UP","ch":2,"pv":10},{"rk":9,"kw":"일리윤","st":"SURGE","ch":68,"pv":77},{"rk":10,"kw":"바디로션","st":"DOWN","ch":-3,"pv":7},{"rk":11,"kw":"아모스컬링에센스","st":"SURGE","ch":36,"pv":47},{"rk":12,"kw":"디올립글로우","st":"UP","ch":4,"pv":16},{"rk":13,"kw":"헤라블랙쿠션","st":"SURGE","ch":10,"pv":23},{"rk":14,"kw":"사우나모자","st":"DOWN","ch":-1,"pv":13},{"rk":15,"kw":"립밤","st":"DOWN","ch":-12,"pv":3},{"rk":16,"kw":"미스트","st":"NEW","ch":null,"pv":null},{"rk":17,"kw":"새치커버스틱","st":"UP","ch":2,"pv":19},{"rk":18,"kw":"유노아엑소좀앰플","st":"NEW","ch":null,"pv":null},{"rk":19,"kw":"정샘물물크림","st":"NEW","ch":null,"pv":null},{"rk":20,"kw":"에스트라아토베리어","st":"SURGE","ch":44,"pv":64},{"rk":21,"kw":"아이오페레티놀","st":"SURGE","ch":6,"pv":27},{"rk":22,"kw":"끌레드뽀보떼","st":"DOWN","ch":-2,"pv":20},{"rk":23,"kw":"이데셀프레스티지크림","st":"NEW","ch":null,"pv":null},{"rk":24,"kw":"이지듀기미쿠션","st":"DOWN","ch":-6,"pv":18},{"rk":25,"kw":"바세린","st":"SURGE","ch":49,"pv":74},{"rk":26,"kw":"샤넬립스틱","st":"NEW","ch":null,"pv":null},{"rk":27,"kw":"장원영빗","st":"DOWN","ch":-12,"pv":15},{"rk":28,"kw":"헤어에센스","st":"DOWN","ch":-14,"pv":14},{"rk":29,"kw":"세포랩에센스","st":"DOWN","ch":-4,"pv":25},{"rk":30,"kw":"조말론핸드크림","st":"DOWN","ch":-4,"pv":26},{"rk":31,"kw":"프라다립밤","st":"SURGE","ch":35,"pv":66},{"rk":32,"kw":"헤드앤숄더샴푸","st":"UP","ch":4,"pv":36},{"rk":33,"kw":"라로슈포제","st":"DOWN","ch":-21,"pv":12},{"rk":34,"kw":"연작베이스프렙","st":"NEW","ch":null,"pv":null},{"rk":35,"kw":"유리아쥬립밤","st":"DOWN","ch":-27,"pv":8},{"rk":36,"kw":"쿤달샴푸","st":"NEW","ch":null,"pv":null},{"rk":37,"kw":"도브바디워시","st":"SURGE","ch":16,"pv":53},{"rk":38,"kw":"에스티로더갈색병","st":"SURGE","ch":27,"pv":65},{"rk":39,"kw":"이지듀","st":"SURGE","ch":19,"pv":58},{"rk":40,"kw":"달바미스트","st":"NEW","ch":null,"pv":null},{"rk":41,"kw":"달바미스트세럼","st":"DOWN","ch":-17,"pv":24},{"rk":42,"kw":"에스티로더더블웨어","st":"SURGE","ch":6,"pv":48},{"rk":43,"kw":"일리윤바디로션","st":"DOWN","ch":-22,"pv":21},{"rk":44,"kw":"입생로랑쿠션","st":"DOWN","ch":-22,"pv":22},{"rk":45,"kw":"카밀핸드크림","st":"DOWN","ch":-14,"pv":31},{"rk":46,"kw":"토리든세럼","st":"SURGE","ch":14,"pv":60},{"rk":47,"kw":"파이모아염색약","st":"NEW","ch":null,"pv":null},{"rk":48,"kw":"마스크팩","st":"SURGE","ch":6,"pv":54},{"rk":49,"kw":"설화수자음생크림","st":"NEW","ch":null,"pv":null},{"rk":50,"kw":"입생로랑립스틱","st":"NEW","ch":null,"pv":null}],"tail":["재생크림","설화수","일리윤바디워시","헤라센슈얼누드밤","헤라썬크림","나이아신아마이드","디올맥시마이저","맥립스틱","여성청결제","랑콤립밤","레티놀","고운발크림","샤넬","설화수클렌징오일","셀퓨전씨선크림","아이크림","유노아시카엑소좀","조말론향수","클리오킬커버쿠션","닥터지선크림","설화수윤조에센스","설화수탄력크림","이솝핸드크림","탈모샴푸","폼클렌징","호호바오일","비반콴트망카","향수","헤라쿠션","헤어트리트먼트","바디오일","브러시세트","염색샴푸","이자녹스더블티놀","케라스타즈","달팽이크림","도브비누","디올립밤","려샴푸","리겐에스리페어크림","머드샴푸","비반콴트망카로션","소울립밤","속눈썹영양제","염색약","인셀덤비비","퀸즈밤","디올향수","딥디크플레르드뽀","샤넬립밤"]},"50":{"ins":["새로 들어왔거나 크게 오른 키워드가 28개예요. 가장 눈에 띄는 건 인셀덤(29위, 57계단 상승)이에요.","검색이 늘어난 이유로는 시즌/날씨가 12개로 가장 많아요. (ahc아이크림, 세포랩 등)","다른 연령대 50위 안에는 없고 50대 여성만 상위 20위 안에서 찾은 키워드: 설화수탄력크림, 젤라또팩토리."],"rows":[{"rk":1,"kw":"ahc아이크림","st":"SAME","ch":0,"pv":1},{"rk":2,"kw":"세포랩","st":"UP","ch":1,"pv":3},{"rk":3,"kw":"마데카크림","st":"DOWN","ch":-1,"pv":2},{"rk":4,"kw":"세포랩에센스","st":"UP","ch":1,"pv":5},{"rk":5,"kw":"이지듀기미쿠션","st":"DOWN","ch":-1,"pv":4},{"rk":6,"kw":"바디로션","st":"UP","ch":4,"pv":10},{"rk":7,"kw":"달바미스트세럼","st":"SURGE","ch":5,"pv":12},{"rk":8,"kw":"설화수탄력크림","st":"SURGE","ch":15,"pv":23},{"rk":9,"kw":"헤라블랙쿠션","st":"DOWN","ch":-2,"pv":7},{"rk":10,"kw":"록시땅핸드크림","st":"SURGE","ch":5,"pv":15},{"rk":11,"kw":"아모스컬링에센스","st":"DOWN","ch":-2,"pv":9},{"rk":12,"kw":"헤어에센스","st":"DOWN","ch":-1,"pv":11},{"rk":13,"kw":"핸드크림","st":"DOWN","ch":-7,"pv":6},{"rk":14,"kw":"젤라또팩토리","st":"NEW","ch":null,"pv":null},{"rk":15,"kw":"샤넬립스틱","st":"SURGE","ch":6,"pv":21},{"rk":16,"kw":"에스티로더갈색병","st":"SURGE","ch":15,"pv":31},{"rk":17,"kw":"설화수윤조에센스","st":"SURGE","ch":13,"pv":30},{"rk":18,"kw":"립밤","st":"SURGE","ch":47,"pv":65},{"rk":19,"kw":"비판텐연고","st":"SURGE","ch":20,"pv":39},{"rk":20,"kw":"새치커버스틱","st":"DOWN","ch":-4,"pv":16},{"rk":21,"kw":"설화수","st":"SURGE","ch":19,"pv":40},{"rk":22,"kw":"샴푸","st":"SURGE","ch":7,"pv":29},{"rk":23,"kw":"헤드스파7","st":"NEW","ch":null,"pv":null},{"rk":24,"kw":"닥터지수분크림","st":"SURGE","ch":22,"pv":46},{"rk":25,"kw":"도브비누","st":"DOWN","ch":-7,"pv":18},{"rk":26,"kw":"세인트프랑블랙라벨","st":"NEW","ch":null,"pv":null},{"rk":27,"kw":"씨아클라크림마스크","st":"NEW","ch":null,"pv":null},{"rk":28,"kw":"염색약","st":"DOWN","ch":-2,"pv":26},{"rk":29,"kw":"인셀덤","st":"SURGE","ch":57,"pv":86},{"rk":30,"kw":"정샘물물크림","st":"NEW","ch":null,"pv":null},{"rk":31,"kw":"입생로랑립스틱","st":"NEW","ch":null,"pv":null},{"rk":32,"kw":"아모스염색약","st":"DOWN","ch":-7,"pv":25},{"rk":33,"kw":"유노아엑소좀앰플","st":"NEW","ch":null,"pv":null},{"rk":34,"kw":"헤라썬크림","st":"DOWN","ch":-21,"pv":13},{"rk":35,"kw":"호호바오일","st":"DOWN","ch":-3,"pv":32},{"rk":36,"kw":"비욘드핸드크림","st":"NEW","ch":null,"pv":null},{"rk":37,"kw":"에이지20s팩트","st":"DOWN","ch":-3,"pv":34},{"rk":38,"kw":"고레소레","st":"NEW","ch":null,"pv":null},{"rk":39,"kw":"닥터지달팽이크림","st":"NEW","ch":null,"pv":null},{"rk":40,"kw":"이지듀","st":"SURGE","ch":26,"pv":66},{"rk":41,"kw":"도미나크림","st":"DOWN","ch":-3,"pv":38},{"rk":42,"kw":"맥립스틱","st":"SURGE","ch":14,"pv":56},{"rk":43,"kw":"바디워시","st":"DOWN","ch":-2,"pv":41},{"rk":44,"kw":"썬크림","st":"NEW","ch":null,"pv":null},{"rk":45,"kw":"씨드비물염색","st":"SAME","ch":0,"pv":45},{"rk":46,"kw":"에스트라아토베리어","st":"SURGE","ch":38,"pv":84},{"rk":47,"kw":"마스크팩","st":"DOWN","ch":-3,"pv":44},{"rk":48,"kw":"미스트","st":"NEW","ch":null,"pv":null},{"rk":49,"kw":"이자녹스더블티놀","st":"SURGE","ch":23,"pv":72},{"rk":50,"kw":"입생로랑쿠션","st":"DOWN","ch":-13,"pv":37}],"tail":["일리윤바디로션","나노다이아몬드석고팩","달링태그","라로슈포제b5","모로칸오일","실크테라피","올레놀샷nmn포뮬러","아이오페레티놀","고운발크림","카밀핸드크림","헤어팩","도미나스기미크림","시노덤볼륨헤어팩","헤라톤업선크림","그래비티샴푸","디올립스틱","라로슈포제","이자녹스듀얼커버쿠션","하이드로선스크린","샤넬핸드크림","설화수쿠션","설화수클렌징폼","셀퓨전씨선크림","올레놀샷","눅스오일","도브센서티브바","세인트프랑크림에센스","철벽녀립스틱","폼클렌징","피부과엑소좀앰플","헤드앤숄더샴푸","나이아신아마이드","달바미스트","비누","세타필바디로션","아토베리어365크림","이자녹스쿠션","정샘물쿠션","헤라쿠션","디올립글로우","닥터그루트샴푸","달팽이크림","랑스맥스","바세린","설화수세트","인셀덤오일미스트","하이퍼셀pdrn","헤어트리트먼트","바세린바디로션","뉴트로지나바디로션"]},"60":{"ins":["새로 들어왔거나 크게 오른 키워드가 38개예요. 가장 눈에 띄는 건 고레소레(3위, 82계단 상승)예요.","검색이 늘어난 이유로는 시즌/날씨가 10개로 가장 많아요. (ahc아이크림, 세포랩 등)","다른 연령대 50위 안에는 없고 60대 이상 여성만 상위 20위 안에서 찾은 키워드: 립스틱, 달링태그, 설화수세트, 올레놀샷nmn포뮬러."],"rows":[{"rk":1,"kw":"ahc아이크림","st":"SAME","ch":0,"pv":1},{"rk":2,"kw":"마데카크림","st":"SAME","ch":0,"pv":2},{"rk":3,"kw":"고레소레","st":"SURGE","ch":82,"pv":85},{"rk":4,"kw":"세포랩","st":"SURGE","ch":16,"pv":20},{"rk":5,"kw":"핸드크림","st":"SURGE","ch":6,"pv":11},{"rk":6,"kw":"바디로션","st":"SURGE","ch":7,"pv":13},{"rk":7,"kw":"설화수윤조에센스","st":"SURGE","ch":19,"pv":26},{"rk":8,"kw":"립밤","st":"SURGE","ch":28,"pv":36},{"rk":9,"kw":"세포랩에센스","st":"DOWN","ch":-3,"pv":6},{"rk":10,"kw":"비판텐연고","st":"SURGE","ch":27,"pv":37},{"rk":11,"kw":"립스틱","st":"SURGE","ch":66,"pv":77},{"rk":12,"kw":"유노아엑소좀앰플","st":"NEW","ch":null,"pv":null},{"rk":13,"kw":"아모스컬링에센스","st":"DOWN","ch":-3,"pv":10},{"rk":14,"kw":"이지듀기미쿠션","st":"SURGE","ch":21,"pv":35},{"rk":15,"kw":"달링태그","st":"SURGE","ch":36,"pv":51},{"rk":16,"kw":"설화수세트","st":"SURGE","ch":40,"pv":56},{"rk":17,"kw":"올레놀샷nmn포뮬러","st":"SURGE","ch":10,"pv":27},{"rk":18,"kw":"헤라블랙쿠션","st":"SURGE","ch":46,"pv":64},{"rk":19,"kw":"설화수자음생크림","st":"SURGE","ch":10,"pv":29},{"rk":20,"kw":"세인트프랑링클크림","st":"NEW","ch":null,"pv":null},{"rk":21,"kw":"헤라썬크림","st":"NEW","ch":null,"pv":null},{"rk":22,"kw":"헤드스파7","st":"NEW","ch":null,"pv":null},{"rk":23,"kw":"달바미스트세럼","st":"DOWN","ch":-7,"pv":16},{"rk":24,"kw":"살림백서","st":"SURGE","ch":31,"pv":55},{"rk":25,"kw":"견미리팩트","st":"NEW","ch":null,"pv":null},{"rk":26,"kw":"선크림","st":"NEW","ch":null,"pv":null},{"rk":27,"kw":"아이오페슈퍼바이탈","st":"SURGE","ch":32,"pv":59},{"rk":28,"kw":"정샘물쿠션","st":"NEW","ch":null,"pv":null},{"rk":29,"kw":"퍼시앙아르간골드","st":"SURGE","ch":34,"pv":63},{"rk":30,"kw":"바디워시","st":"NEW","ch":null,"pv":null},{"rk":31,"kw":"샤넬립스틱","st":"SURGE","ch":49,"pv":80},{"rk":32,"kw":"설화수자음2종","st":"SURGE","ch":26,"pv":58},{"rk":33,"kw":"실크테라피","st":"DOWN","ch":-19,"pv":14},{"rk":34,"kw":"아모스염색약","st":"DOWN","ch":-30,"pv":4},{"rk":35,"kw":"에스티로더갈색병","st":"NEW","ch":null,"pv":null},{"rk":36,"kw":"헤어에센스","st":"DOWN","ch":-29,"pv":7},{"rk":37,"kw":"동국제약마데카크림","st":"SURGE","ch":49,"pv":86},{"rk":38,"kw":"맥립스틱","st":"SURGE","ch":40,"pv":78},{"rk":39,"kw":"바엘바로광채븨블토너","st":"NEW","ch":null,"pv":null},{"rk":40,"kw":"염색약","st":"DOWN","ch":-6,"pv":34},{"rk":41,"kw":"올레놀샷","st":"DOWN","ch":-16,"pv":25},{"rk":42,"kw":"인셀덤화장품","st":"NEW","ch":null,"pv":null},{"rk":43,"kw":"쿠션팩트","st":"NEW","ch":null,"pv":null},{"rk":44,"kw":"호호바오일","st":"DOWN","ch":-16,"pv":28},{"rk":45,"kw":"닥터큐먼콜라겐팩","st":"NEW","ch":null,"pv":null},{"rk":46,"kw":"랑스맥스","st":"NEW","ch":null,"pv":null},{"rk":47,"kw":"염색샴푸","st":"DOWN","ch":-26,"pv":21},{"rk":48,"kw":"향수","st":"NEW","ch":null,"pv":null},{"rk":49,"kw":"헤어트리트먼트","st":"NEW","ch":null,"pv":null},{"rk":50,"kw":"달팽이크림","st":"NEW","ch":null,"pv":null}],"tail":["도미나크림","도브비누","매스틱화장품","메디카미실크루미어","멜라논크림","민트리샴푸","바닐라코파운데이션","설화수샘플","설화수퍼펙팅파우더","일리윤바디로션","폼클렌징","후시덤수분크림","라니쥬밤쿠션","록시땅핸드크림","민트리스칼프샴푸","설화수","세인트프랑블랙라벨","에르띠","에센스","오휘기초세트","오휘영양크림","워터플비교인기","이지듀기미앰플","티니올크리미팩트fw에디션","헤어팩","라프린엠플","리퀴드파운데이션","상떼앰플","세타필바디로션","에이지투웨니스","허블룸톤업선크림","헤드스파7트리트먼트","헤라립스틱","고운발","라셀턴","루비스가위","리체나샴푸형염색","바세린","설화수탄력크림75ml","설화수퍼펙팅쿠션","안스테틱","윤조에센스","이자녹스옴므스킨","포스트쿠엄","피지오겔로션","흑당고","김정문큐어크림","녹는실앰플","닥터디퍼런트ceq비타민씨","디올쁘아종오드뚜알렛100ml"]}},"an":{"웨이크메이크파데":{"c":"할인/행사","r":"블로그 4건에서 ‘세일’, ‘1+1’ 이야기가 나왔어요 (관련 없는 글 1건 제외). 대표 근거: 올리브영 신상 깡 [어뮤즈 누 세럼 볼륨 글로우업 쿠션/로지킴 PDRN ....","f":"medium","s":[["올리브영 신상 깡 [어뮤즈 누 세럼 볼륨 글로우업 쿠션/로지킴 PDRN ....","https://blog.naver.com/yourpeterpan/224472259095"],["올영블프세일 마지막날 후기 ㅣ 올영쿠폰 , 올영세일 , 올영블프 , ....","https://blog.naver.com/xa_eun-/224470300128"],["봄웜정식","https://blog.naver.com/jsjs0511/224467131497"]],"u":0},"쓰리씨이마이링":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"셀린토아마보앰플":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"도브바디스크럽":{"c":"SNS 바이럴","r":"뉴스 1건 · 블로그 1건에서 ‘입소문’, ‘대란’ 이야기가 나왔어요 (관련 없는 글 6건 제외). 대표 근거: [가봤다] 세면대 넓히고 성수 골목 묶은 무신사의 큰 그림...코랄빛 '뷰...","f":"medium","s":[["[가봤다] 세면대 넓히고 성수 골목 묶은 무신사의 큰 그림...코랄빛 '뷰...","https://www.techm.kr/news/articleView.html?idxno=157143"],["단종 소문 진짜인가요? 다이소 뷰티 사재기 대란템 정체 vs 11월 올영....","https://blog.naver.com/hyungrooming/224470804169"]],"u":0},"질스튜어트매그놀리아":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"나스팟컨실러":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"바닐라코컨실러21호":{"c":"원인 불명확","r":"관련 글 1건 (관련 없는 글 5건 제외)이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["올리브영 베이스 메이크업 추천템! 쿠션부터 파운데이션까지 인생 ....","https://blog.naver.com/kocinepa/224468705208"]],"u":0},"시드물":{"c":"시즌/날씨","r":"블로그 8건에서 ‘보습’, ‘건조’ 이야기가 나왔어요 (광고·체험단 글 1건 · 관련 없는 글 1건 제외). 대표 근거: [신제품] 물 없이 광으로 꽉 채운 보르광! 보르피린 초물광 팩센스 ....","f":"medium","s":[["[신제품] 물 없이 광으로 꽉 채운 보르광! 보르피린 초물광 팩센스 ....","https://blog.naver.com/sidmoolsis/224472012895"],["임산부 피부염 속건조 스킨케어 추천, 시드물 2주 사용 후기 (피부 ....","https://blog.naver.com/songyoujin1/224471197676"],["고보습 립밤 추천 : 유명한 제품 10개 이상 써본 솔직 후기(이거 3가....","https://blog.naver.com/wontae123/224470584914"]],"u":0},"우레아크림":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"톰포드로즈디아말피":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"퓌젤리팟":{"c":"할인/행사","r":"블로그 17건에서 ‘할인’, ‘세일’ 이야기가 나왔어요. 대표 근거: 2026 퓌 블랙프라이데이 총정리｜블프 할인 기간·혜택·추천템 BEST 5","f":"medium","s":[["2026 퓌 블랙프라이데이 총정리｜블프 할인 기간·혜택·추천템 BEST 5","https://blog.naver.com/pms775/224471701097"],["퓌 푸딩팟 버블 체리 발색 비교 | 퓌 블프 세일 특가 가격 & 초대링크....","https://blog.naver.com/rktjdq1/224471699963"],["퓌 블프 2,900원 특가 뭐가 있나? 젤리팟·틴트·쿠션 가격 비교","https://blog.naver.com/mybeauty14/224471656284"]],"u":0},"도브크럼블":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 3건 제외).","f":"low","s":[],"u":0},"스킨1004":{"c":"성분/기술 트렌드","r":"뉴스 1건 · 블로그 1건에서 ‘더마’, ‘성분’ 이야기가 나왔어요 (관련 없는 글 2건 제외). 대표 근거: 10월 티몰 K-뷰티 8개 품목 종합 분석: 시장은 성장, 브랜드 판도는 변화","f":"medium","s":[["10월 티몰 K-뷰티 8개 품목 종합 분석: 시장은 성장, 브랜드 판도는 변화","https://www.thebk.co.kr/news/articleView.html?idxno=312584"],["조선미녀부터 메디큐브까지! 실리콘투 '모이다'가 유럽인들 지갑 열....","https://blog.naver.com/ayj1118/224472263339"]],"u":0},"지성중학생쿠션":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"캣아이마그네틱네일펜":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"펄립밤":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 10건 제외).","f":"low","s":[],"u":0},"퓌틴트":{"c":"할인/행사","r":"블로그 11건에서 ‘할인’, ‘특가’ 이야기가 나왔어요. 대표 근거: 2026 퓌 블랙프라이데이 총정리｜블프 할인 기간·혜택·추천템 BEST 5","f":"medium","s":[["2026 퓌 블랙프라이데이 총정리｜블프 할인 기간·혜택·추천템 BEST 5","https://blog.naver.com/pms775/224471701097"],["퓌 푸딩팟 버블 체리 발색 비교 | 퓌 블프 세일 특가 가격 & 초대링크....","https://blog.naver.com/rktjdq1/224471699963"],["퓌 블프 2,900원 특가 뭐가 있나? 젤리팟·틴트·쿠션 가격 비교","https://blog.naver.com/mybeauty14/224471656284"]],"u":0},"플라워노즈팔레트":{"c":"원인 불명확","r":"관련 글 2건 (관련 없는 글 18건 제외)이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["상하이 여행 화장품 와우컬러 플라워노즈 주디돌 난징동루 쇼핑","https://blog.naver.com/dawn_of_winter/224470447590"]],"u":0},"플라워노즈향수":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 13건 제외).","f":"low","s":[],"u":0},"한율립밤어린쑥":{"c":"할인/행사","r":"블로그 1건에서 ‘할인’, ‘세일’ 이야기가 나왔어요 (관련 없는 글 1건 제외). 대표 근거: 2026년 11월 아리따움 세일 정기 할인 행사 내용과 올리브영 누니 애....","f":"low","s":[["2026년 11월 아리따움 세일 정기 할인 행사 내용과 올리브영 누니 애....","https://blog.naver.com/h8352153/224471913219"]],"u":0},"롬앤10주년팔레트":{"c":"시즌/날씨","r":"블로그 2건에서 ‘보습’, ‘여름’ 이야기가 나왔어요 (관련 없는 글 5건 제외). 대표 근거: 올리브영 11월 올영픽, 뭐가 더 들어 있나? 실제 기획상품 5가지 구성....","f":"low","s":[["올리브영 11월 올영픽, 뭐가 더 들어 있나? 실제 기획상품 5가지 구성....","https://blog.naver.com/boseokland/224471738473"],["부어 보이지 않는 차분한 애쉬 모브빛... 여름뮤트 인생 섀도우 팔레....","https://blog.naver.com/cjhcjh9011/224471620376"]],"u":0},"마사지바":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 20건 제외).","f":"low","s":[],"u":0},"맥얼론타임":{"c":"SNS 바이럴","r":"블로그 1건에서 ‘품절’ 이야기가 나왔어요 (관련 없는 글 13건 제외). 대표 근거: 맥 얼론타임 쿨톤 웜톤 발색 차이, 가을마다 품절되는 진짜 이유","f":"low","s":[["맥 얼론타임 쿨톤 웜톤 발색 차이, 가을마다 품절되는 진짜 이유","https://blog.naver.com/starmom1231/224452844654"]],"u":0},"무광핑크풀컬러네일":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 15건 제외).","f":"low","s":[],"u":0},"브링그린글루타치온세럼":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 17건 제외).","f":"low","s":[],"u":0},"삐아치크엔젤":{"c":"SNS 바이럴","r":"블로그 1건에서 ‘인스타’ 이야기가 나왔어요 (관련 없는 글 1건 제외). 대표 근거: 죽지 않고 돌아 온 TEAM여쿨-퍼플 레드블러셔 특집","f":"low","s":[["죽지 않고 돌아 온 TEAM여쿨-퍼플 레드블러셔 특집","https://blog.naver.com/wlduswkd201/224471957777"]],"u":0},"손소독제":{"c":"시즌/날씨","r":"뉴스 4건에서 ‘겨울’, ‘추위’ 이야기가 나왔어요 (관련 없는 글 9건 제외). 대표 근거: 겨울철 영유아 노로바이러스 장염 주의","f":"high","s":[["겨울철 영유아 노로바이러스 장염 주의","https://www.bosa.co.kr/news/articleView.html?idxno=3015952"],["\"초겨울 추위 성큼\"…영유아 노로바이러스 '비상'","https://www.newsis.com/view/NISX20261109_0003860131"],["우리 아이, 겨울철 노로바이러스 장염 대처법은","https://jhealthmedia.joins.com/news/articleView.html?idxno=33960"]],"u":0},"일본한정":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"자라로즈구르망30ml":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 3건 제외).","f":"low","s":[],"u":0},"중국화장품":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"카밀핸드크림선물":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"컬러그램누디블러틴트14":{"c":"할인/행사","r":"블로그 4건에서 ‘세일’, ‘블랙프라이데이’ 이야기가 나왔어요 (관련 없는 글 3건 제외). 대표 근거: 올리브영 연희점 올영 세일 화장품 쇼핑 매가행사 내돈내산 뷰티제....","f":"medium","s":[["올리브영 연희점 올영 세일 화장품 쇼핑 매가행사 내돈내산 뷰티제....","https://blog.naver.com/gabee2022/224472280015"],["2026 올리브영 블랙프라이데이 라스트픽 매장 재고조회 방법 & 광화....","https://blog.naver.com/playground_of_star/224468634532"],["[올리브영] 컬러그램X위글위글 '위글위글세트' 웜·쿨 바구니 둘 다 ....","https://blog.naver.com/ungttung-ttung/224468497720"]],"u":0},"컬러토닝샴푸핑크":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 3건 제외).","f":"low","s":[],"u":0},"코스트코팬틴샴푸":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 7건 제외).","f":"low","s":[],"u":0},"클리오모감주밑서재":{"c":"할인/행사","r":"블로그 2건에서 ‘세일’, ‘증정’ 이야기가 나왔어요. 대표 근거: 올0세일 아무것도 안 사게 된 이유 . .","f":"low","s":[["올0세일 아무것도 안 사게 된 이유 . .","https://blog.naver.com/ring_0145/224468173587"],["클리오 프로 아이 팔레트 에어 M20·M21, 아침마다 손이 갈 색은?","https://blog.naver.com/laima57/224466377068"]],"u":0},"토리든":{"c":"성분/기술 트렌드","r":"뉴스 3건에서 ‘성분’, ‘더마’ 이야기가 나왔어요. 대표 근거: 토리든, 'BeautyMatter ASIA15 2026' 선정…아시아 유망 뷰티 브랜드 15선...","f":"high","s":[["토리든, 'BeautyMatter ASIA15 2026' 선정…아시아 유망 뷰티 브랜드 15선...","https://www.gokorea.kr/news/articleView.html?idxno=884962"],["토리든, 뷰티매터 선정 아시아 유망 브랜드…\"글로벌 공략 가속\"","https://news.tf.co.kr/read/economy/2386739.htm"],["10월 티몰 K-뷰티 토너 분석⑦: 판매량 2.2% 감소…상위권 브랜드 재편","https://www.thebk.co.kr/news/articleView.html?idxno=312579"]],"u":0},"다이소쪽집게":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 8건 제외).","f":"low","s":[],"u":0},"데이지크크림소다":{"c":"원인 불명확","r":"관련 글 2건이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["몇 년동안 썼던 올리브영 숨은 추천템 7가지 장단점 정리 내돈내산 ....","https://blog.naver.com/0908lsy_/224468788030"]],"u":0},"도브스크럽마카다미아":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 8건 제외).","f":"low","s":[],"u":0},"라끄베르클렌징티슈":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"라타파":{"c":"시즌/날씨","r":"블로그 1건에서 ‘겨울’ 이야기가 나왔어요. 대표 근거: 프렌치애비뉴 겨울 향수, 술 향이 도는 두 병 중 나에게 맞는 건 어....","f":"low","s":[["프렌치애비뉴 겨울 향수, 술 향이 도는 두 병 중 나에게 맞는 건 어....","https://blog.naver.com/kimjin556423/224470853766"]],"u":0},"록시땅선크림":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 6건 제외).","f":"low","s":[],"u":0},"롬앤베러댄컨투어쉐딩":{"c":"할인/행사","r":"블로그 3건에서 ‘쿠폰’, ‘페스타’ 이야기가 나왔어요. 대표 근거: 에이블리 뷰티 페스타 시작! 선착순 50% 쿠폰, 100원딜 등 역대급 혜택","f":"medium","s":[["에이블리 뷰티 페스타 시작! 선착순 50% 쿠폰, 100원딜 등 역대급 혜택","https://blog.naver.com/pureminiv/224470317313"],["에이블리 뷰티 페스타 에뷰페 11월 할인 쿠폰 50% 100원딜 럭키박스 혜....","https://blog.naver.com/bloom0_9/224469804427"],["[올영세일 추천] 몇 통째 쟁이는 쿨톤 인생 쉐딩! 롬앤 베러 댄 컨투....","https://blog.naver.com/okjjini/224468441448"]],"u":0},"먼작귀퍼퓸드":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"미니향수세트":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 8건 제외).","f":"low","s":[],"u":0},"바닐라헤어오일":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 17건 제외).","f":"low","s":[],"u":0},"바디로션":{"c":"신제품 출시","r":"뉴스 15건에서 ‘론칭’, ‘선보’ 이야기가 나왔어요. 대표 근거: 쿠팡 알럭스, 론칭 2주년 기획전…33개 브랜드 할인에 사은품 증정","f":"high","s":[["쿠팡 알럭스, 론칭 2주년 기획전…33개 브랜드 할인에 사은품 증정","https://www.thepublic.kr/news/articleView.html?idxno=325991"],["알럭스, 론칭 2주년 기획전…홀리데이 한정판부터 단독 선물세트까지","https://news.bbsi.co.kr/news/articleView.html?idxno=4117794"],["쿠팡 알럭스, 론칭 2주년 기획전...33개 뷰티 브랜드 홀리데이 한정판 판...","https://www.betanews.net/article/view/beta202611100148"]],"u":0},"바비브라운아이섀도우":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 2건 제외).","f":"low","s":[],"u":0},"발효화장품":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 10건 제외).","f":"low","s":[],"u":0},"백옥생질청결제":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"토너패드":{"c":"신제품 출시","r":"뉴스 2건에서 ‘출시’ 이야기가 나왔어요 (관련 없는 글 4건 제외). 대표 근거: 한미화장품, 더마 브랜드 '오브한' 출시...아쿠아라인·한국산 세럼 선...","f":"medium","s":[["한미화장품, 더마 브랜드 '오브한' 출시...아쿠아라인·한국산 세럼 선...","https://www.dailian.co.kr/news/view/1712760/?sc=Naver"],["올리브영, 미국 매장 7곳으로 확대…내년 상반기 5곳 추가 출점","http://digitalchosun.dizzo.com/site/data/html_dir/2026/11/09/2026110980194.html"]],"u":0},"vdl틴트":{"c":"할인/행사","r":"블로그 3건에서 ‘할인’, ‘세일’ 이야기가 나왔어요 (관련 없는 글 2건 제외). 대표 근거: 2026 12월 올영세일 언제? 일정부터 할인 쇼핑 꿀팁까지","f":"medium","s":[["2026 12월 올영세일 언제? 일정부터 할인 쇼핑 꿀팁까지","https://blog.naver.com/suzy_0620/224471295909"],["|| 올리브영 추천템 세일 끝, 가격과 고르는 기준 정리","https://blog.naver.com/lgscienc/224469698119"],["올리브영 블랙프라이데이 쇼핑기록｜VDL,힌스,WM,투크","https://blog.naver.com/viewinthesquare/224468560808"]],"u":0},"라카키스프루프":{"c":"신제품 출시","r":"블로그 2건에서 ‘신상’, ‘출시’ 이야기가 나왔어요. 대표 근거: 라카 신상 묻어남 없는 글로스 틴트! 키스 프루프 07 레터 내돈내산 ....","f":"low","s":[["라카 신상 묻어남 없는 글로스 틴트! 키스 프루프 07 레터 내돈내산 ....","https://blog.naver.com/ekqls0949/224472288960"],["광은 그대로인데 색은 안 묻어난다고? 라카 키스프루프 글로스의 ‘....","https://blog.naver.com/pando_sagwan/224472260180"]],"u":0},"더유핏브이밴드":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"더페이스샵잉크그라피":{"c":"시즌/날씨","r":"블로그 1건에서 ‘건조’ 이야기가 나왔어요. 대표 근거: 더페이스샵 fmgt 잉크그라피 리퀴드 라이너 EX 구매 전 체크포인트","f":"low","s":[["더페이스샵 fmgt 잉크그라피 리퀴드 라이너 EX 구매 전 체크포인트","https://blog.naver.com/b30zsf7zu6j4/224469629407"]],"u":0},"쉬글램세트":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 1건 제외).","f":"low","s":[],"u":0},"리스네일파츠":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 3건 제외).","f":"low","s":[],"u":0},"헤라에코레더":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"밀본염색약":{"c":"원인 불명확","r":"관련 글 3건 (관련 없는 글 9건 제외)이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["밀본 염색약 새치커버 셀프염모제 써보니 솔직 후기","https://blog.naver.com/dfyzshhji02/224472152085"]],"u":0},"핸드크림":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"코링코속눈썹":{"c":"셀럽/광고","r":"블로그 1건에서 ‘착용’ 이야기가 나왔어요 (관련 없는 글 8건 제외). 대표 근거: 코링코 톡톡하라 이지컷 노글루 속눈썹 로사, 픽시 리뷰 속눈썹 붙....","f":"low","s":[["코링코 톡톡하라 이지컷 노글루 속눈썹 로사, 픽시 리뷰 속눈썹 붙....","https://blog.naver.com/lge9380/224472230858"]],"u":0},"아멜리":{"c":"신제품 출시","r":"뉴스 9건에서 ‘선보’, ‘론칭’ 이야기가 나왔어요. 대표 근거: [WIKI 현장] 성수서 100번째 매장 연 무신사…패션으로 모은 고객, 뷰티...","f":"high","s":[["[WIKI 현장] 성수서 100번째 매장 연 무신사…패션으로 모은 고객, 뷰티...","https://www.wikileaks-kr.org/news/articleView.html?idxno=194443"],["무신사, 성수에 두번째 뷰티 단독매장 연다","https://www.fnnews.com/news/202611101819181646"],["무신사 뷰티 성수, 약국과 인디·글로벌 브랜드로 차별화","http://www.apparelnews.co.kr/news/news_view/?idx=228898"]],"u":0},"토리든수딩크림":{"c":"성분/기술 트렌드","r":"블로그 3건에서 ‘성분’, ‘PDRN’ 이야기가 나왔어요 (관련 없는 글 6건 제외). 대표 근거: 모공앰플 추천 8가지 바르는순서 모공 탄력·수분·진정·미백 피부 ....","f":"medium","s":[["모공앰플 추천 8가지 바르는순서 모공 탄력·수분·진정·미백 피부 ....","https://blog.naver.com/rlfal719/224472146365"],["P-1｜올리브영 선크림 추천 순위｜현직 약사가 성분으로 매긴 등급....","https://blog.naver.com/earl-do/224472073692"],["히알루론산앰플 '이름만 믿었나', 전성분표 열어보니 달랐던 점","https://blog.naver.com/pickmoa77/224469530786"]],"u":0},"픽셀네일플레이트":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 1건 제외).","f":"low","s":[],"u":0},"헤라홀리데이쿠션":{"c":"시즌/날씨","r":"뉴스 4건 · 블로그 6건에서 ‘겨울’, ‘연말’ 이야기가 나왔어요. 대표 근거: K-뷰티 브랜드, 홀리데이 컬렉션 시장 합류","f":"high","s":[["K-뷰티 브랜드, 홀리데이 컬렉션 시장 합류","https://www.thebk.co.kr/news/articleView.html?idxno=312681"],["올리브영 연말 할인에 한정판 경쟁까지…피지오겔·헤라·헉슬리 출격","https://www.segye.com/newsView/20261106505039?OutUrl=naver"],["[Weekly New뷰티] 미리 찾아온 크리스마스 … 홀리데이 한정판 '풍성'","https://biz.newdaily.co.kr/site/data/html/2026/11/04/2026110400105.html"]],"u":0},"롤빗":{"c":"원인 불명확","r":"관련 글 1건 (관련 없는 글 1건 제외)이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["자를까 기를까 고민된다면? 중단발 거지존, 이렇게 넘기세요","https://www.allurekorea.com/2026/11/06/%ec%95%a0%eb%a7%a4%eb%aa%a8%ed%98%b8%ed%95%9c-%ec%a4%91%eb%8b%a8%eb%b0%9c-%ea%b1%b0%ec%a7%80%ec%a1%b4-%ec%9d%b4%eb%a0%87%ea%b2%8c-%ec%8a%a4%ed%83%80%ec%9d%bc%eb%a7%81%ed%95%b4%ec%95%bc-%ea%b7%b9/?utm_source=naver&utm_medium=partnership"]],"u":0},"모공세럼":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 18건 제외).","f":"low","s":[],"u":0},"엠브리올리스":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"헤어팩":{"c":"신제품 출시","r":"뉴스 5건에서 ‘선보’, ‘출시’ 이야기가 나왔어요. 대표 근거: 다노날, 두피 자외선 차단제 사용 후 세정 고민에 주목... '스케일링 두...","f":"high","s":[["다노날, 두피 자외선 차단제 사용 후 세정 고민에 주목... '스케일링 두...","http://www.beyondpost.co.kr/view.php?ud=20261109112153582037600e7ec7_30"],["다노날, 헤드 스파에서 영감 받은 '스케일링 두피 클렌징 오일' 출시","https://www.gokorea.kr/news/articleView.html?idxno=884730"],["낙엽처럼 바사삭 '빨간불'~가을철 두피·피부·입술 케어 주목","https://www.slist.kr/news/articleView.html?idxno=779658"]],"u":0},"3ce무드레시피립":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"록시땅핸드크림":{"c":"시즌/날씨","r":"블로그 3건에서 ‘선물’, ‘건조’ 이야기가 나왔어요 (관련 없는 글 10건 제외). 대표 근거: 핸드크림 추천, 록시땅·조말론·이솝·탬버린즈 인기 브랜드 비교와....","f":"medium","s":[["핸드크림 추천, 록시땅·조말론·이솝·탬버린즈 인기 브랜드 비교와....","https://blog.naver.com/mallpick/224472216049"],["록시땅 럭키8 핸드크림 8종 세트, 여자친구 생일선물·연말선물 추천....","https://blog.naver.com/goldenpapa2030/224470142584"],["40대 크리스마스 선물 추천 BEST 10, 비싸다고 좋아할까요?","https://blog.naver.com/twojins_go/224471605959"]],"u":0},"바이오더마토너":{"c":"성분/기술 트렌드","r":"블로그 16건에서 ‘더마’, ‘시카’ 이야기가 나왔어요 (관련 없는 글 2건 제외). 대표 근거: 화잘먹 메노킨 30초 버블팩 믹순 버블 세럼 계면활성제 화장품 조제....","f":"medium","s":[["화잘먹 메노킨 30초 버블팩 믹순 버블 세럼 계면활성제 화장품 조제....","https://blog.naver.com/great100_/224471938137"],["파데프리 재생크림, 이제 피부 고민 끝입니다!","https://blog.naver.com/hijong21/224471724727"],["30대 속건조 스킨케어 루틴, 내돈내산 꿀템 3가지","https://blog.naver.com/mango-pasta/224471564246"]],"u":0},"애크온":{"c":"원인 불명확","r":"관련 글 4건이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["약뷰아 심포지엄 후기｜피부 외용제부터 뷰티약국의 방향까지 공부....","https://blog.naver.com/gndpharm/224470321169"]],"u":0},"여성청결제":{"c":"신제품 출시","r":"뉴스 2건에서 ‘선보’, ‘출시’ 이야기가 나왔어요 (관련 없는 글 1건 제외). 대표 근거: 재활부터 진단까지…여성건강 시장 개척하는 펨테크 기업들","f":"medium","s":[["재활부터 진단까지…여성건강 시장 개척하는 펨테크 기업들","https://www.etoday.co.kr/news/view/2645958"],["소비자 의견이 제품으로…기업들, 고객 참여형 활동 확대","https://www.segye.com/newsView/20261105517189?OutUrl=naver"]],"u":0},"클렌징밀크":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"네일리본파츠":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 14건 제외).","f":"low","s":[],"u":0},"네일파일":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 1건 제외).","f":"low","s":[],"u":0},"도브스크럽":{"c":"시즌/날씨","r":"블로그 1건에서 ‘겨울’ 이야기가 나왔어요 (관련 없는 글 9건 제외). 대표 근거: 부드러운 피부를 위한 바디케어 추천! 도브 바디 스크럽 종류와 추....","f":"low","s":[["부드러운 피부를 위한 바디케어 추천! 도브 바디 스크럽 종류와 추....","https://blog.naver.com/yulaness/224472237709"]],"u":0},"딥디크오르페옹":{"c":"시즌/날씨","r":"블로그 6건에서 ‘겨울’, ‘선물’ 이야기가 나왔어요 (관련 없는 글 9건 제외). 대표 근거: 터틀힙 연남 모찌 케이크 구매와 딥디크 오르페옹 선물 후기","f":"medium","s":[["터틀힙 연남 모찌 케이크 구매와 딥디크 오르페옹 선물 후기","https://blog.naver.com/bewise1109/224469382934"],["겨울 향수 추천 순위, 지난겨울 많이 찾은 우디·앰버 향 7가지와 뿌....","https://blog.naver.com/bellevioleta/224468636854"],["딥디크/홀리데이 컬렉션 남녀향수 크리스마스 선물추천 오르페옹·....","https://blog.naver.com/growwww/224468475548"]],"u":0},"레드립":{"c":"원인 불명확","r":"관련 글 3건이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["정채연 확 달라졌다, 청순 이미지 벗고 강렬한 레드립…블랙 드레스까지...","https://www.xportsnews.com/article/2217761"]],"u":0},"루이스비드마":{"c":"할인/행사","r":"블로그 1건에서 ‘할인’ 이야기가 나왔어요 (광고·체험단 글 1건 제외). 대표 근거: 11월 블프 쇼핑 전 필독!카드사별 5% 즉시할인 꿀팁!","f":"low","s":[["11월 블프 쇼핑 전 필독!카드사별 5% 즉시할인 꿀팁!","https://blog.naver.com/power9903400/224470508869"]],"u":0},"마녀공장클렌징오일":{"c":"할인/행사","r":"뉴스 6건 · 블로그 2건에서 ‘할인’, ‘1+1’ 이야기가 나왔어요 (관련 없는 글 2건 제외). 대표 근거: [똑똑한케어] CJ올리브영, 크레이버코퍼레이션, 마녀공장, 리필드, 더샘...","f":"high","s":[["[똑똑한케어] CJ올리브영, 크레이버코퍼레이션, 마녀공장, 리필드, 더샘...","https://www.ekn.kr/web/view.php?key=20261109020567034"],["입동에 패딩 최대 84% 할인…쿠팡·네이버·G마켓까지 11월 쇼핑 할인전","https://www.segye.com/newsView/20261107502290?OutUrl=naver"],["캐시미어 반값·광어회 1만원대…주말 유통가 할인 전쟁","https://www.segye.com/newsView/20261107502260?OutUrl=naver"]],"u":0},"배스앤바디웍스디즈니":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 16건 제외).","f":"low","s":[],"u":0},"벨벳젤":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"세잔느무펄하라":{"c":"SNS 바이럴","r":"블로그 3건에서 ‘인스타’, ‘SNS’ 이야기가 나왔어요 (관련 없는 글 6건 제외). 대표 근거: 후쿠오카 1 | 디올 하라 • 샤넬 립듀오 • 세잔느 무펄하라 • 하카....","f":"medium","s":[["후쿠오카 1 | 디올 하라 • 샤넬 립듀오 • 세잔느 무펄하라 • 하카....","https://blog.naver.com/touternavie/224471801588"],["일본여행 잘산템 7가지 추천","https://blog.naver.com/littlefind/224469605854"],["일본 품절 대란 도쿄 세잔느 무펄하라 2호 톤필터 하이라이터 파는....","https://blog.naver.com/orang2in/224469150585"]],"u":0},"수제네일팁":{"c":"셀럽/광고","r":"블로그 1건에서 ‘착용’ 이야기가 나왔어요 (관련 없는 글 6건 제외). 대표 근거: 부평 수제 네일팁 미나네일박스 후기｜네일팁 사이즈 고르는 법과 ....","f":"low","s":[["부평 수제 네일팁 미나네일박스 후기｜네일팁 사이즈 고르는 법과 ....","https://blog.naver.com/sunae0218/224470601778"]],"u":0},"에쿠와":{"c":"시즌/날씨","r":"블로그 1건에서 ‘건조’ 이야기가 나왔어요 (관련 없는 글 19건 제외). 대표 근거: [20대 속건조 해결사] 수부지 필수템","f":"low","s":[["[20대 속건조 해결사] 수부지 필수템","https://blog.naver.com/diana1788/224468559503"]],"u":0},"염색차트":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 10건 제외).","f":"low","s":[],"u":0},"입생로랑쿠션":{"c":"할인/행사","r":"블로그 2건에서 ‘증정’, ‘세일’ 이야기가 나왔어요 (관련 없는 글 6건 제외). 대표 근거: 롯데백화점 안양 홀리데이 컬렉션 리스트 (구찌 바비브라운 바이레....","f":"low","s":[["롯데백화점 안양 홀리데이 컬렉션 리스트 (구찌 바비브라운 바이레....","https://blog.naver.com/yesterday_mood/224471932432"],["세포라 세일 쇼핑 하울! 향수부터 스킨케어 헤어케어까지, 이번에 ....","https://blog.naver.com/coolio24/224471461523"]],"u":0},"파머스바디오일":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 9건 제외).","f":"low","s":[],"u":0},"폴라스초이스바하":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"향좋은샴푸":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 6건 제외).","f":"low","s":[],"u":0},"나스블러쉬":{"c":"할인/행사","r":"블로그 5건에서 ‘할인’, ‘세일’ 이야기가 나왔어요 (광고·체험단 글 1건 · 관련 없는 글 1건 제외). 대표 근거: [나스] 임직원 시크릿 세일 최대 50% OFF","f":"medium","s":[["[나스] 임직원 시크릿 세일 최대 50% OFF","https://blog.naver.com/dalnimworld/224471758945"],["[국내선/네이버쇼핑] \"나스(NARS)\" 임직원 시크릿 클리어런스 세일!! (U....","https://blog.naver.com/saleship/224471729923"],["나스 홀리데이 2026 팔레트 아프레 스키 치크 아이 팔레트 아스펜 하....","https://blog.naver.com/khbbhani/224471620417"]],"u":0},"나이아신아마이드":{"c":"성분/기술 트렌드","r":"뉴스 14건에서 ‘성분’, ‘PDRN’ 이야기가 나왔어요. 대표 근거: 기미·잡티·흑자, 다 같은 '얼룩' 아니다…겨울 색소 치료, 이름부터 가...","f":"high","s":[["기미·잡티·흑자, 다 같은 '얼룩' 아니다…겨울 색소 치료, 이름부터 가...","https://www.thepublic.kr/news/articleView.html?idxno=325892"],["스튜디오17, 특허 캄셀 및 기능별 PDRN 배합 버블세럼 3종 출시","https://www.fashionbiz.co.kr/article/230942"],["'약국 플랫폼' 바로팜, 11일 코스닥 상장…K뷰티 허브로 확장","https://view.asiae.co.kr/article/2026110915253218596"]],"u":0},"노딥스":{"c":"원인 불명확","r":"관련 글 1건이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["노딥스 FILL 힙딥관리 패치 2개월 사용 후기","https://blog.naver.com/nobleelegance/224466139890"]],"u":0},"노세범톤업선크림":{"c":"원인 불명확","r":"관련 글 1건 (관련 없는 글 19건 제외)이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["파데프리 메이크업, 선크림 하나로 가능할까? 이니스프리 노세범 3....","https://blog.naver.com/picknote417/224468239990"]],"u":0},"뉴케라칼라앰플9ml":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"라이콘스크럽":{"c":"원인 불명확","r":"관련 글 1건 (관련 없는 글 17건 제외)이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["[서울 강서/발산역] 레브로우 왁싱 발산점ㅣ다리 하프 브라질리언 ....","https://blog.naver.com/odtt_/224472007492"]],"u":0},"엔타도라":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"라로슈포제b5":{"c":"성분/기술 트렌드","r":"블로그 7건에서 ‘시카’, ‘더마’ 이야기가 나왔어요 (관련 없는 글 1건 제외). 대표 근거: 봄,가을은 특권이자 재앙. 261110","f":"medium","s":[["봄,가을은 특권이자 재앙. 261110","https://blog.naver.com/hyunny_9387/224472288145"],["올리브영 지금 사면 호구? 11월 올영픽 가격 비교해 봤습니다","https://blog.naver.com/aftertherain22/224472230649"],["[제왕절개 출산가방] 병원에서 잘 쓴 기초화장품 추천_내돈내산 솔....","https://blog.naver.com/kys962499/224472160229"]],"u":0},"립밤":{"c":"셀럽/광고","r":"뉴스 1건에서 ‘협업’ 이야기가 나왔어요. 대표 근거: 음반 60만 장·협업 빵 200만 개…'파죽지세' 리센느, 팬덤 화력 입증","f":"medium","s":[["음반 60만 장·협업 빵 200만 개…'파죽지세' 리센느, 팬덤 화력 입증","https://www.edaily.co.kr/News/Read?newsId=04208246645644408&mediaCodeNo=257&utm_source=naver&utm_medium=referral&utm_campaign=news_syndication&utm_content=original_article"]],"u":0},"일리윤":{"c":"할인/행사","r":"뉴스 17건에서 ‘할인’, ‘특가’ 이야기가 나왔어요. 대표 근거: 쿠팡, 올해 마지막 '블랙생필품 위크' 개최","f":"high","s":[["쿠팡, 올해 마지막 '블랙생필품 위크' 개최","https://news.bbsi.co.kr/news/articleView.html?idxno=4117810"],["쿠팡, 올해 마지막 '블랙생필품 위크' 개최…2만여개 상품 할인","https://www.thepublic.kr/news/articleView.html?idxno=325959"],["쿠팡, 생활필수품 기획전에 200여 브랜드 상품 구성","https://www.lawissue.co.kr/view.php?ud=20261110175338368204ead0791_12"]],"u":0},"네일픽셀플레이트":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 1건 제외).","f":"low","s":[],"u":0},"샴푸":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"디올립글로우":{"c":"시즌/날씨","r":"블로그 2건에서 ‘선물’, ‘크리스마스’ 이야기가 나왔어요 (관련 없는 글 6건 제외). 대표 근거: NEW 디올 립 글로우 버터 & 립 글로우 세트 솔직 리뷰","f":"low","s":[["NEW 디올 립 글로우 버터 & 립 글로우 세트 솔직 리뷰","https://blog.naver.com/codus118/224472270539"],["40대 크리스마스 선물 추천 BEST 10, 비싸다고 좋아할까요?","https://blog.naver.com/twojins_go/224471605959"]],"u":0},"도브바디워시":{"c":"성분/기술 트렌드","r":"블로그 1건에서 ‘성분’ 이야기가 나왔어요 (관련 없는 글 17건 제외). 대표 근거: 등드름 없애고 싶다면 4HA클린미스트 써보세요(솔직후기)","f":"low","s":[["등드름 없애고 싶다면 4HA클린미스트 써보세요(솔직후기)","https://blog.naver.com/rpdmfmaqodl/224471980810"]],"u":0},"에스티로더갈색병":{"c":"시즌/날씨","r":"블로그 6건에서 ‘선물’, ‘보습’ 이야기가 나왔어요 (관련 없는 글 1건 제외). 대표 근거: 에스티로더 갈색병 건조한 피부에 딱 맞는 세럼","f":"medium","s":[["에스티로더 갈색병 건조한 피부에 딱 맞는 세럼","https://blog.naver.com/bonn_i/224471853080"],["연말 선물용으로도 정답  에스티로더 나이트 리페어 갈색병 세트 + 3....","https://blog.naver.com/buyhelper/224471369661"],["스킨케어 기록 00. 피부는 여전히 어렵다","https://blog.naver.com/livewelljustlive/224470384560"]],"u":0},"닥터지선크림":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"모로칸오일":{"c":"성분/기술 트렌드","r":"블로그 2건에서 ‘특허’ 이야기가 나왔어요 (관련 없는 글 8건 제외). 대표 근거: #시그니처특허펌 #스피에라#익산매직잘하는샵#익산파마 잘하는샵#....","f":"low","s":[["#시그니처특허펌 #스피에라#익산매직잘하는샵#익산파마 잘하는샵#....","https://blog.naver.com/beakseolran0197/224472024737"],["#시그니처특허펌 #스피에라#익산매직잘하는샵#익산파마 잘하는샵#....","https://blog.naver.com/beakseolran0197/224471750673"]],"u":0},"연작베이스프렙":{"c":"원인 불명확","r":"관련 글 4건 (관련 없는 글 16건 제외)이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["연작, 성수동서 트레일러 팝업","http://www.hansbiz.co.kr/news/articleView.html?idxno=880772"]],"u":0},"헤라블랙쿠션":{"c":"시즌/날씨","r":"뉴스 2건 · 블로그 5건에서 ‘겨울’, ‘보습’ 이야기가 나왔어요 (관련 없는 글 3건 제외). 대표 근거: 올리브영 연말 할인에 한정판 경쟁까지…피지오겔·헤라·헉슬리 출격","f":"high","s":[["올리브영 연말 할인에 한정판 경쟁까지…피지오겔·헤라·헉슬리 출격","https://www.segye.com/newsView/20261106505039?OutUrl=naver"],["[Weekly New뷰티] 미리 찾아온 크리스마스 … 홀리데이 한정판 '풍성'","https://biz.newdaily.co.kr/site/data/html/2026/11/04/2026110400105.html"],["나의 공병 이야기","https://blog.naver.com/jongipiano/224472296435"]],"u":0},"입욕제":{"c":"셀럽/광고","r":"뉴스 2건에서 ‘모델’ 이야기가 나왔어요. 대표 근거: 영남이공대, 로컬크리에이터 경진대회 '3관왕'","f":"medium","s":[["영남이공대, 로컬크리에이터 경진대회 '3관왕'","https://www.dkilbo.com/news/articleView.html?idxno=560097"],["영남이공대, ‘로컬크리에이터 경진대회’ 참가 팀 전원 수상","https://www.joongang.co.kr/article/25477005"]],"u":0},"바디워시":{"c":"SNS 바이럴","r":"뉴스 3건에서 ‘유튜브’ 이야기가 나왔어요 (관련 없는 글 7건 제외). 대표 근거: 미술관에서 홍대 거리까지…애경산업, 문화 연계 브랜드 경험 확대","f":"high","s":[["미술관에서 홍대 거리까지…애경산업, 문화 연계 브랜드 경험 확대","https://www.youthdaily.co.kr/news/article.html?no=229634"],["[뷰티톡톡] 설화수ㆍ애경산업ㆍ실리콘투","https://www.dnews.co.kr/uhtml/view.jsp?idxno=202611101613238070447"],["애경산업, 홍대서 'K-컬처 페스티벌' 개최…\"문화로 고객 일상 넓힌다\"","http://www.ftoday.co.kr/news/articleView.html?idxno=369330"]],"u":0},"사우나모자":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 4건 제외).","f":"low","s":[],"u":0},"올킨스실리콘패치":{"c":"원인 불명확","r":"관련 글 1건 (관련 없는 글 10건 제외)이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["예비신부 목주름 관리 올킨스 실리콘패치 목주름팩  사용 후기","https://blog.naver.com/nhj9605/224466386387"]],"u":0},"이솝핸드크림":{"c":"시즌/날씨","r":"블로그 5건에서 ‘선물’, ‘건조’ 이야기가 나왔어요 (관련 없는 글 11건 제외). 대표 근거: 핸드크림 추천, 록시땅·조말론·이솝·탬버린즈 인기 브랜드 비교와....","f":"medium","s":[["핸드크림 추천, 록시땅·조말론·이솝·탬버린즈 인기 브랜드 비교와....","https://blog.naver.com/mallpick/224472216049"],["이솝 선물세트 미국 공홈 홀리데이 한정 키트 핸드크림 3종 50달러","https://blog.naver.com/elles85/224471752584"],["건조한 손 불리 포마드 콘크레뜨 핸드크림 추천","https://blog.naver.com/kiyomi518/224472019489"]],"u":0},"정샘물물크림":{"c":"할인/행사","r":"블로그 2건에서 ‘할인’, ‘증정’ 이야기가 나왔어요 (관련 없는 글 13건 제외). 대표 근거: ️ 놓치면 후회할 11월 올영 PICK 총정리! 할인율 최대 32%부터 헬로키....","f":"low","s":[["️ 놓치면 후회할 11월 올영 PICK 총정리! 할인율 최대 32%부터 헬로키....","https://blog.naver.com/mgmgmgmgmgmg768/224470397333"],["29CM 이구위크 정샘물 쿠션 할인! 에센셜 스킨 누더 쿠션 NEW 컬러 리....","https://blog.naver.com/binimum_/224469997893"]],"u":0},"ahc아이크림":{"c":"시즌/날씨","r":"블로그 5건에서 ‘보습’, ‘겨울’ 이야기가 나왔어요. 대표 근거: 신한카드 미스터라이프 혜택, 월 30만원 쓰면 얼마나 할인될까?","f":"medium","s":[["신한카드 미스터라이프 혜택, 월 30만원 쓰면 얼마나 할인될까?","https://blog.naver.com/insilhana/224472209554"],["하나 MOVING카드 ALLDAY모드, 전월실적 없이 얼마나 쌓일까?","https://blog.naver.com/insilhana/224472208273"],["삼성 iD SELECT ALL 카드, 40만원 썼는데도 할인 못 받을 수 있다고?","https://blog.naver.com/insilhana/224472193113"]],"u":0},"바디오일":{"c":"원인 불명확","r":"관련 글 1건 (관련 없는 글 6건 제외)이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["변압기부터 K-뷰티까지… 해외인증이 中企 수출 '퀀텀점프' 이끌다","https://www.mt.co.kr/economy/2026/11/11/2026111012543056287"]],"u":0},"설화수자음생크림":{"c":"시즌/날씨","r":"뉴스 4건 · 블로그 3건에서 ‘선물’, ‘연말’ 이야기가 나왔어요. 대표 근거: \"화장품 넘어 경험까지 판매\"…설화수, 카카오 손잡고 연말 고객 잡기","f":"high","s":[["\"화장품 넘어 경험까지 판매\"…설화수, 카카오 손잡고 연말 고객 잡기","https://www.megaeconomy.co.kr/news/newsview.php?ncode=1065599468708703"],["K-뷰티 브랜드, 홀리데이 컬렉션 시장 합류","https://www.thebk.co.kr/news/articleView.html?idxno=312681"],["[Weekly New뷰티] 미리 찾아온 크리스마스 … 홀리데이 한정판 '풍성'","https://biz.newdaily.co.kr/site/data/html/2026/11/04/2026110400105.html"]],"u":0},"일리윤바디로션":{"c":"시즌/날씨","r":"블로그 8건에서 ‘건조’, ‘겨울’ 이야기가 나왔어요 (관련 없는 글 2건 제외). 대표 근거: 일리윤 아토로션 내돈내산 찐 후기｜겨울철 피부장벽 보습, 건조할 ....","f":"medium","s":[["일리윤 아토로션 내돈내산 찐 후기｜겨울철 피부장벽 보습, 건조할 ....","https://blog.naver.com/jungsukbeauty87/224472280624"],["#12. 임산부 튼살 관리","https://blog.naver.com/mest3323/224472252136"],["엠락틴 바디케어 미백 데일리 라인 내돈내산 후기, 바디로션 추천","https://blog.naver.com/by_on_gyeol/224472236083"]],"u":0},"탈모샴푸":{"c":"성분/기술 트렌드","r":"뉴스 1건에서 ‘성분’ 이야기가 나왔어요 (관련 없는 글 5건 제외). 대표 근거: “비듬 샴푸, 두피 환경 바꾼다”… 탈모 개선에 의외로 도움 돼","f":"medium","s":[["“비듬 샴푸, 두피 환경 바꾼다”… 탈모 개선에 의외로 도움 돼","https://health.chosun.com/site/data/html_dir/2026/11/09/2026110902131.html"]],"u":0},"히스토랩":{"c":"성분/기술 트렌드","r":"블로그 3건에서 ‘성분’, ‘더마’ 이야기가 나왔어요 (관련 없는 글 2건 제외). 대표 근거: 히스토랩 아줄렌 앰플 72 사용감부터 성분까지 솔직 리뷰!","f":"medium","s":[["히스토랩 아줄렌 앰플 72 사용감부터 성분까지 솔직 리뷰!","https://blog.naver.com/aowlr8030/224471738725"],["피부과 공급 더마 브랜드 메디안스, 싱가포르 PE가 지분 100% 인수 계....","https://blog.naver.com/friendljs/224469972823"],["풍동 피부과 매일매일 촉촉하게 자외선 차단☀️ [히스토랩 포에버 ....","https://blog.naver.com/go9037600/224466908208"]],"u":0},"nmn토너":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 20건 제외).","f":"low","s":[],"u":0},"샤넬립밤":{"c":"시즌/날씨","r":"뉴스 1건 · 블로그 3건에서 ‘선물’, ‘자외선’ 이야기가 나왔어요 (관련 없는 글 1건 제외). 대표 근거: 여름 햇빛에 손상된 피부를 위한 진정 케어 아이템 추천","f":"high","s":[["여름 햇빛에 손상된 피부를 위한 진정 케어 아이템 추천","https://www.gqkorea.co.kr/2026/11/06/%ea%b0%80%ec%9d%84%eb%b3%95%ec%97%90%ec%84%9c-%ec%82%b4%ec%95%84%eb%82%a8%ea%b8%b0/?utm_source=naver&utm_medium=partnership"],["[261110] 보통의 하루, 소소한 배움과 작은 사치","https://blog.naver.com/ourlittlelife_/224472267544"],["[빼빼로데이 여자친구 선물] 10대~50대 연령별·가격별 센스있는 추천....","https://blog.naver.com/msxx_a/224472192244"]],"u":0},"mts롤러":{"c":"성분/기술 트렌드","r":"블로그 1건에서 ‘시카’, ‘더마’ 이야기가 나왔어요 (관련 없는 글 15건 제외). 대표 근거: 더마랩 포어락부스터 왕모공수축키트 내돈내산 찐후기","f":"low","s":[["더마랩 포어락부스터 왕모공수축키트 내돈내산 찐후기","https://blog.naver.com/basic522/224471841032"]],"u":0},"에스티로더퓨처리스트":{"c":"할인/행사","r":"블로그 2건에서 ‘할인’ 이야기가 나왔어요 (관련 없는 글 14건 제외). 대표 근거: 에스티로더 파운데이션 퓨쳐리스트 아쿠아 브릴리언스 리퀴드 메이....","f":"low","s":[["에스티로더 파운데이션 퓨쳐리스트 아쿠아 브릴리언스 리퀴드 메이....","https://blog.naver.com/ahj1182/224470266748"],["추천 9만원대 에스티로더 아쿠아 차지 밀키 크림, 1개, 50ml 헤라 에이....","https://onlyinformation.tistory.com/1219"]],"u":0},"이솝핸드워시":{"c":"시즌/날씨","r":"블로그 2건에서 ‘건조’, ‘선물’ 이야기가 나왔어요 (관련 없는 글 10건 제외). 대표 근거: 핸드워시 10개 써보고 정착한이유는!? 도브 핸드워시","f":"low","s":[["핸드워시 10개 써보고 정착한이유는!? 도브 핸드워시","https://blog.naver.com/s_sy_y/224472203350"],["[선물 추천] 실패 없는 센스 만점 집들이 & 생일 선물! 이솝(Aēsop) '레....","https://blog.naver.com/pharmily/224472161985"]],"u":0},"키스미아이라이너":{"c":"원인 불명확","r":"관련 글 3건 (관련 없는 글 16건 제외)이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["후쿠오카 돈키호테 쇼핑리스트 일본 여행 기념품 추천템 14가지 뷰....","https://blog.naver.com/jin_y2/224471452830"]],"u":0},"드로에뚜젤리틴트":{"c":"성분/기술 트렌드","r":"블로그 1건에서 ‘성분’ 이야기가 나왔어요 (관련 없는 글 4건 제외). 대표 근거: 히네 모공앰플 가격과 성분, 히네 앰플 기능성 표시까지 정리","f":"low","s":[["히네 모공앰플 가격과 성분, 히네 앰플 기능성 표시까지 정리","https://blog.naver.com/eunoia_life/224467451531"]],"u":0},"로마샴푸":{"c":"시즌/날씨","r":"블로그 2건에서 ‘선물’ 이야기가 나왔어요 (관련 없는 글 15건 제외). 대표 근거: 임산부 샴푸 로마 너리싱 내돈내산 신혼집 집들이 선물 추천","f":"low","s":[["임산부 샴푸 로마 너리싱 내돈내산 신혼집 집들이 선물 추천","https://blog.naver.com/torycco/224471964115"],["임산부 선물 임산부 튼살크림 직접 써본 비교 후기","https://blog.naver.com/yuun617/224470896714"]],"u":0},"시드물판테놀앰플":{"c":"원인 불명확","r":"관련 글 1건 (관련 없는 글 4건 제외)이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["시드물 재구매만 n번째… 안 쓰면 손해인 가성비템 3가지","https://blog.naver.com/soivn/224466694815"]],"u":0},"시세이도파운데이션":{"c":"원인 불명확","r":"관련 글 1건 (관련 없는 글 15건 제외)이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["\"에센스처럼 촉촉하고 광채가 미쳤어요\" 시세이도 110 알리바스터 내....","https://blog.naver.com/xxt5479/224450911473"]],"u":0},"이자녹스더블티놀":{"c":"원인 불명확","r":"관련 글 5건 (관련 없는 글 4건 제외)이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["이자녹스 더블티놀 35ml 크림, 데이·나이트 구성부터 볼 점","https://blog.naver.com/fornos/224471761533"]],"u":0},"끌레드뽀보떼":{"c":"시즌/날씨","r":"블로그 2건에서 ‘여름’ 이야기가 나왔어요 (관련 없는 글 2건 제외). 대표 근거: 재방문 [여름라이트] 인데 미지근 여라입니다.","f":"low","s":[["재방문 [여름라이트] 인데 미지근 여라입니다.","https://blog.naver.com/yellowcooltone/224471661887"],["n차방문 [여름뮤트] 저한테 오지 않으셨으면 인생파데 영원히 못 찾....","https://blog.naver.com/yellowcooltone/224468469995"]],"u":0},"마데카크림":{"c":"신제품 출시","r":"뉴스 7건에서 ‘선보’, ‘출시’ 이야기가 나왔어요. 대표 근거: 동국제약 ‘센텔리안24’ 글로벌 영토 확장⋯유럽 판매망 확대","f":"high","s":[["동국제약 ‘센텔리안24’ 글로벌 영토 확장⋯유럽 판매망 확대","https://www.etoday.co.kr/news/view/2645370"],["스킨케어 경쟁, 성분 넘어 기능으로 확대 [최기자의 화장품 털기]","https://www.meconomynews.com/news/articleView.html?idxno=203392"],["동국제약 센텔리안24, 영국 부츠·슈퍼드러그 입점 등 유럽 진출","https://www.medigatenews.com/news/1088243648"]],"u":0},"샤넬듀오립":{"c":"SNS 바이럴","r":"블로그 3건에서 ‘대란’, ‘품절’ 이야기가 나왔어요. 대표 근거: 샤넬 품절대란 립 모음/ 고윤정립(쥬르), 카리나립(악세수아르)","f":"medium","s":[["샤넬 품절대란 립 모음/ 고윤정립(쥬르), 카리나립(악세수아르)","https://blog.naver.com/sobi_kirok/224472245246"],["샤넬 대란템 르 루쥬 듀오 입고 정보 feat. 달리세요 여러분!!!","https://blog.naver.com/gladandyoung/224472219295"],["샤넬뷰티 레 베쥬 오드 블러셔 라이트핑크 품절대란","https://blog.naver.com/eunae_89/224472160392"]],"u":0},"알마스도브롤온":{"c":"신제품 출시","r":"블로그 2건에서 ‘출시’ 이야기가 나왔어요 (관련 없는 글 3건 제외). 대표 근거: 도브향수 '진짜 나온 거 맞아?', 블로그 한 곳만 전한 소식 확인해보....","f":"low","s":[["도브향수 '진짜 나온 거 맞아?', 블로그 한 곳만 전한 소식 확인해보....","https://blog.naver.com/kino1109/224468068761"],["도브향수 '정말 한국에도 나오나', 아직 확인 안 된 것들","https://blog.naver.com/gwangjaj98/224468065495"]],"u":0},"웰라쥬앰플":{"c":"성분/기술 트렌드","r":"블로그 7건에서 ‘성분’, ‘PDRN’ 이야기가 나왔어요 (관련 없는 글 3건 제외). 대표 근거: '식물성 PDRN'은 진짜 PDRN일까? 연어 PDRN·PN 성분표로 구분하기","f":"medium","s":[["'식물성 PDRN'은 진짜 PDRN일까? 연어 PDRN·PN 성분표로 구분하기","https://blog.naver.com/ingredient_note/224472247422"],["올영에서 벌고 올영에서 다 쓰는 사람의 추천템 모음","https://blog.naver.com/yedong2_0/224471956113"],["웰라쥬 리얼 히알루로닉 캡슐 앰플 추천｜동결건조 2X 히알루론산 ....","https://blog.naver.com/asdasd3241236/224471579197"]],"u":0},"토리든세럼":{"c":"신제품 출시","r":"뉴스 11건에서 ‘선보’, ‘출시’ 이야기가 나왔어요 (관련 없는 글 1건 제외). 대표 근거: '해외 매출 62%' 토리든, 뷰티매터 2026 선정","f":"high","s":[["'해외 매출 62%' 토리든, 뷰티매터 2026 선정","http://www.apparelnews.co.kr/news/news_view/?idx=228897"],["토리든 '아시아 유망 뷰티 브랜드 15선'에… \"글로벌 시장 공략 속도\"","http://www.bokuennews.com/news/article.html?no=286903"],["토리든, 'BeautyMatter ASIA15 2026' 선정…아시아 유망 뷰티 브랜드 15선...","https://www.gokorea.kr/news/articleView.html?idxno=884962"]],"u":0},"트리트먼트":{"c":"신제품 출시","r":"뉴스 2건에서 ‘출시’, ‘신제품’ 이야기가 나왔어요. 대표 근거: 셀메드, 겨울·연말 시즌 겨냥 신제품 4종 출시","f":"medium","s":[["셀메드, 겨울·연말 시즌 겨냥 신제품 4종 출시","https://www.dailypharm.com/user/news/344404?REFERER=NP"],["몽클로스, '무신사 뷰티 성수' 입점…헤어·바디케어 10종 선보여","https://www.gpkorea.com/news/articleView.html?idxno=148475"]],"u":0},"세포랩":{"c":"시즌/날씨","r":"블로그 1건에서 ‘환절기’ 이야기가 나왔어요. 대표 근거: 세포랩 바이오제닉 모이스처라이저 로션 직접 써본 후기","f":"low","s":[["세포랩 바이오제닉 모이스처라이저 로션 직접 써본 후기","https://blog.naver.com/mz1pos1zpqj2/224472279944"]],"u":0},"정샘물쿠션":{"c":"시즌/날씨","r":"뉴스 3건 · 블로그 4건에서 ‘겨울’, ‘크리스마스’ 이야기가 나왔어요 (관련 없는 글 1건 제외). 대표 근거: 메이크업은 도구·조립형으로 진화, 헤어는 향과 캐릭터 입었다 [최기자...","f":"high","s":[["메이크업은 도구·조립형으로 진화, 헤어는 향과 캐릭터 입었다 [최기자...","https://www.meconomynews.com/news/articleView.html?idxno=203393"],["K-뷰티 브랜드, 홀리데이 컬렉션 시장 합류","https://www.thebk.co.kr/news/articleView.html?idxno=312681"],["[Weekly New뷰티] 미리 찾아온 크리스마스 … 홀리데이 한정판 '풍성'","https://biz.newdaily.co.kr/site/data/html/2026/11/04/2026110400105.html"]],"u":0},"아모스컬링에센스":{"c":"성분/기술 트렌드","r":"블로그 2건에서 ‘성분’, ‘시카’ 이야기가 나왔어요 (관련 없는 글 3건 제외). 대표 근거: 비싼 게 정답인 줄 알았는데.. 단단함·1mL 값·성분표로 고르는 컬크....","f":"low","s":[["비싼 게 정답인 줄 알았는데.. 단단함·1mL 값·성분표로 고르는 컬크....","https://blog.naver.com/propclip/224469403463"],["[관평동 미용실] [WEEKLY HAIR MAGAZINE] VOL.58 - 2026 겨울 남자 헤어스타일 ....","https://blog.naver.com/gguzzihair_gp/224468131480"]],"u":0},"미스트":{"c":"신제품 출시","r":"뉴스 7건에서 ‘선보’, ‘출시’ 이야기가 나왔어요. 대표 근거: 성남산업진흥원, 남다른상점서 8,700만원 판매…중소기업 21개사 참여","f":"high","s":[["성남산업진흥원, 남다른상점서 8,700만원 판매…중소기업 21개사 참여","https://www.gukjenews.com/news/articleView.html?idxno=3747881"],["고운아씨, 첫 론칭 방송에서 준비 물량 소진…판매 채널 확대 검토","https://www.ppss.kr/news/articleView.html?idxno=320220"],["日큐텐·라쿠텐 1위…유이크, '바이옴 베리어 판텐시브 크림' 올리브영...","https://view.asiae.co.kr/article/2026111015333576908"]],"u":0},"새치커버스틱":{"c":"원인 불명확","r":"관련 글 4건이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["모두봄 올데이 헤어틴트 만원대 새치커버스틱!! 솔직 특징 정리","https://blog.naver.com/bombi9030/224472275848"]],"u":0},"유노아엑소좀앰플":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 3건 제외).","f":"low","s":[],"u":0},"에스트라아토베리어":{"c":"신제품 출시","r":"뉴스 7건에서 ‘출시’, ‘선보’ 이야기가 나왔어요. 대표 근거: 스킨케어 경쟁, 성분 넘어 기능으로 확대 [최기자의 화장품 털기]","f":"high","s":[["스킨케어 경쟁, 성분 넘어 기능으로 확대 [최기자의 화장품 털기]","https://www.meconomynews.com/news/articleView.html?idxno=203392"],["\"화장품 1+1에 키즈 방한용품 특가\"…온라인 할인전 풍성[주말e커머스]","https://www.newsis.com/view/NISX20261106_0003857915"],["얼굴 넘어 입술까지…뷰티업계, ‘립 스키니피케이션’ 확산","https://www.ddaily.co.kr/page/view/2026110614283825572"]],"u":0},"아이오페레티놀":{"c":"성분/기술 트렌드","r":"블로그 15건에서 ‘레티놀’, ‘시카’ 이야기가 나왔어요 (관련 없는 글 2건 제외). 대표 근거: 나의 공병 이야기","f":"medium","s":[["나의 공병 이야기","https://blog.naver.com/jongipiano/224472296435"],["올리브영 지금 사면 호구? 11월 올영픽 가격 비교해 봤습니다","https://blog.naver.com/aftertherain22/224472230649"],["2026 고흥유자축제, 주차·셔틀부터 주변 관광지까지 한 번에","https://blog.naver.com/0701swimmimg/224472221485"]],"u":0},"이데셀프레스티지크림":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"이지듀기미쿠션":{"c":"신제품 출시","r":"뉴스 4건 · 블로그 1건에서 ‘선보’, ‘출시’ 이야기가 나왔어요 (관련 없는 글 1건 제외). 대표 근거: 화장품으로 발 넓히는 제약·바이오","f":"high","s":[["화장품으로 발 넓히는 제약·바이오","http://www.smedaily.co.kr/news/articleView.html?idxno=365796"],["\"검증과 시장 설계가 관건\"…화장품이 된 신약기술","https://www.fortunekorea.co.kr/news/articleView.html?idxno=54662"],["‘바이오 코스메틱’이 뜬다…신약 물질·피부과학 입고 K-뷰티 확장","https://biz.heraldcorp.com/article/10927353?ref=naver"]],"u":0},"바세린":{"c":"셀럽/광고","r":"뉴스 1건에서 ‘협업’ 이야기가 나왔어요. 대표 근거: 황지상, 11일 첫 정규 발매…16곡 수록","f":"medium","s":[["황지상, 11일 첫 정규 발매…16곡 수록","https://www.bntnews.co.kr/article/view/bnt202611090019"]],"u":0},"샤넬립스틱":{"c":"원인 불명확","r":"관련 글 3건 (관련 없는 글 1건 제외)이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["[내돈내산] 2026 디올 홀리데이 립듀오","https://blog.naver.com/jun2bbucka/224472295915"]],"u":0},"장원영빗":{"c":"셀럽/광고","r":"블로그 2건에서 ‘협업’, ‘아이돌’ 이야기가 나왔어요 (관련 없는 글 15건 제외). 대표 근거: 장원영빗 가격 에이블리 vs 면세점 vs 구매대행 어디가 제일 쌀까?","f":"low","s":[["장원영빗 가격 에이블리 vs 면세점 vs 구매대행 어디가 제일 쌀까?","https://blog.naver.com/mangdooyam/224471327643"],["[쇼핑 011] 장원영 빗 정체? 품절대란 핫핑크 브러쉬 반값","https://blog.naver.com/top1hotels/224471020755"]],"u":0},"헤어에센스":{"c":"신제품 출시","r":"뉴스 1건에서 ‘선보’ 이야기가 나왔어요 (관련 없는 글 12건 제외). 대표 근거: [뷰티 트렌드] 더샘, '커버 퍼펙션 트리플 팟 컨실러 글로우’ 올리브영...","f":"medium","s":[["[뷰티 트렌드] 더샘, '커버 퍼펙션 트리플 팟 컨실러 글로우’ 올리브영...","https://www.ibabynews.com/news/articleView.html?idxno=156739"]],"u":0},"세포랩에센스":{"c":"시즌/날씨","r":"블로그 1건에서 ‘보습’ 이야기가 나왔어요 (관련 없는 글 1건 제외). 대표 근거: 세포랩 바이오제닉 에센스 90% 155ml 2개입 기획세트 정보 세안하자마....","f":"low","s":[["세포랩 바이오제닉 에센스 90% 155ml 2개입 기획세트 정보 세안하자마....","https://blog.naver.com/guhwan2002/224472238629"]],"u":0},"조말론핸드크림":{"c":"시즌/날씨","r":"블로그 9건에서 ‘선물’, ‘보습’ 이야기가 나왔어요 (관련 없는 글 2건 제외). 대표 근거: 카카오톡 선물하기 추천 3만원대 조말론 핸드크림 향 30ml","f":"medium","s":[["카카오톡 선물하기 추천 3만원대 조말론 핸드크림 향 30ml","https://blog.naver.com/squr0716/224472293074"],["핸드크림 추천, 록시땅·조말론·이솝·탬버린즈 인기 브랜드 비교와....","https://blog.naver.com/mallpick/224472216049"],["[빼빼로데이 여자친구 선물] 10대~50대 연령별·가격별 센스있는 추천....","https://blog.naver.com/msxx_a/224472192244"]],"u":0},"프라다립밤":{"c":"시즌/날씨","r":"블로그 6건에서 ‘선물’, ‘겨울’ 이야기가 나왔어요 (관련 없는 글 7건 제외). 대표 근거: W09. 부모님 첫인사, 상견례 선물 추천 리스트, 구매 꿀팁, 춘천앙그....","f":"medium","s":[["W09. 부모님 첫인사, 상견례 선물 추천 리스트, 구매 꿀팁, 춘천앙그....","https://blog.naver.com/wldnjs2651/224471719998"],["테슬라가 공중도약 자동차를 만들었다는데 나는 하는게 무엇인가","https://blog.naver.com/bonggu_buljumeok/224471604447"],["생일선물 받았을때 기분좋은 선물 공유/ 생일선물 추천","https://blog.naver.com/xingfudu/224471596313"]],"u":0},"헤드앤숄더샴푸":{"c":"신제품 출시","r":"뉴스 2건에서 ‘신제품’, ‘런칭’ 이야기가 나왔어요 (관련 없는 글 10건 제외). 대표 근거: 샴푸 2026년 11월 브랜드평판...앙방, 헤드앤숄더, 케라스타즈 順","f":"medium","s":[["샴푸 2026년 11월 브랜드평판...앙방, 헤드앤숄더, 케라스타즈 順","https://www.energy-news.co.kr/news/articleView.html?idxno=229540"],["앙방 샴푸, 11월 샴푸 브랜드평판 1위...헤드앤숄더·케라스타즈 순","http://www.popcornnews.net/news/articleView.html?idxno=138806"]],"u":0},"라로슈포제":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"유리아쥬립밤":{"c":"시즌/날씨","r":"블로그 10건에서 ‘보습’, ‘겨울’ 이야기가 나왔어요 (관련 없는 글 1건 제외). 대표 근거: 유리아쥬 립밤 추천, 무향 제모스 스틱레브르로 겨울 입술 촉촉하게....","f":"medium","s":[["유리아쥬 립밤 추천, 무향 제모스 스틱레브르로 겨울 입술 촉촉하게....","https://blog.naver.com/modestly-88/224471887364"],["바세린 컬러 립밤 전색상 비교! 키싱레드부터 멜로우로즈 생기 보습....","https://blog.naver.com/jyhlove1102/224471146791"],["올리브영 유리아쥬 롬앤 콜라보 립밤 후기｜보습력부터 발색까지 ....","https://blog.naver.com/eseul_k/224471133608"]],"u":0},"쿤달샴푸":{"c":"할인/행사","r":"블로그 5건에서 ‘1+1’, ‘할인’ 이야기가 나왔어요 (관련 없는 글 1건 제외). 대표 근거: 이마트 에브리데이ㆍ노브랜드 11월 첫째주 쓱데이 할인","f":"medium","s":[["이마트 에브리데이ㆍ노브랜드 11월 첫째주 쓱데이 할인","https://blog.naver.com/ymwoo82/224471969221"],["11월 9일 이마트 전단행사","https://blog.naver.com/9813028k/224471826267"],["샴푸추천, 머리는 금방 떡지는데 끝은 푸석하다면? 두피·모발별 선....","https://blog.naver.com/red_flow_/224471433684"]],"u":0},"이지듀":{"c":"성분/기술 트렌드","r":"뉴스 4건 · 블로그 2건에서 ‘성분’, ‘더마’ 이야기가 나왔어요. 대표 근거: \"관광객과 직접 만난다\"…이나벨로, 무신사 뷰티 홍대 '파머시 뷰티' 입...","f":"high","s":[["\"관광객과 직접 만난다\"…이나벨로, 무신사 뷰티 홍대 '파머시 뷰티' 입...","https://www.edaily.co.kr/News/Read?newsId=04234486645644408&mediaCodeNo=257&utm_source=naver&utm_medium=referral&utm_campaign=news_syndication&utm_content=original_article"],["“마데카솔 성분이 화장품으로”…신약 기술이 뷰티 시장 향하는 이유 ...","https://www.donga.com/news/Economy/article/all/20261106/134972757/2"],["신약 기술로 뷰티시장 공략…바이오업계, 수익원 다각화","https://www.asiatoday.co.kr/kn/view.php?key=20261105010002138"]],"u":0},"달바미스트":{"c":"성분/기술 트렌드","r":"뉴스 13건에서 ‘펩타이드’, ‘성분’ 이야기가 나왔어요. 대표 근거: 달바와 함께한 하루, 3분의 리추얼","f":"high","s":[["달바와 함께한 하루, 3분의 리추얼","https://www.marieclairekorea.com/beauty/2026/11/dalba-signature/?utm_source=naver&utm_medium=partnership"],["달바, 신제품 미스트 국내외 초기 판매 호조…글로벌 유통망 확대 추진","https://www.m-i.kr/news/articleView.html?idxno=2016158"],["달바 ‘프로2X 미스트 펩타이드’, 액티브 세럼 함량 2배 강화하고 듀얼...","https://www.sportschosun.com/life/2026-11-10/202611100100069450006472"]],"u":0},"달바미스트세럼":{"c":"성분/기술 트렌드","r":"뉴스 14건에서 ‘펩타이드’, ‘엑소좀’ 이야기가 나왔어요 (관련 없는 글 1건 제외). 대표 근거: 달바와 함께한 하루, 3분의 리추얼","f":"high","s":[["달바와 함께한 하루, 3분의 리추얼","https://www.marieclairekorea.com/beauty/2026/11/dalba-signature/?utm_source=naver&utm_medium=partnership"],["달바, 신제품 미스트 국내외 초기 판매 호조…글로벌 유통망 확대 추진","https://www.m-i.kr/news/articleView.html?idxno=2016158"],["달바 ‘프로2X 미스트 펩타이드’, 액티브 세럼 함량 2배 강화하고 듀얼...","https://www.sportschosun.com/life/2026-11-10/202611100100069450006472"]],"u":0},"에스티로더더블웨어":{"c":"할인/행사","r":"블로그 4건에서 ‘증정’, ‘쿠폰’ 이야기가 나왔어요 (광고·체험단 글 1건 · 관련 없는 글 4건 제외). 대표 근거: 시코르 블룸 뷰티 할인 행사, 마감일은 언제?","f":"medium","s":[["시코르 블룸 뷰티 할인 행사, 마감일은 언제?","https://blog.naver.com/moneysavingtech/224471451194"],["에스티로더 더블웨어 파운데이션 샘플링","https://blog.naver.com/smileh25/224470709389"],["[무료샘플✔️] 에스티로더 매장 방문 시 더블웨어 패킷 증정 (~11/30)","https://blog.naver.com/moxxsoul/224470642707"]],"u":0},"카밀핸드크림":{"c":"할인/행사","r":"블로그 5건에서 ‘할인’, ‘최저가’ 이야기가 나왔어요 (관련 없는 글 5건 제외). 대표 근거: 11월 둘째주 코스트코 추천 할인상품 vs 쿠팡 최저가 비교 | 화장품편....","f":"medium","s":[["11월 둘째주 코스트코 추천 할인상품 vs 쿠팡 최저가 비교 | 화장품편....","https://blog.naver.com/dazzlingly_0/224472223667"],["코스트코 11월 둘째 주 할인상품 ① 화장품·보습용품 총정리 (11/9~11/....","https://blog.naver.com/costo_note/224472080094"],["코스트코 “지금 아니면 또 제값 줘야 해요…” 11월 둘째주 놓치면 ....","https://blog.naver.com/chidamam/224472000497"]],"u":0},"파이모아염색약":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 9건 제외).","f":"low","s":[],"u":0},"마스크팩":{"c":"성분/기술 트렌드","r":"뉴스 1건에서 ‘성분’ 이야기가 나왔어요 (관련 없는 글 3건 제외). 대표 근거: 달바와 함께한 하루, 3분의 리추얼","f":"medium","s":[["달바와 함께한 하루, 3분의 리추얼","https://www.marieclairekorea.com/beauty/2026/11/dalba-signature/?utm_source=naver&utm_medium=partnership"]],"u":0},"입생로랑립스틱":{"c":"시즌/날씨","r":"블로그 3건에서 ‘여름’, ‘선물’ 이야기가 나왔어요 (관련 없는 글 2건 제외). 대표 근거: [여름라이트] 인데 미지근 여라입니다.","f":"medium","s":[["[여름라이트] 인데 미지근 여라입니다.","https://blog.naver.com/yellowcooltone/224471653964"],["입생로랑 홀리데이 2026, 카카오톡 선물하기 포미위크 할인까지 챙기....","https://blog.naver.com/nextpage365/224471507996"],["겨울에 쓰기 좋은 샤넬, 입생로랑, 프라다 립밤, 명품립밤 추천","https://blog.naver.com/gozimozi/224462322799"]],"u":0},"설화수탄력크림":{"c":"할인/행사","r":"뉴스 1건에서 ‘특가’ 이야기가 나왔어요 (관련 없는 글 1건 제외). 대표 근거: [유통소식] \"이번 주말이 기회\"…이마트, 쓱데이 마지막 주말 혜택 풍성","f":"medium","s":[["[유통소식] \"이번 주말이 기회\"…이마트, 쓱데이 마지막 주말 혜택 풍성","http://www.4th.kr/news/articleView.html?idxno=2121148"]],"u":0},"젤라또팩토리":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 20건 제외).","f":"low","s":[],"u":0},"설화수윤조에센스":{"c":"시즌/날씨","r":"뉴스 5건에서 ‘연말’, ‘선물’ 이야기가 나왔어요. 대표 근거: 마지막 날 타임딜 4배로…11번가, 그랜드십일절 총력전","f":"high","s":[["마지막 날 타임딜 4배로…11번가, 그랜드십일절 총력전","https://www.joongangenews.com/news/articleView.html?idxno=562686"],["11번가, '그랜드십일절' 11일 풀타임 특가...최대 89% 할인","https://www.slist.kr/news/articleView.html?idxno=780321"],["K-뷰티 브랜드, 홀리데이 컬렉션 시장 합류","https://www.thebk.co.kr/news/articleView.html?idxno=312681"]],"u":0},"비판텐연고":{"c":"성분/기술 트렌드","r":"블로그 1건에서 ‘성분’, ‘비타민’ 이야기가 나왔어요 (관련 없는 글 3건 제외). 대표 근거: 수억 원대 건물주 연예인이 수건 대신 얼굴에 매일 바르는 3천 원대 ....","f":"low","s":[["수억 원대 건물주 연예인이 수건 대신 얼굴에 매일 바르는 3천 원대 ....","https://blog.naver.com/bealleyes13/224472036600"]],"u":0},"설화수":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"헤드스파7":{"c":"신제품 출시","r":"뉴스 3건에서 ‘선보’, ‘론칭’ 이야기가 나왔어요 (관련 없는 글 1건 제외). 대표 근거: 신세계 하이퍼그라운드, 대만·말레이시아 팝업 운영","f":"high","s":[["신세계 하이퍼그라운드, 대만·말레이시아 팝업 운영","https://www.vegannews.co.kr/news/article.html?no=402762"],["신세계백화점, 뷰티 편집숍 시코르 '블룸' 론칭·'신세계 하이퍼그라운...","http://www.wsobi.com/news/articleView.html?idxno=321304"],["신세계 하이퍼그라운드, 대만·말레이시아서 K패션·뷰티 선보인다","https://www.sedaily.com/article/20111887?ref=naver"]],"u":0},"닥터지수분크림":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"도브비누":{"c":"시즌/날씨","r":"블로그 1건에서 ‘보습’ 이야기가 나왔어요 (관련 없는 글 4건 제외). 대표 근거: 도브 뷰티크림바 vs 센서티브 뷰티바 내돈내산 둘 다 써보니 차이는?","f":"low","s":[["도브 뷰티크림바 vs 센서티브 뷰티바 내돈내산 둘 다 써보니 차이는?","https://blog.naver.com/chapchoki/224471719482"]],"u":0},"세인트프랑블랙라벨":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 17건 제외).","f":"low","s":[],"u":0},"씨아클라크림마스크":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 1건 제외).","f":"low","s":[],"u":0},"염색약":{"c":"원인 불명확","r":"관련 글 7건이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["염색·펌 후 머리카락 빠진다면…모발 손상 vs 실제 탈모 구분부터","https://www.ikunkang.com/news/articleView.html?idxno=51819"]],"u":0},"인셀덤":{"c":"셀럽/광고","r":"뉴스 1건 · 블로그 1건에서 ‘배우’ 이야기가 나왔어요 (관련 없는 글 4건 제외). 대표 근거: 박명수, 16년째 작품 없는 원빈에 공개 러브콜…“‘아저씨’ 이후 왜 ...","f":"medium","s":[["박명수, 16년째 작품 없는 원빈에 공개 러브콜…“‘아저씨’ 이후 왜 ...","https://www.segye.com/newsView/20261110514292?OutUrl=naver"],["영업 잘하는 사람 특징 | 네트워크 사업에서 통하는 것과 통하지 않....","https://blog.naver.com/diet129078/224470712732"]],"u":0},"아모스염색약":{"c":"원인 불명확","r":"관련 글 1건 (관련 없는 글 16건 제외)이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["새치 염색약, 74세 윤미라 50년 단골 원장이 꺼낸 국산 염색약","https://blog.naver.com/bosuvictory/224469268675"]],"u":0},"헤라썬크림":{"c":"시즌/날씨","r":"블로그 2건에서 ‘자외선’, ‘건조’ 이야기가 나왔어요 (광고·체험단 글 1건 · 관련 없는 글 6건 제외). 대표 근거: 헤라썬크림 비교, 멀티디펜스부터 톤업 피치 라벤더까지","f":"low","s":[["헤라썬크림 비교, 멀티디펜스부터 톤업 피치 라벤더까지","https://blog.naver.com/roeun2275/224467085724"],["쇼핑 천재의 면세점 털기 (ft. 브랜든 월렛백, 기내 꿀템은 면세점에....","https://blog.naver.com/chikara3/224466084208"]],"u":0},"호호바오일":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"비욘드핸드크림":{"c":"셀럽/광고","r":"뉴스 1건에서 ‘콜라보’ 이야기가 나왔어요 (관련 없는 글 19건 제외). 대표 근거: 비욘드, 올영 단독 '다마고치' 콜라보 에디션 출시","f":"medium","s":[["비욘드, 올영 단독 '다마고치' 콜라보 에디션 출시","http://www.babytimes.co.kr/news/articleView.html?idxno=74564"]],"u":0},"에이지20s팩트":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 20건 제외).","f":"low","s":[],"u":0},"고레소레":{"c":"할인/행사","r":"블로그 1건에서 ‘증정’, ‘최저가’ 이야기가 나왔어요 (관련 없는 글 1건 제외). 대표 근거: 상떼 클렌징밀크 500ml+200ml 증정부터 NEW 바디워시+바디크림 듀오세트....","f":"low","s":[["상떼 클렌징밀크 500ml+200ml 증정부터 NEW 바디워시+바디크림 듀오세트....","https://blog.naver.com/myananan/224464511214"]],"u":0},"닥터지달팽이크림":{"c":"시즌/날씨","r":"블로그 7건에서 ‘보습’, ‘겨울’ 이야기가 나왔어요 (관련 없는 글 1건 제외). 대표 근거: 50대 겨울 피부, 비싼 화장품 필요할까? 군마트 1만 원대 보습크림","f":"medium","s":[["50대 겨울 피부, 비싼 화장품 필요할까? 군마트 1만 원대 보습크림","https://blog.naver.com/saramsoc/224472026614"],["군마트 PX추천템, 피엑스 화장품 \"달팽이크림 추천 4종\", 어떤게 좋을....","https://blog.naver.com/vitaminm-/224471747224"],["예비군 PX 화장품 이건 꼭 보세요! 2026 군마트 추천템 6가지 가격 총....","https://blog.naver.com/qlgofk51897/224471509253"]],"u":0},"도미나크림":{"c":"성분/기술 트렌드","r":"블로그 7건에서 ‘성분’, ‘PDRN’ 이야기가 나왔어요 (관련 없는 글 4건 제외). 대표 근거: P-4｜약국템 대신 올리브영템 1편｜아젤리아크림·도미나크림·리쥬....","f":"medium","s":[["P-4｜약국템 대신 올리브영템 1편｜아젤리아크림·도미나크림·리쥬....","https://blog.naver.com/earl-do/224472077823"],["\"도미나냐 멜라토닝이냐...\" 4050 기미·잡티 싹 지우는 약국 크림 대....","https://blog.naver.com/cos_re/224457946272"],["기미 고민 이제 끝? 도미나크림 효과 제대로 알아보자","https://blog.naver.com/cosmeticst/224471868355"]],"u":0},"맥립스틱":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 2건 제외).","f":"low","s":[],"u":0},"썬크림":{"c":"원인 불명확","r":"관련 글 1건이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["험한 북알프스를 가장 쉽게 걷다 [일본 북알프스 트레킹]","http://san.chosun.com/news/articleView.html?idxno=26315"]],"u":0},"씨드비물염색":{"c":"시즌/날씨","r":"블로그 1건에서 ‘건조’ 이야기가 나왔어요 (관련 없는 글 6건 제외). 대표 근거: [내돈내산] PX 쇼핑템, 센텔리안24 마데카크림, 마데카멜라캡처앰플, ....","f":"low","s":[["[내돈내산] PX 쇼핑템, 센텔리안24 마데카크림, 마데카멜라캡처앰플, ....","https://blog.naver.com/forpyj/224467358898"]],"u":0},"립스틱":{"c":"신제품 출시","r":"뉴스 10건에서 ‘신상’, ‘선보’ 이야기가 나왔어요. 대표 근거: 한국콜마, CES 뷰티테크 최고혁신상 세계 최초 2연패","f":"high","s":[["한국콜마, CES 뷰티테크 최고혁신상 세계 최초 2연패","https://www.getnews.co.kr/news/articleView.html?idxno=886695"],["신민아, '재혼 황후' 나비에로 매혹 선보인 궁정 비주얼","https://www.topstarnews.net/news/articleView.html?idxno=16273225"],["[미리보는 이데일리 신문]폰번호 1弗, 진료정보 300弗…해커 돈 따라간...","https://www.edaily.co.kr/News/Read?newsId=06333686645644408&mediaCodeNo=257&utm_source=naver&utm_medium=referral&utm_campaign=news_syndication&utm_content=original_article"]],"u":0},"달링태그":{"c":"원인 불명확","r":"관련 글 1건 (관련 없는 글 19건 제외)이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["달링태그 구매 전 확인할 것, 후기와 고르는 기준","https://blog.naver.com/mici19/224469268389"]],"u":0},"설화수세트":{"c":"할인/행사","r":"뉴스 13건에서 ‘기획전’, ‘증정’ 이야기가 나왔어요. 대표 근거: 쿠팡 알럭스, 론칭 2주년 기획전…33개 브랜드 할인에 사은품 증정","f":"high","s":[["쿠팡 알럭스, 론칭 2주년 기획전…33개 브랜드 할인에 사은품 증정","https://www.thepublic.kr/news/articleView.html?idxno=325991"],["알럭스, 론칭 2주년 기획전…홀리데이 한정판부터 단독 선물세트까지","https://news.bbsi.co.kr/news/articleView.html?idxno=4117794"],["쿠팡 알럭스, 론칭 2주년 기획전...33개 뷰티 브랜드 홀리데이 한정판 판...","https://www.betanews.net/article/view/beta202611100148"]],"u":0},"올레놀샷nmn포뮬러":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"세인트프랑링클크림":{"c":"시즌/날씨","r":"블로그 1건에서 ‘보습’ 이야기가 나왔어요 (관련 없는 글 17건 제외). 대표 근거: 세인트프랑링클크림 250ml 대용량 내돈내산 탄력 보습 크림 추천 후....","f":"low","s":[["세인트프랑링클크림 250ml 대용량 내돈내산 탄력 보습 크림 추천 후....","https://blog.naver.com/eun5375/224470764586"]],"u":0},"살림백서":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"견미리팩트":{"c":"셀럽/광고","r":"블로그 1건에서 ‘배우’ 이야기가 나왔어요 (관련 없는 글 3건 제외). 대표 근거: 여배우 쇼핑몰 CEO 매출 숫자에 속지 않는 법, 기준 3가지","f":"low","s":[["여배우 쇼핑몰 CEO 매출 숫자에 속지 않는 법, 기준 3가지","https://blog.naver.com/vygusdms/224469887259"]],"u":0},"선크림":{"c":"셀럽/광고","r":"뉴스 1건에서 ‘협업’ 이야기가 나왔어요. 대표 근거: 편의점 화장품, 다이소와 맞붙나…초저가 뷰티 유통 경쟁","f":"medium","s":[["편의점 화장품, 다이소와 맞붙나…초저가 뷰티 유통 경쟁","http://www.apparelnews.co.kr/news/news_view/?idx=228879"]],"u":0},"아이오페슈퍼바이탈":{"c":"할인/행사","r":"뉴스 14건 · 블로그 1건에서 ‘세일’, ‘할인’ 이야기가 나왔어요 (관련 없는 글 3건 제외). 대표 근거: [캐시워크 종합] 11월 10일 화요일 낮 12시 현재 출제되고 있는 모든 문...","f":"high","s":[["[캐시워크 종합] 11월 10일 화요일 낮 12시 현재 출제되고 있는 모든 문...","http://www.bizwnews.com/news/articleView.html?idxno=151451"],["[캐시워크 종합] 11월 10일 화요일 오전 11시 현재 출제되고 있는 모든 ...","http://www.bizwnews.com/news/articleView.html?idxno=151449"],["11번가, 11일 ‘그랜드십일절’ 피날레 행사…타임딜 최대 80% 할인","https://www.inthenews.co.kr/news/article.html?no=94234"]],"u":0},"퍼시앙아르간골드":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"설화수자음2종":{"c":"할인/행사","r":"뉴스 19건에서 ‘할인’, ‘증정’ 이야기가 나왔어요. 대표 근거: G마켓, 빼빼로데이 선물 특가전...스타배송으로 막바지 수요 공략","f":"high","s":[["G마켓, 빼빼로데이 선물 특가전...스타배송으로 막바지 수요 공략","https://www.ebn.co.kr/news/articleView.html?idxno=1731021"],["[유통레이더] 트립닷컴, 롯데월드, 놀유니버스, 번개장터, 삼양라운드스...","https://daily.hankooki.com/news/articleView.html?idxno=1423013"],["G마켓, 빅스마일데이 13일까지…2주차 특가 할인","https://www.nocutnews.co.kr/news/6604115?utm_source=naver&utm_medium=article&utm_campaign=20261109145534"]],"u":0},"실크테라피":{"c":"할인/행사","r":"블로그 7건에서 ‘할인’, ‘최저가’ 이야기가 나왔어요 (관련 없는 글 4건 제외). 대표 근거: 코스트코 11월 할인상품 총정리! 둘째 주부터 셋째 주까지 놓치면 아....","f":"medium","s":[["코스트코 11월 할인상품 총정리! 둘째 주부터 셋째 주까지 놓치면 아....","https://blog.naver.com/lifestyle_ad/224472267687"],["11월 둘째주 코스트코 추천 할인상품 vs 쿠팡 최저가 비교 | 화장품편....","https://blog.naver.com/dazzlingly_0/224472223667"],["코스트코 11월 둘째주 블랙프라이데이 할인 품목 정보","https://blog.naver.com/sincose/224472212974"]],"u":0},"동국제약마데카크림":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 19건 제외).","f":"low","s":[],"u":0},"바엘바로광채븨블토너":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 1건 제외).","f":"low","s":[],"u":0},"올레놀샷":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 18건 제외).","f":"low","s":[],"u":0},"인셀덤화장품":{"c":"신제품 출시","r":"블로그 1건에서 ‘신제품’ 이야기가 나왔어요 (관련 없는 글 14건 제외). 대표 근거: 마포구 인셀덤화장품 올 뉴 신제품 변화와 플랫폼 비즈니스 데이터 ....","f":"low","s":[["마포구 인셀덤화장품 올 뉴 신제품 변화와 플랫폼 비즈니스 데이터 ....","https://blog.naver.com/love7831/224468238574"]],"u":0},"쿠션팩트":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"닥터큐먼콜라겐팩":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 1건 제외).","f":"low","s":[],"u":0},"랑스맥스":{"c":"신제품 출시","r":"블로그 1건에서 ‘신상’ 이야기가 나왔어요 (관련 없는 글 3건 제외). 대표 근거: NEW 최신상 랑스맥스 크림 기본패키지 98,900원, 사기 전에 개당 단가....","f":"low","s":[["NEW 최신상 랑스맥스 크림 기본패키지 98,900원, 사기 전에 개당 단가....","https://blog.naver.com/sd1st/224470915336"]],"u":0},"염색샴푸":{"c":"원인 불명확","r":"관련 글은 있었지만 키워드를 직접 다룬 글이 없었어요 (관련 없는 글 8건 제외).","f":"low","s":[],"u":0},"향수":{"c":"원인 불명확","r":"최근 5일 안에 관련 뉴스나 블로그 글을 찾지 못했어요.","f":"low","s":[],"u":0},"헤어트리트먼트":{"c":"SNS 바이럴","r":"뉴스 1건에서 ‘유튜브’ 이야기가 나왔어요 (관련 없는 글 19건 제외). 대표 근거: 건조기 돌렸다가 '확' 줄어든 니트…버리지 말고 '이 물'에 담가보세요","f":"medium","s":[["건조기 돌렸다가 '확' 줄어든 니트…버리지 말고 '이 물'에 담가보세요","https://www.wikitree.co.kr/articles/1171064"]],"u":0},"달팽이크림":{"c":"원인 불명확","r":"관련 글 8건 (관련 없는 글 1건 제외)이 있지만 뚜렷한 이유를 찾지 못했어요. 출처를 직접 확인해 보세요.","f":"low","s":[["자민경(JAMINKYUNG), 홍대 이어 성수까지… 무신사 뷰티 오프라인 매장 ...","http://www.newsroad.co.kr/news/articleView.html?idxno=67463"]],"u":0}},"common":[["바디로션",["10","30","40","50","60"]],["핸드크림",["20","30","40","50","60"]],["록시땅핸드크림",["20","30","40","50"]],["입생로랑쿠션",["20","30","40","50"]],["립밤",["30","40","50","60"]],["에스티로더갈색병",["30","40","50","60"]],["헤라블랙쿠션",["30","40","50","60"]],["바디워시",["30","40","50","60"]],["ahc아이크림",["30","40","50","60"]],["마데카크림",["30","40","50","60"]]]}},"events":[{"n":"빈느, 더현대 서울서 세 번째 팝업 오픈","b":null,"p":"더현대 서울","a":"여의도","s":"2026-11-04","e":"2026-11-11","bk":null,"sm":null,"src":["빈느, 더현대 서울서 세 번째 팝업 오픈","https://www.newspim.com/news/view/20261109000252"]}],"brands":{"3ce무드레시피립":"3CE","ahc아이크림":"AHC","vdl틴트":"VDL","나스리퀴드블러쉬":"나스","나스블러셔":"나스","나스블러쉬":"나스","나스쿠션홀리데이":"나스","나스파운데이션":"나스","나스팟컨실러":"나스","넘버즈인":"넘버즈인","넘버즈인5번앰플":"넘버즈인","닥터디퍼런트ceq비타민씨":"닥터디퍼런트","닥터지달팽이크림":"닥터지","닥터지선크림":"닥터지","닥터지수분크림":"닥터지","달바미스트":"달바","달바미스트세럼":"달바","더유핏브이밴드":"더유핏","더페이스샵잉크그라피":"더페이스샵","데이지크크림소다":"데이지크","디올립글로우":"디올","디올립밤":"디올","디올립스틱":"디올","디올맥시마이저":"디올","디올블러쉬":"디올","디올쁘아종오드뚜알렛100ml":"디올","디올하이라이터홀리데이":"디올","디올향수":"디올","라네즈진저브레드":"라네즈","라로슈포제":"라로슈포제","라로슈포제b5":"라로슈포제","라카키스프루프":"라카","랑콤립밤":"랑콤","롬앤10주년팔레트":"롬앤","롬앤베러댄컨투어쉐딩":"롬앤","롬앤피그피그":"롬앤","르라보어나더13":"르라보","마녀공장클렌징오일":"마녀공장","마데카크림":"마데카","메이크업포에버파우더":"메이크업포에버","모로칸오일":"모로칸오일","바닐라코컨실러21호":"바닐라코","바닐라코파운데이션":"바닐라코","바비브라운아이섀도우":"바비브라운","바비브라운엑스트라립밤":"바비브라운","바이오더마립밤":"바이오더마","바이오더마바디로션":"바이오더마","바이오더마에센스로션":"바이오더마","바이오더마토너":"바이오더마","브링그린글루타치온세럼":"브링그린","삐아치크엔젤":"삐아","샤넬":"샤넬","샤넬듀오드밤":"샤넬","샤넬듀오립":"샤넬","샤넬립밤":"샤넬","샤넬립스틱":"샤넬","샤넬핸드크림":"샤넬","설화수":"설화수","설화수샘플":"설화수","설화수세트":"설화수","설화수윤조에센스":"설화수","설화수자음2종":"설화수","설화수자음생크림":"설화수","설화수쿠션":"설화수","설화수크림":"설화수","설화수클렌징오일":"설화수","설화수클렌징폼":"설화수","설화수탄력크림":"설화수","설화수탄력크림75ml":"설화수","설화수퍼펙팅쿠션":"설화수","설화수퍼펙팅파우더":"설화수","세타필바디로션":"세타필","세타필크림":"세타필","셀퓨전씨선크림":"셀퓨전씨","스킨1004":"스킨1004","아비브앰플":"아비브","아이오페레티놀":"아이오페","아이오페슈퍼바이탈":"아이오페","에스네이처수분크림":"에스네이처","에스네이처토너":"에스네이처","에스트라아토베리어":"에스트라","에스티로더갈색병":"에스티로더","에스티로더더블웨어":"에스티로더","에스티로더퓨처리스트":"에스티로더","오휘기초세트":"오휘","오휘영양크림":"오휘","웨이크메이크파데":"웨이크메이크","웨이크메이크팔레트":"웨이크메이크","웰라쥬앰플":"웰라쥬","유리아쥬립밤":"유리아쥬","이니스프리":"이니스프리","이지듀":"이지듀","이지듀기미앰플":"이지듀","이지듀기미쿠션":"이지듀","일리윤":"일리윤","일리윤립밤1개":"일리윤","일리윤바디로션":"일리윤","일리윤바디워시":"일리윤","입생로랑립스틱":"입생로랑","입생로랑쿠션":"입생로랑","정샘물물크림":"정샘물","정샘물쿠션":"정샘물","조말론핸드크림":"조말론","조말론향수":"조말론","컬러그램누디블러틴트14":"컬러그램","쿤달샴푸":"쿤달","클리오모감주밑서재":"클리오","클리오컬러링선립밤":"클리오","클리오킬커버쿠션":"클리오","토리든":"토리든","토리든세럼":"토리든","토리든수딩크림":"토리든","톰포드로즈디아말피":"톰포드","페리페라왤케포도":"페리페라","퓌젤리팟":"퓌","퓌틴트":"퓌","프리메라쿠션":"프리메라","피지오겔로션":"피지오겔","한율립밤어린쑥":"한율","헤라립스틱":"헤라","헤라블랙쿠션":"헤라","헤라센슈얼누드밤":"헤라","헤라썬크림":"헤라","헤라에코레더":"헤라","헤라쿠션":"헤라","헤라톤업선크림":"헤라","헤라파운데이션":"헤라","헤라홀리데이쿠션":"헤라"},"pcats":["선케어","클렌징","베이스","마스크팩","헤어","바디","향수","네일","뷰티디바이스","립","아이·브로우","치크·하이라이터","스킨케어","기타"],"pcat":{"브링그린글루타치온세럼":12,"카밀핸드크림선물":5,"헤드스파7":13,"도브스크럽카렌듈라":13,"맥립스틱":9,"아도안나수이":13,"연작베이스프렙":13,"마사지겔":13,"샤넬듀오드밤":6,"에이지20s팩트":2,"헤라에코레더":13,"세포랩":13,"에르띠":13,"에쿠와":13,"세잔느무펄하라":13,"새치커버스틱":13,"나스리퀴드블러쉬":11,"헤라센슈얼누드밤":13,"오휘기초세트":13,"다이소쪽집게":13,"레삐아마존스토리":13,"설화수퍼펙팅파우더":2,"오휘영양크림":12,"허블룸톤업선크림":0,"엠브리올리스":13,"에스네이처수분크림":12,"자라로즈구르망30ml":13,"네일팁사이즈":7,"나이아신아마이드":13,"엔타도라":13,"도브롤온향수":6,"카밀핸드크림":5,"인셀덤오일미스트":12,"입생로랑쿠션":2,"안스테틱":13,"셀퓨전씨선크림":0,"레브젤누아르핑크":13,"비반콴트망카로션":12,"컬러그램누디블러틴트14":9,"정샘물쿠션":2,"닥터지달팽이크림":12,"설화수세트":13,"호호바오일":12,"클리오모감주밑서재":13,"속눈썹영양제":10,"셀라덤유스터닝앰플":12,"이솝핸드워시":13,"마데카크림":12,"우레아크림":12,"플라워노즈팔레트":13,"라로슈포제b5":13,"철벽녀립스틱":9,"mts롤러":13,"랑콤립밤":9,"빼빼눈살패치":3,"닥터지수분크림":12,"브러쉬탈모앰플":4,"파이모아염색약":4,"달팽이크림":12,"이자녹스옴므스킨":12,"도브센서티브바":13,"마사지바":13,"노딥스":13,"유노아엑소좀앰플":12,"라이콘스크럽":13,"디올쁘아종오드뚜알렛100ml":6,"나노다이아몬드석고팩":13,"립스틱":9,"라프린엠플":13,"일리윤바디워시":5,"플라워노즈향수":6,"닥터그루트샴푸":4,"비판텐연고":13,"헤라립스틱":9,"네일필름":7,"일본롬앤피치모카":13,"나스파운데이션":2,"루비스가위":13,"넘버즈인5번앰플":12,"올레놀샷":13,"cheeryep":13,"헤라썬크림":12,"염색약":4,"바이오더마토너":12,"밀본염색약":4,"네일리본파츠":7,"쿠션팩트":2,"향좋은샴푸":4,"ckonesummer":13,"소나무진정앰플":12,"인셀덤":13,"나스쿠션홀리데이":2,"펄립밤":9,"헤어에센스":4,"디올하이라이터홀리데이":11,"아모스컬링에센스":12,"이솝핸드크림":5,"ahc아이크림":12,"aztk블러셔":11,"닥터브로너스립밤":9,"폼클렌징":1,"여드름마스크팩":3,"디올블러쉬":11,"브러시세트":13,"주디돌쉐딩":11,"리퀴드파운데이션":2,"디올향수":6,"헤라톤업선크림":0,"쿤달샴푸":4,"시드물":13,"바닐라코파운데이션":2,"이더앤썬릿치크밤":11,"모공세럼":12,"자석젤":13,"스킨1004":12,"샤넬핸드크림":5,"하이퍼셀pdrn":12,"고레소레":13,"joocyee팔레트":13,"브이씨드토너":12,"아토베리어365크림":12,"김정문큐어크림":12,"고체향수만들기":6,"일리윤":13,"칭즈":13,"무광핑크풀컬러네일":7,"맨소래담립밤":9,"견미리팩트":2,"비누":13,"살림백서":13,"모로칸오일":12,"루비셀퍼프":13,"톰포드로즈디아말피":13,"샤넬립밤":9,"네일파일":7,"설화수":13,"웰라쥬앰플":12,"설화수자음생크림":12,"하이드로선스크린":13,"primaniacs코마에다":13,"mentholatum립":9,"한율립밤어린쑥":9,"킬리안돈비샤이":13,"다이소수분플럼핑":12,"딥디크오르페옹":13,"바닐라헤어오일":4,"도미나크림":12,"정샘물물크림":12,"레티놀":12,"헤라블랙쿠션":2,"향수":6,"바엘바로광채븨블토너":12,"올레놀샷nmn포뮬러":13,"커리쉴바바수오일":12,"에스트라아토베리어":13,"설화수윤조에센스":12,"바세린바디로션":5,"피부과엑소좀앰플":12,"도브바디스크럽":5,"비욘드핸드크림":5,"올킨스실리콘패치":3,"입욕제":5,"배스앤바디웍스디즈니":5,"설화수퍼펙팅쿠션":2,"샴푸":4,"블레파졸":13,"백옥생질청결제":13,"컬러토닝샴푸핑크":4,"퀸즈밤":13,"랑끄쿠션":2,"메이크업브러쉬":13,"맥얼론타임":13,"아이크림":12,"지성중학생쿠션":2,"시노덤볼륨헤어팩":4,"에스네이처토너":12,"토리든수딩크림":12,"논픽션헤어미스트":4,"세인트프랑블랙라벨":13,"시세이도로사리움향수":6,"질스튜어트매그놀리아":13,"인셀덤화장품":13,"우유단백질광채크림":12,"롬앤베러댄컨투어쉐딩":11,"fu12프롬":13,"핸드크림":5,"헤라홀리데이쿠션":2,"코스트코팬틴샴푸":4,"디올립밤":9,"젤라또팩토리":13,"파머스바디오일":5,"아로마오일":12,"레드립":9,"리겐에스리페어크림":12,"눅스오일":12,"퓌젤리팟":13,"상떼앰플":12,"디올립글로우":9,"뉴케라칼라앰플9ml":12,"가히멀티밤":13,"리체나샴푸형염색":4,"라네즈진저브레드":13,"폴라스초이스바하":13,"바이오더마에센스로션":12,"카밀핸드크림향":5,"녹차실감":13,"달링태그":13,"3ce무드레시피립":9,"디올맥시마이저":13,"고운발":13,"네일픽셀플레이트":7,"설화수샘플":13,"도미나스기미크림":12,"더페이스샵잉크그라피":13,"로마샴푸":4,"트리트먼트":4,"딥디크플레르드뽀":13,"르라보어나더13":13,"록시땅핸드크림":5,"넘버즈인":13,"벨벳젤":13,"픽서":2,"노모랩크림":12,"이지듀":13,"lg데이티놀":13,"설화수탄력크림75ml":12,"이니스프리":13,"클리오컬러링선립밤":9,"이자녹스데이티놀":13,"라카키스프루프":13,"세타필바디로션":5,"픽셀네일플레이트":7,"미인채쿠션":2,"노글루속눈썹":10,"아베다샴푸":4,"선크림":0,"도브스크럽":13,"페리페라왤케포도":13,"중국화장품":13,"도브바디워시":5,"클레드뽀메베":13,"토리든세럼":12,"염색샴푸":4,"세인트프랑크림에센스":12,"설화수자음2종":13,"미니향수세트":6,"토너패드":12,"디올립스틱":9,"미스트":12,"이자녹스더블티놀":13,"마스크팩":3,"에이치블러틴트":9,"머드샴푸":4,"오호라":13,"보로탈코바디크림":5,"샤넬듀오립":9,"인셀덤비비":2,"포스트쿠엄":13,"그랑핸드수지살몬":13,"삐아치크엔젤":11,"쓰리씨이마이링":13,"디피어24미라클":13,"민트리스칼프샴푸":4,"탈모샴푸":4,"메디카미실크루미어":13,"nmn토너":12,"설화수크림":12,"롤빗":13,"염색차트":4,"가나디틴트":9,"도브비누":13,"애크온":13,"실크테라피":13,"다이소아이라이너":10,"윤조에센스":12,"비레디블루쿠션":2,"나스블러셔":11,"씨아클라크림마스크":12,"코링코속눈썹":10,"롬앤10주년팔레트":13,"려샴푸":4,"에이지투웨니스":13,"여성청결제":13,"흑당고":13,"일리윤바디로션":5,"라타파":13,"록시땅선크림":0,"바디오일":5,"에스티로더퓨처리스트":13,"매스틱화장품":13,"멜라논크림":12,"시드물판테놀앰플":12,"라끄베르클렌징티슈":1,"헤드앤숄더샴푸":4,"에끌라뒤땅":13,"퓌틴트":9,"그래비티샴푸":4,"바비브라운엑스트라립밤":9,"다이소입큰파우더팩트":2,"고운발크림":12,"헤라쿠션":2,"더마팩토리":13,"티니올크리미팩트fw에디션":2,"heme섀도우":10,"프리메라쿠션":2,"soldejaneiro71향수":6,"비반콴트망카":13,"케라스타즈":13,"소울립밤":9,"설화수클렌징오일":1,"민트리샴푸":4,"헤드스파7트리트먼트":4,"에스티로더더블웨어":13,"워터플비교인기":13,"헤라파운데이션":2,"재생크림":12,"키스미아이라이너":10,"또또얼굴형관리":13,"나스팟컨실러":2,"바닐라코컨실러21호":2,"바세린":13,"유노아시카엑소좀":12,"립밤":9,"설화수탄력크림":12,"도브크럼블":13,"녹는실앰플":12,"헤어팩":4,"휴리즈바디워시":5,"먼작귀퍼퓸드":6,"바이오더마바디로션":5,"퍼시앙아르간골드":13,"바비브라운아이섀도우":10,"설화수쿠션":2,"헤트라스핸드크림":5,"달바미스트세럼":12,"4인용바스밤만들기":13,"구찌홀리데이":13,"샤넬":13,"마녀공장클렌징오일":1,"히스토랩":13,"도브스크럽마카다미아":13,"닥터큐먼콜라겐팩":12,"데이지크크림소다":12,"라셀턴":13,"루이스비드마":13,"노세범톤업선크림":0,"수제네일팁":7,"알마스도브롤온":13,"아비브앰플":12,"더유핏브이밴드":13,"이자녹스쿠션":2,"데일리모먼트핸드크림":5,"손소독제":13,"아모스염색약":4,"씨드비물염색":4,"달바미스트":12,"속모증":13,"vdl틴트":9,"이자녹스듀얼커버쿠션":2,"끌레드뽀보떼":13,"설화수클렌징폼":1,"아이오페레티놀":12,"일본한정":13,"대용량노워시":13,"장원영빗":13,"랑스맥스":13,"바디로션":5,"수부지쿠션":2,"꾸셀브러쉬클리너":13,"세포랩에센스":12,"발효화장품":13,"보나메두사":13,"클렌징밀크":1,"아멜리":13,"셀린토아마보앰플":12,"올망롤빗":13,"바디워시":5,"웨이크메이크팔레트":13,"동국제약마데카크림":12,"아이오페슈퍼바이탈":13,"세타필크림":12,"뉴트로지나바디로션":5,"시세이도파운데이션":2,"웨이크메이크파데":13,"일리윤립밤1개":9,"피지오겔로션":12,"이지듀기미쿠션":2,"썬크림":12,"프라다립밤":9,"유리아쥬립밤":9,"세안밴드":13,"라니쥬밤쿠션":2,"나스블러쉬":11,"제이지스칼프샴푸":4,"네일팁":7,"닥터디퍼런트ceq비타민씨":12,"바이오던스콜라겐팩":12,"젤클리너":13,"입생로랑립스틱":9,"드로에뚜젤리틴트":9,"씨피원린스":4,"라로슈포제":13,"셀프왁싱":13,"롬앤피그피그":13,"샤넬립스틱":9,"핸드워시":13,"클리오킬커버쿠션":2,"리스네일파츠":7,"세인트프랑링클크림":12,"조말론향수":6,"세르잔느쿠션":2,"지원앰플비비":2,"캣아이마그네틱네일펜":7,"바이오더마립밤":9,"이데셀프레스티지크림":12,"사우나모자":13,"닥터지선크림":0,"토리든":13,"조말론핸드크림":5,"히스토랩클렌징밀크":1,"헤어트리트먼트":4,"때비누":13,"에센스":12,"에스티로더갈색병":13,"이지듀기미앰플":12,"다이소눈썹칼":10,"쉬글램세트":13,"후시덤수분크림":12,"메이크업포에버파우더":2},"notes":{},"watch":["메디큐브","달바","톰","리쥬란"]};
+(function(){
+  const DATA = window.SITE_DATA;
+  const AGES = ["10","20","30","40","50","60"];
+  const AGE_NAME = {"10":"10대","20":"20대","30":"30대","40":"40대","50":"50대","60":"60대 이상"};
+  const SHADE = {"10":["#F4C7D0","#4A1E2B"],"20":["#EA98AC","#4A1E2B"],"30":["#D86784","#FFFFFF"],
+                 "40":["#B9445F","#FFFFFF"],"50":["#8F2F49","#FFFFFF"],"60":["#5E1E31","#FFFFFF"]};
+  const CAT = {"셀럽/광고":"#D9577A","시즌/날씨":"#5B8DB8","할인/행사":"#D9A13B","성분/기술 트렌드":"#4F9A78",
+               "SNS 바이럴":"#8A5CC2","신제품 출시":"#2E9AA0","스테디셀러":"#A08C7A","원인 불명확":"#B3ADB6"};
+  const WD = "일월화수목금토";
+  const dates = DATA.dates.slice().sort();
+  const ages = AGES.filter(a => dates.some(d => DATA.days[d].ages[a]));
+  const $ = id => document.getElementById(id);
+
+  const state = {date: dates[dates.length-1], age: ages[0], filter: "all", q: "", expanded: false};
+
+  /* ---------- 도우미 ---------- */
+  function h(tag, attrs, ...kids){
+    const el = document.createElement(tag);
+    for (const [k,v] of Object.entries(attrs||{})){
+      if (v == null || v === false) continue;
+      if (k === "class") el.className = v;
+      else if (k === "style") el.style.cssText = v;
+      else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+      else el.setAttribute(k, v === true ? "" : v);
+    }
+    for (const c of kids.flat()) if (c != null && c !== false) el.append(c.nodeType ? c : String(c));
+    return el;
+  }
+  const dt = d => new Date(d + "T00:00:00");
+  const longDate = d => { const x = dt(d); return `${x.getFullYear()}년 ${x.getMonth()+1}월 ${x.getDate()}일 ${WD[x.getDay()]}요일`; };
+  const shortDate = d => { const x = dt(d); return `${x.getMonth()+1}/${x.getDate()}`; };
+  const day = () => DATA.days[state.date];
+  const an = (d, kw) => (DATA.days[d].an[kw] || {c:"원인 불명확", r:"분석 정보가 없습니다.", f:"low", s:[]});
+  const rising = r => r.st === "NEW" || r.st === "SURGE";
+  const T = DATA.target || "";
+  const who = a => T ? `${AGE_NAME[a]} ${T}` : AGE_NAME[a];
+  const LIMIT = DATA.collect || 50;
+  // 해당 날짜·연령의 순위 (1~50위는 rows, 51위부터는 tail에 순서대로 저장)
+  function rankOf(d, a, kw){
+    const g = DATA.days[d]?.ages[a]; if (!g) return null;
+    const r = g.rows.find(x => x.kw === kw); if (r) return r.rk;
+    const i = (g.tail || []).indexOf(kw); return i >= 0 ? g.rows.length + 1 + i : null;
+  }
+  function kwsOf(d, a){ const g = DATA.days[d]?.ages[a]; return g ? g.rows.map(r => r.kw).concat(g.tail || []) : []; }
+  const when = () => state.date === dates[dates.length-1] ? "오늘" : "이날";
+
+  function chg(r){
+    const c = Math.abs(r.ch || 0);
+    if (r.st === "NEW") return h("span",{class:"chg new"},"NEW");
+    if (r.st === "SURGE" || r.st === "UP") return h("span",{class:"chg up"+(r.st==="SURGE"?" surge":""), title:`전일 ${r.pv}위`},`▲${c}`);
+    if (r.st === "DOWN") return h("span",{class:"chg down", title:`전일 ${r.pv}위`},`▼${c}`);
+    return h("span",{class:"chg same", title:"전일과 같은 순위"},"–");
+  }
+  // 이유 문장의 '대표 근거: 제목' 부분을 눌러서 바로 원문으로 갈 수 있게
+  function reasonEl(a, cls){
+    const p = h("p",{class:cls + (a.f === "low" ? " low" : "")});
+    const i = a.r.indexOf("대표 근거:"), s0 = a.s[0];
+    if (i >= 0 && s0 && s0[1]){
+      p.append(a.r.slice(0, i) + "대표 근거: ",
+        h("a",{class:"rlink", href:s0[1], target:"_blank", rel:"noopener", title:"원문 열기"}, a.r.slice(i + 6).trim().replace(/\.{2,}$/, "…"), " ↗"));
+    } else p.append(a.r);
+    return p;
+  }
+  const srcLinks = a => a.s.length ? h("div",{class:"src"}, a.s.map(s => h("a",{href:s[1]||"#", target:"_blank", rel:"noopener", title:s[0]},
+    h("span",{class:"t"}, s[0]), h("span",{"aria-hidden":"true"}, "↗")))) : null;
+  const catChip = c => h("span",{class:"cat"}, h("i",{class:"dot", style:`background:${CAT[c]||"#B3ADB6"}`}), c);
+
+  /* ---------- 날짜 ---------- */
+  function renderDatebar(){
+    const sel = $("datePick");
+    if (!sel.options.length){
+      for (const d of dates.slice().reverse()) sel.append(h("option",{value:d}, longDate(d)));
+      sel.addEventListener("change", () => setDate(sel.value));
+    }
+    sel.value = state.date;
+    const i = dates.indexOf(state.date);
+    $("prevDay").disabled = i <= 0;
+    $("nextDay").disabled = i >= dates.length-1;
+    $("latestNote").textContent = i === dates.length-1 ? "가장 최근 날짜예요" : "";
+  }
+  function setDate(d, push=true){
+    if (!DATA.days[d]) return;
+    state.date = d; state.expanded = false; commonOpen = false; catSel = null;
+    if (!DATA.days[d].ages[state.age]) state.age = ages.find(a => DATA.days[d].ages[a]);
+    if (push) history.replaceState(null, "", "#d" + d.replaceAll("-",""));
+    renderAll();
+  }
+  $("prevDay").onclick = () => setDate(dates[dates.indexOf(state.date)-1]);
+  $("nextDay").onclick = () => setDate(dates[dates.indexOf(state.date)+1]);
+
+  /* ---------- 히어로 스와치 ---------- */
+  function renderSwatches(){
+    const box = $("swatches"); box.replaceChildren();
+    for (const a of ages){
+      const g = day().ages[a]; if (!g) continue;
+      const [bg, fg] = SHADE[a];
+      box.append(h("button",{class:"sw", "aria-pressed": String(a===state.age), style:`--sw:${bg};--swfg:${fg}`,
+        onclick:() => { setAge(a); $("ranking").scrollIntoView(); }},
+        h("span",{class:"sw-age"}, AGE_NAME[a]),
+        h("span",{class:"sw-top"}, g.rows[0] ? g.rows[0].kw : "-"),
+        h("span",{class:"sw-meta"}, `새로 뜬 ${g.rows.filter(rising).length}개`)));
+    }
+  }
+
+  /* ---------- 연령별 순위 ---------- */
+  function setAge(a){ state.age = a; state.expanded = false; renderSwatches(); renderRanking(); }
+
+  function renderRanking(){
+    const g = day().ages[state.age];
+    const [shade] = SHADE[state.age];
+    $("rankSub").textContent = `${longDate(state.date)} 기준 ${who(state.age)} 1~${g.rows.length}위`;
+
+    const tabs = $("ageTabs"); tabs.replaceChildren();
+    for (const a of ages) if (day().ages[a])
+      tabs.append(h("button",{"aria-pressed":String(a===state.age), onclick:()=>setAge(a)},
+        h("i",{style:`background:${SHADE[a][0]}`}), AGE_NAME[a]));
+
+    // 요약
+    const counts = {};
+    for (const r of g.rows){ const c = an(state.date, r.kw).c; counts[c] = (counts[c]||0)+1; }
+    const order = Object.keys(CAT).filter(c => counts[c]);
+    const total = g.rows.length || 1;
+    const sum = $("summary"); sum.style.setProperty("--shade", shade); sum.replaceChildren(
+      h("div",{}, h("h3",{}, `${who(state.age)}${T ? "은" : "는"} ${when()} 이걸 찾았어요`),
+        h("ul",{class:"ins"}, (g.ins.length ? g.ins : ["오늘은 인사이트를 만들지 못했습니다."]).map(x => h("li",{},x)))),
+      h("div",{class:"mix"}, h("h4",{},"검색이 늘어난 이유"),
+        h("div",{class:"bar", role:"img", "aria-label": order.map(c=>`${c} ${counts[c]}개`).join(", ")},
+          order.map(c => h("span",{style:`flex:${counts[c]};background:${CAT[c]}`, title:`${c} ${counts[c]}개`}))),
+        h("ul",{class:"legend"}, order.map(c => h("li",{}, h("i",{class:"dot",style:`background:${CAT[c]}`}), c,
+          h("b",{}, `${Math.round(counts[c]*100/total)}%`))))));
+
+    $("risingBtn").textContent = `새로 뜬 키워드 ${g.rows.filter(rising).length}`;
+    document.querySelectorAll(".seg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.f===state.filter)));
+
+    // 리스트
+    const q = state.q.trim().toLowerCase();
+    let rows = g.rows.filter(r => (state.filter==="all" || rising(r)) && (!q || r.kw.toLowerCase().includes(q)));
+    const limited = !state.expanded && state.filter==="all" && !q && rows.length > 20;
+    const shown = limited ? rows.slice(0,20) : rows;
+    $("rankList").replaceChildren(...shown.map(r => {
+      const a = an(state.date, r.kw);
+      return h("li",{class:"row"+(r.rk<=3?" top":"")},
+        h("span",{class:"rk"}, r.rk),
+        h("div",{class:"kwcol"},
+          h("button",{class:"kwbtn", title:"이 키워드의 추이 보기", onclick:()=>showHistory(r.kw)}, h("span",{class:"kw"}, r.kw)),
+          chg(r),
+          BR[r.kw] && !r.kw.includes(BR[r.kw]) ? h("button",{class:"btag", title:"이 브랜드 전체 보기", onclick:()=>showHistory(BR[r.kw])}, BR[r.kw]) : null),
+        h("div",{class:"why"}, catChip(a.c),
+          reasonEl(a, "reason"),
+          srcLinks(a),
+          a.u ? h("span",{class:"note"},"지난 분석 유지") : null));
+    }));
+    $("moreBtn").hidden = !limited;
+    $("moreBtn").textContent = `21~${rows.length}위 더 보기`;
+    const empty = $("rankEmpty");
+    empty.hidden = rows.length > 0;
+    empty.textContent = q ? `‘${state.q}’가 들어간 키워드가 이 순위에 없어요.` : "오늘은 새로 진입했거나 급상승한 키워드가 없어요.";
+  }
+  document.querySelectorAll(".seg button").forEach(b => b.onclick = () => { state.filter = b.dataset.f; renderRanking(); });
+  $("rankFind").addEventListener("input", e => { state.q = e.target.value; renderRanking(); });
+  $("moreBtn").onclick = () => { state.expanded = true; renderRanking(); };
+
+  /* ---------- 급상승 ---------- */
+  function topRisers(n){
+    const out = [];
+    for (const a of ages){ const g = day().ages[a]; if (!g) continue;
+      for (const r of g.rows) if (rising(r)) out.push({...r, age:a, score: r.st==="NEW" ? 51 - r.rk : r.ch}); }
+    out.sort((x,y) => y.score - x.score || x.rk - y.rk);
+    const seen = new Set(), res = [];
+    for (const r of out){ const k = r.kw + r.age; if (seen.has(k)) continue; seen.add(k); res.push(r); if (res.length>=n) break; }
+    return res;
+  }
+  function renderRising(){
+    const list = topRisers(8);
+    $("riseList").replaceChildren(...(list.length ? list.map(r => {
+      const a = an(state.date, r.kw);
+      return h("li",{style:`--shade:${SHADE[r.age][0]}`},
+        h("div",{class:"r1"}, h("button",{class:"kwbtn", onclick:()=>showHistory(r.kw)}, h("span",{class:"kw"}, r.kw)), chg(r)),
+        h("span",{class:"who"}, `${who(r.age)} ${r.rk}위`),
+        catChip(a.c),
+        reasonEl(a, "reason"),
+        srcLinks(a));
+    }) : [h("li",{}, "오늘은 크게 오른 키워드가 없어요.")]));
+  }
+
+  /* ---------- 팝업·행사 ---------- */
+  const EVENTS = DATA.events || [];
+  const ev = {f:"all", area:""};
+  function evStatus(e){
+    const r = dt(state.date), s = dt(e.s), en = e.e ? dt(e.e) : null, DAY = 864e5;
+    if (s > r){ const n = Math.round((s-r)/DAY); return n <= 21 ? {k:"soon", b:`D-${n}`, sm:"오픈 예정", o:1000+n} : null; }
+    if (en && en < r) return null;
+    if (!en) return {k:"on", b:"진행 중", sm:"종료일 미정", o:500};
+    const left = Math.round((en-r)/DAY);
+    return left === 0 ? {k:"last", b:"오늘 마감", sm:"마지막 날", o:0} : {k:"on", b:"진행 중", sm:`${left}일 남음`, o:left};
+  }
+  function brandHit(e){
+    if (!e.b || e.b.length < 2) return null;
+    for (const a of ages){ const r = day().ages[a]?.rows.find(x => x.kw.includes(e.b)); if (r) return `${who(a)} 검색 ${r.rk}위`; }
+    return null;
+  }
+  function renderEvents(){
+    const live = EVENTS.map(e => ({e, st: evStatus(e)})).filter(x => x.st);
+    const areas = [...new Set(live.map(x => x.e.a))].sort((a,b) => a==="기타" ? 1 : b==="기타" ? -1 : a.localeCompare(b));
+    if (ev.area && !areas.includes(ev.area)) ev.area = "";
+    $("evAreas").replaceChildren(...(areas.length > 1 ? ["", ...areas].map(a => h("button",{"aria-pressed":String(ev.area===a),
+      onclick:()=>{ ev.area = a; renderEvents(); }}, a || "모든 지역")) : []));
+    const on = live.filter(x => x.st.k !== "soon").length, soon = live.length - on;
+    $("evSub").textContent = `${longDate(state.date)} 기준 진행 중 ${on}곳, 3주 안에 오픈 ${soon}곳`;
+    document.querySelectorAll("[data-ev]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.ev===ev.f)));
+    const list = live.filter(x => (ev.f==="all" || (ev.f==="soon" ? x.st.k==="soon" : x.st.k!=="soon")) && (!ev.area || x.e.a===ev.area))
+                     .sort((x,y) => x.st.o - y.st.o);
+    $("evList").replaceChildren(...list.map(({e, st}) => {
+      const hit = brandHit(e);
+      return h("li",{class:`ticket t-${st.k}`},
+        h("div",{class:"stub"}, h("b",{}, st.b), h("small",{}, st.sm)),
+        h("div",{class:"tbody"},
+          h("span",{class:"tname"}, e.n),
+          h("span",{class:"tmeta"}, `${e.p || "장소 미정"} · ${shortDate(e.s)} ~ ${e.e ? shortDate(e.e) : "미정"}`),
+          e.sm ? h("p",{class:"tsum"}, e.sm) : null,
+          h("div",{class:"ttags"}, h("span",{}, e.a), e.bk ? h("span",{}, e.bk) : null, hit ? h("span",{class:"hit"}, hit) : null,
+            e.src && e.src[1] ? h("a",{href:e.src[1], target:"_blank", rel:"noopener"}, "출처 보기") : null)));
+    }));
+    $("evEmpty").hidden = list.length > 0;
+    $("evNote").textContent = (DATA.demo ? "행사 정보는 2026년 11월 10일에 웹에서 확인한 실제 일정이에요. " : "")
+      + "일정과 혜택은 바뀔 수 있으니 방문 전에 공식 안내를 확인하세요.";
+  }
+  document.querySelectorAll("[data-ev]").forEach(b => b.onclick = () => { ev.f = b.dataset.ev; renderEvents(); });
+
+  /* ---------- 공통 ---------- */
+  let commonOpen = false;
+  $("commonMore").onclick = () => { commonOpen = true; renderCommon(); };
+  function renderCommon(){
+    const all = day().common || [];
+    const c = commonOpen ? all : all.slice(0, 16);
+    $("commonMore").hidden = commonOpen || all.length <= 16;
+    $("commonMore").textContent = `${all.length}개 모두 보기`;
+    $("commonList").replaceChildren(...(c.length ? c.map(([kw, as]) => h("li",{},
+      h("button",{class:"kwbtn", onclick:()=>showHistory(kw)}, h("span",{}, kw)),
+      h("span",{class:"dots", "aria-label": as.map(a=>AGE_NAME[a]).join(", ")},
+        ages.map(a => h("i",{style:`background:${as.includes(a) ? SHADE[a][0] : "transparent"}`, title:AGE_NAME[a]})))))
+      : [h("li",{}, "오늘은 여러 세대가 함께 찾은 키워드가 없어요.")]));
+  }
+
+  /* ---------- 키워드 검색 ---------- */
+  let histKw = "";
+  function showHistory(kw, scroll=true){
+    histKw = kw.trim(); if (!histKw) return;
+    $("histFind").value = histKw; $("bigQ").value = histKw; renderHistory();
+    if (scroll) $("history").scrollIntoView();
+  }
+  $("bigSearch").addEventListener("submit", e => { e.preventDefault(); showHistory($("bigQ").value); });
+  $("histGo").onclick = () => showHistory($("histFind").value, false);
+  $("histFind").addEventListener("keydown", e => { if (e.key === "Enter") showHistory(e.target.value, false); });
+
+  function jo(w, withB, withoutB){ const c = w.charCodeAt(w.length-1);
+    const b = c >= 0xAC00 && c <= 0xD7A3 ? (c - 0xAC00) % 28 !== 0 : /[lmnr0136789]$/i.test(w); return b ? withB : withoutB; }
+  const norm = t => t.replace(/\s+/g, "").toLowerCase();
+  const BR = DATA.brands || {};                       // 검색어 → 브랜드
+  const BRANDS = [...new Set(Object.values(BR))];
+  // 브랜드 이름이 2글자 이하(예: 톰)면 '톰포드'에 걸리지 않도록 단어 맨 앞에 따로 쓰인 경우만 인정
+  const isBrandKw = (k, b) => BR[k] === b || (b.length <= 2 ? new RegExp(`^${b.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(\\s|$)`).test(k) : norm(k).includes(norm(b)));
+  function brandHits(d, a, b){ return kwsOf(d, a).map((k, i) => ({k, rk: i+1})).filter(x => isBrandKw(x.k, b)); }
+  const shopUrl = q => "https://search.shopping.naver.com/search/all?query=" + encodeURIComponent(q);
+
+  function renderHistory(){
+    const dl = $("kwList");
+    if (!dl.options.length){
+      const all = new Set(BRANDS); for (const a of ages) kwsOf(state.date, a).forEach(k => all.add(k));
+      dl.replaceChildren(...[...all].sort().map(k => h("option",{value:k})));
+    }
+    $("histLead").textContent = `키워드나 브랜드 이름을 검색하면 연령대별로 몇 위인지(${LIMIT}위까지), 그동안 어떻게 움직였는지 보여줘요.`;
+    $("histChips").replaceChildren(h("span",{class:"hist-sum", style:"margin:0 4px 0 0"}, `${when()} 급상승:`),
+      ...topRisers(6).map(r => r.kw).filter((k,i,a)=>a.indexOf(k)===i).map(k => h("button",{onclick:()=>showHistory(k)}, k)));
+
+    if (!histKw) histKw = topRisers(1)[0]?.kw || day().ages[state.age].rows[0].kw;
+    $("histFind").value = histKw;
+    const q = norm(histKw);
+    const brand = BRANDS.find(b => norm(b) === q) || null;     // 브랜드 이름으로 검색했는지
+    const i = dates.indexOf(state.date), prevD = i > 0 ? dates[i-1] : null;
+
+    // 순위를 구하는 방법: 키워드면 그 키워드의 순위, 브랜드면 그 브랜드 검색어 중 가장 높은 순위
+    const at = brand
+      ? (d, a) => { const l = brandHits(d, a, brand); return l.length ? {rk: l[0].rk, k: l[0].k, n: l.length} : null; }
+      : (d, a) => { const rk = rankOf(d, a, histKw); return rk ? {rk} : null; };
+
+    // 1) 연령별 현재 순위
+    const now = ages.map(a => ({a, cur: at(state.date, a), prv: prevD ? at(prevD, a) : undefined}));
+    $("rankNow").replaceChildren(...now.map(({a, cur, prv}) => {
+      let c = null;
+      if (cur && prv === null) c = h("span",{class:"chg new"}, "NEW");
+      else if (cur && prv) c = prv.rk > cur.rk ? h("span",{class:"chg up"}, `▲${prv.rk-cur.rk}`) : prv.rk < cur.rk ? h("span",{class:"chg down"}, `▼${cur.rk-prv.rk}`) : h("span",{class:"chg same"}, "–");
+      return h("div",{class:"rn" + (cur ? "" : " out"), style:`--sh:${SHADE[a][0]}`},
+        h("span",{class:"a"}, who(a)),
+        cur ? h("b",{}, cur.rk, h("small",{}, "위")) : h("b",{}, `${LIMIT}위 밖`),
+        brand && cur ? h("span",{class:"rk-kw", title:cur.k}, cur.k) : null,
+        brand && cur ? h("span",{class:"rk-n"}, `검색어 ${cur.n}개 순위권`) : c);
+    }));
+
+    // 2) 관련 검색어: 브랜드면 그 브랜드 상품 검색어 전부, 키워드면 그 단어가 들어간 검색어
+    const rel = new Map();
+    for (const a of ages) kwsOf(state.date, a).forEach((k, idx) => {
+      const ok = brand ? isBrandKw(k, brand)
+                       : norm(k) !== q && (norm(k).includes(q) || (q.length >= 3 && q.includes(norm(k))));
+      if (ok){ const rk = idx + 1; if (!rel.has(k) || rel.get(k).rk > rk) rel.set(k, {rk, a}); }
+    });
+    const relAll = [...rel.entries()].sort((x,y) => x[1].rk - y[1].rk);
+    const relList = relAll.slice(0, brand ? 24 : 12);
+    const ownBrand = !brand && BR[histKw] ? BR[histKw] : null;
+    $("related").replaceChildren(...[
+      ...(relList.length ? [h("span",{class:"lab"}, brand ? `${brand} 상품 검색어 ${relAll.length}개` : `‘${histKw}’${jo(histKw,"이","가")} 들어간 검색어`),
+        ...relList.map(([k, v]) => h("button",{onclick:()=>showHistory(k, false), title:`${who(v.a)} ${v.rk}위`}, k, h("small",{}, `${v.rk}위`)))] : []),
+      ownBrand ? h("button",{class:"brandchip", onclick:()=>showHistory(ownBrand, false)}, `브랜드 ${ownBrand} 전체 보기`) : null,
+      brand ? h("button",{class:"watchbtn", "aria-pressed": String(isWatched(brand)), onclick:() => toggleWatch(brand)}, isWatched(brand) ? "★ 관심 브랜드" : "☆ 관심 브랜드에 추가") : null,
+      h("a",{class:"shop", href:shopUrl(histKw), target:"_blank", rel:"noopener"}, `네이버 쇼핑에서 ‘${histKw}’ 상품 보기 ↗`)].filter(Boolean));
+
+    // 3) 요약 + 추이
+    const series = ages.map(a => ({a, pts: dates.map(d => at(d, a)?.rk ?? null)}));
+    const seen = series.some(sr => sr.pts.some(v => v != null));
+    if (!seen){
+      $("histSum").textContent = `‘${histKw}’${jo(histKw,"은","는")} 저장된 ${dates.length}일 동안 어느 연령대의 ${LIMIT}위 안에도 없었어요.` +
+        (relList.length ? " 대신 이 단어가 들어간 검색어는 아래에 있어요." : " 띄어쓰기나 다른 표현으로도 검색해 보세요. 상품 자체는 네이버 쇼핑에서 볼 수 있어요.");
+      $("chartTitle").textContent = ""; $("chart").replaceChildren(); $("hLegend").replaceChildren(); return;
+    }
+    const best = now.filter(x => x.cur).sort((x,y) => x.cur.rk - y.cur.rk)[0];
+    const days = series.map(sr => ({a: sr.a, n: sr.pts.filter(v => v != null).length}));
+    const steady = days.filter(x => x.n === dates.length).map(x => AGE_NAME[x.a]);
+    const steadyTxt = steady.length === ages.length ? "모든 연령대" : steady.join(", ");
+    const head = !best ? `${longDate(state.date)}에는 모든 연령대에서 ${LIMIT}위 밖이에요. `
+      : brand ? `${longDate(state.date)} 기준 ${brand} 상품 검색어 ${relAll.length}개가 ${LIMIT}위 안에 있어요. 가장 높은 건 ${who(best.a)}의 ‘${best.cur.k}’ ${best.cur.rk}위예요. `
+              : `${longDate(state.date)} 기준 가장 높은 순위는 ${who(best.a)} ${best.cur.rk}위예요. `;
+    $("histSum").textContent = head + (steady.length
+      ? `${steadyTxt}에서 저장된 ${dates.length}일 내내 ${LIMIT}위 안에 있었으니, 꾸준히 찾는 스테디 ${brand ? "브랜드" : "키워드"}예요.`
+      : `${dates.length}일 중 ${Math.max(...days.map(x=>x.n))}일 동안 ${LIMIT}위 안에 들었어요.`);
+    $("chartTitle").textContent = brand ? `최근 ${dates.length}일 ${brand} 검색어 최고 순위` : `최근 ${dates.length}일 순위 변화`;
+    drawChart(series);
+    $("hLegend").replaceChildren(...series.filter(sr => sr.pts.some(v=>v!=null)).map(sr =>
+      h("span",{}, h("i",{style:`background:var(--l${sr.a})`}), AGE_NAME[sr.a])));
+  }
+
+  function drawChart(series){
+    const box = $("chart"); box.replaceChildren();
+    const W = Math.max(280, box.clientWidth), H = W < 500 ? 220 : 280;
+    const m = {l:40, r:12, t:12, b:26};
+    const x = i => m.l + (dates.length === 1 ? (W-m.l-m.r)/2 : i * (W-m.l-m.r)/(dates.length-1));
+    const worst = Math.max(...series.flatMap(sr => sr.pts.filter(v => v != null)));
+    const MAX = [10, 50, 100, 200, 300, 500].find(n => n >= worst) || 500;
+    const y = v => m.t + (v-1) * (H-m.t-m.b)/(MAX-1);
+    const NS = "http://www.w3.org/2000/svg";
+    const s = (tag, at) => { const el = document.createElementNS(NS, tag); for (const k in at) el.setAttribute(k, at[k]); return el; };
+    const svg = s("svg",{viewBox:`0 0 ${W} ${H}`, role:"img", "aria-label":`${histKw} 연령대별 순위 추이`});
+    const grid = s("g",{class:"grid"}), axis = s("g",{class:"axis"});
+    const ticks = MAX <= 50 ? [1,10,20,30,40,50].filter(v => v <= MAX) : [1, ...[1,2,3,4,5].map(k => Math.round(MAX*k/5))];
+    for (const v of ticks){
+      grid.append(s("line",{x1:m.l, x2:W-m.r, y1:y(v), y2:y(v)}));
+      const t = s("text",{x:m.l-8, y:y(v)+4, "text-anchor":"end"}); t.textContent = v + "위"; axis.append(t);
+    }
+    const step = Math.ceil(dates.length / Math.floor((W-m.l-m.r)/56));
+    const last = dates.length-1;
+    dates.forEach((d,i) => { if (i !== last && (i % step || last - i < step)) return;
+      const t = s("text",{x:x(i), y:H-6, "text-anchor":"middle"}); t.textContent = shortDate(d); axis.append(t); });
+    svg.append(grid, axis);
+    const tip = h("div",{class:"tip", hidden:true});
+    for (const sr of series){
+      const col = `var(--l${sr.a})`; let path = "", pen = false;
+      sr.pts.forEach((v,i) => { if (v==null){ pen=false; return; } path += (pen?"L":"M") + x(i) + "," + y(v); pen = true; });
+      if (path) svg.append(s("path",{d:path, fill:"none", stroke:col, "stroke-width":2.5, "stroke-linejoin":"round", "stroke-linecap":"round"}));
+      sr.pts.forEach((v,i) => { if (v==null) return;
+        const c = s("circle",{cx:x(i), cy:y(v), r:4, fill:col, stroke:"var(--paper)", "stroke-width":1.5, tabindex:0});
+        const show = () => { tip.hidden = false; tip.textContent = `${shortDate(dates[i])} ${AGE_NAME[sr.a]} ${v}위`;
+          tip.style.left = (x(i)/W*100)+"%"; tip.style.top = (y(v)/H*box.clientHeight)+"px"; };
+        c.addEventListener("pointerenter", show); c.addEventListener("focus", show);
+        c.addEventListener("pointerleave", () => tip.hidden = true); c.addEventListener("blur", () => tip.hidden = true);
+        c.addEventListener("click", show);
+        svg.append(c);
+      });
+    }
+    box.append(svg, tip);
+  }
+  let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => histKw && renderHistory(), 150); });
+
+  /* ---------- 지난 기록 ---------- */
+  function renderArchive(){
+    const months = {};
+    for (const d of dates.slice().reverse()){ const x = dt(d); (months[`${x.getFullYear()}년 ${x.getMonth()+1}월`] ||= []).push(d); }
+    $("archList").replaceChildren(...Object.entries(months).map(([m, ds]) => h("div",{class:"month"}, h("h3",{}, m),
+      h("ul",{class:"days"}, ds.map(d => { const x = dt(d), g = DATA.days[d];
+        const n = ages.reduce((s,a) => s + (g.ages[a]?.rows.filter(rising).length||0), 0);
+        return h("li",{}, h("button",{class:"day", "aria-current": String(d===state.date),
+            onclick:() => { setDate(d); scrollTo({top:0}); }},
+          h("span",{class:"d"}, h("b",{}, `${x.getDate()}일`, (NOTES[d] || getLocal(d)) ? h("span",{class:"pen", title:"노트 있음"}, "✎") : null), `${WD[x.getDay()]}요일 · 새로 뜬 ${n}개`),
+          h("span",{class:"minis"}, ages.map(a => h("span",{class:"mini", style:`background:${SHADE[a][0]};color:${SHADE[a][1]}`,
+            title:`${AGE_NAME[a]} 1위`}, g.ages[a]?.rows[0]?.kw || "-")))));
+      })))));
+  }
+
+  /* ---------- 품목 ---------- */
+  const PC = DATA.pcats || ["기타"], PCAT = DATA.pcat || {};
+  const PCOL = {"선케어":"#E8A33B","클렌징":"#5B8DB8","베이스":"#D2A07F","마스크팩":"#7FB8C9","헤어":"#8C6A4F","바디":"#9FB35E",
+                "향수":"#B98AC9","네일":"#3E8E8C","뷰티디바이스":"#59627F","립":"#D9577A","아이·브로우":"#6B5B95",
+                "치크·하이라이터":"#F08FA8","스킨케어":"#4F9A78","기타":"#C9C3CC"};
+  const pcOf = k => PC[PCAT[k]] ?? "기타";
+  const CAT_N = Math.min(100, LIMIT);
+  function catShare(d, a){
+    const ks = kwsOf(d, a).slice(0, CAT_N), c = {};
+    ks.forEach(k => { const p = pcOf(k); c[p] = (c[p] || 0) + 1; });
+    return {c, n: ks.length || 1};
+  }
+  const topCat = c => PC.filter(x => x !== "기타" && c[x]).sort((x,y) => c[y] - c[x])[0];
+  let catSel = null;
+  function renderCats(){
+    const i = dates.indexOf(state.date), prevD = i > 0 ? dates[i-1] : null, used = new Set();
+    $("catRows").replaceChildren(...ages.filter(a => day().ages[a]).map(a => {
+      const {c, n} = catShare(state.date, a), p = prevD ? catShare(prevD, a).c : null;
+      const order = PC.filter(x => c[x]); order.forEach(x => used.add(x));
+      let up = null;
+      if (p){ const g = PC.filter(x => x !== "기타").map(x => [x, (c[x]||0) - (p[x]||0)]).sort((x,y) => y[1]-x[1])[0]; if (g && g[1] > 0) up = `${g[0]} +${g[1]}`; }
+      const tc = topCat(c);
+      return h("div",{class:"catrow"},
+        h("span",{class:"catage"}, h("i",{style:`background:${SHADE[a][0]}`}), AGE_NAME[a]),
+        h("div",{class:"catbar", role:"group", "aria-label":`${AGE_NAME[a]} 품목 비중`}, order.map(x => h("button",{
+          style:`flex:${c[x]};background:${PCOL[x] || "#C9C3CC"}`, title:`${x} ${c[x]}개 (${Math.round(c[x]*100/n)}%)`,
+          "aria-label":`${x} ${c[x]}개`, "aria-pressed": String(!!catSel && catSel.a === a && catSel.c === x),
+          onclick:() => { catSel = {a, c:x}; renderCats(); }}))),
+        h("span",{class:"catnote"}, tc ? `1위 ${tc} ${Math.round(c[tc]*100/n)}%` : "", up ? h("em",{}, ` · 어제보다 ${up}`) : null));
+    }));
+    $("catLegend").replaceChildren(...PC.filter(x => used.has(x)).map(x => h("li",{}, h("i",{class:"dot", style:`background:${PCOL[x]}`}), x)));
+    if (!catSel || !day().ages[catSel.a]){ const a = state.age, tc = topCat(catShare(state.date, a).c); catSel = tc ? {a, c:tc} : null; }
+    if (catSel){
+      const ks = kwsOf(state.date, catSel.a).slice(0, CAT_N).map((k, i) => ({k, rk: i+1})).filter(x => pcOf(x.k) === catSel.c);
+      $("catDetail").replaceChildren(h("h3",{}, `${who(catSel.a)} · ${catSel.c} 검색어 ${ks.length}개 (상위 ${CAT_N}위 중)`),
+        h("div",{class:"related"}, ks.slice(0, 24).map(x => h("button",{onclick:() => showHistory(x.k)}, x.k, h("small",{}, `${x.rk}위`)))));
+    } else $("catDetail").replaceChildren();
+  }
+
+  /* ---------- 브랜드 랭킹 ---------- */
+  function brandTable(d, a){
+    const m = new Map();
+    for (const ag of (a ? [a] : ages)) kwsOf(d, ag).forEach((k, i) => {
+      const b = BR[k]; if (!b) return;
+      const e = m.get(b) || {b, kws: new Set(), best: Infinity, bestA: null, bestK: null};
+      e.kws.add(k); if (i + 1 < e.best){ e.best = i + 1; e.bestA = ag; e.bestK = k; }
+      m.set(b, e);
+    });
+    return [...m.values()].map(e => ({...e, n: e.kws.size})).sort((x,y) => y.n - x.n || x.best - y.best);
+  }
+  let brAge = "";
+  function renderBrandRank(){
+    $("brLead").textContent = `${LIMIT}위 안에 든 상품 검색어가 많은 브랜드 순서예요. 오른쪽 숫자는 어제보다 늘거나 줄어든 검색어 수예요.`;
+    $("brTabs").replaceChildren(...["", ...ages].map(a => h("button",{"aria-pressed": String(brAge === a), onclick:() => { brAge = a; renderBrandRank(); }},
+      a ? h("i",{style:`background:${SHADE[a][0]}`}) : null, a ? AGE_NAME[a] : "전체")));
+    const i = dates.indexOf(state.date), prevD = i > 0 ? dates[i-1] : null;
+    const now = brandTable(state.date, brAge || null).slice(0, 15);
+    const prev = prevD ? new Map(brandTable(prevD, brAge || null).map(e => [e.b, e.n])) : null;
+    const max = now[0]?.n || 1;
+    $("brList").replaceChildren(...now.map((e, idx) => {
+      const g = prev ? e.n - (prev.get(e.b) ?? 0) : null;
+      return h("li",{}, h("button",{class:"brrow", onclick:() => showHistory(e.b), title:`${e.b} 검색 결과 보기`},
+        h("span",{class:"brk"}, idx + 1),
+        h("span",{class:"brname"}, e.b),
+        h("span",{class:"brbar"}, h("i",{style:`width:${e.n / max * 100}%`})),
+        h("span",{class:"brn"}, `검색어 ${e.n}개`),
+        h("span",{class:"brbest"}, `최고 ${brAge ? "" : AGE_NAME[e.bestA] + " "}${e.best}위 · ${e.bestK}`),
+        g == null ? h("span",{class:"chg same"}, "") : g > 0 ? h("span",{class:"chg up"}, `+${g}`) : g < 0 ? h("span",{class:"chg down"}, `${g}`) : h("span",{class:"chg same"}, "–")));
+    }));
+    $("brEmpty").hidden = now.length > 0;
+  }
+
+  /* ---------- 3줄 브리핑 ---------- */
+  function renderBrief(){
+    $("briefTitle").textContent = `${when()}의 3줄 브리핑`;
+    $("briefDate").textContent = longDate(state.date) + (T ? ` · ${T} 타깃` : "");
+    const items = [];
+    const r = topRisers(1)[0];
+    if (r){
+      const a = an(state.date, r.kw), how = r.st === "NEW" ? "새로 진입해" : `${r.ch}계단 올라`;
+      items.push({tag:"급상승", text:`${who(r.age)}에서 ‘${r.kw}’${jo(r.kw,"이","가")} ${how} ${r.rk}위가 됐어요. ` +
+        (a.c !== "원인 불명확" ? `${a.c} 영향으로 보여요.` : "뚜렷한 원인은 아직 찾지 못했어요."), go:() => showHistory(r.kw)});
+    } else items.push({tag:"급상승", text:"크게 오른 키워드가 없는 조용한 하루예요.", go:() => $("ranking").scrollIntoView()});
+
+    const i = dates.indexOf(state.date), prevD = i > 0 ? dates[i-1] : null;
+    const now = brandTable(state.date, null);
+    if (now.length){
+      const prev = prevD ? new Map(brandTable(prevD, null).map(e => [e.b, e.n])) : null;
+      const lead = now[0];
+      const gain = prev ? now.map(e => ({...e, g: e.n - (prev.get(e.b) ?? 0)})).sort((x,y) => y.g - x.g || x.best - y.best)[0] : null;
+      items.push({tag:"브랜드", text:`가장 많이 검색된 브랜드는 ‘${lead.b}’예요. 상품 검색어 ${lead.n}개가 순위권이고 최고는 ${who(lead.bestA)} ${lead.best}위예요.` +
+        (gain && gain.g > 0 && gain.b !== lead.b ? ` ‘${gain.b}’는 어제보다 검색어가 ${gain.g}개 늘었어요.` : ""), go:() => $("brandRank").scrollIntoView()});
+    }
+    const ranked = ages.filter(a => day().ages[a]).map(a => { const c = catShare(state.date, a).c;
+      return [AGE_NAME[a], PC.filter(x => x !== "기타" && c[x]).sort((x,y) => c[y] - c[x])]; }).filter(([, l]) => l.length);
+    const say = (pairs) => { const g = new Map(); pairs.forEach(([a, c]) => g.set(c, [...(g.get(c) || []), a]));
+      return [...g.entries()].map(([c, as]) => { const w = as.join("·"); return `${w}${jo(w, "은", "는")} ${c}`; }).join(", "); };
+    if (ranked.length){
+      const firsts = new Set(ranked.map(([, l]) => l[0]));
+      if (firsts.size === 1){
+        const c1 = [...firsts][0], seconds = ranked.filter(([, l]) => l[1]).map(([a, l]) => [a, l[1]]);
+        items.push({tag:"품목", text:`모든 연령대에서 ${c1}${jo(c1, "이", "가")} 가장 많아요. 그다음으로 ${say(seconds)}${jo(say(seconds), "을", "를")} 많이 찾았어요.`, go:() => $("cats").scrollIntoView()});
+      } else items.push({tag:"품목", text:`연령별로 가장 많이 찾은 품목은 ${say(ranked.map(([a, l]) => [a, l[0]]))}${jo(say(ranked.map(([a, l]) => [a, l[0]])), "이에요", "예요")}.`, go:() => $("cats").scrollIntoView()});
+    }
+    $("briefList").replaceChildren(...items.slice(0, 3).map(it => h("li",{},
+      h("p",{}, h("span",{class:"btg"}, it.tag), it.text), h("button",{class:"more-link", onclick:it.go}, "자세히"))));
+    renderNote();
+  }
+
+  /* ---------- 마케터 노트 ---------- */
+  const NOTES = DATA.notes || {}, LS = "note:";
+  const getLocal = d => { try { return localStorage.getItem(LS + d) || ""; } catch(e){ return ""; } };
+  const setLocal = (d, v) => { try { v ? localStorage.setItem(LS + d, v) : localStorage.removeItem(LS + d); return true; } catch(e){ return false; } };
+  function localNotes(){ const out = {}; try { for (let i = 0; i < localStorage.length; i++){ const k = localStorage.key(i); if (k && k.startsWith(LS)) out[k.slice(LS.length)] = localStorage.getItem(k); } } catch(e){} return out; }
+  function renderNote(){
+    const pub = NOTES[state.date];
+    $("notePub").hidden = !pub; $("notePub").textContent = pub || "";
+    $("noteText").value = getLocal(state.date); $("noteSaved").textContent = ""; $("noteExport").hidden = true;
+  }
+  let noteTimer;
+  $("noteText").addEventListener("input", e => { clearTimeout(noteTimer); const d = state.date, v = e.target.value.trim();
+    noteTimer = setTimeout(() => { $("noteSaved").textContent = setLocal(d, v) ? "이 브라우저에 저장됐어요" : "이 브라우저에서는 저장할 수 없어요"; renderNotes(); renderArchive(); }, 400); });
+  $("noteCopy").onclick = async () => {
+    const all = localNotes(), txt = Object.keys(all).sort().map(d => `## ${d}\n${all[d]}\n`).join("\n");
+    const box = $("noteExport"); box.value = txt || "아직 적은 노트가 없어요."; box.hidden = false; box.select();
+    try { await navigator.clipboard.writeText(txt); $("noteSaved").textContent = "복사했어요. notes.md 에 붙여넣으세요."; }
+    catch(e){ $("noteSaved").textContent = "아래 글을 직접 복사해서 notes.md 에 붙여넣으세요."; }
+  };
+  function renderNotes(){
+    const loc = localNotes(), ds = [...new Set([...Object.keys(NOTES), ...Object.keys(loc)])].sort().reverse();
+    $("noteList").replaceChildren(...(ds.length ? ds.map(d => h("li",{},
+      h("div",{}, h("button",{onclick:() => { setDate(d); $("brief").scrollIntoView(); }}, longDate(d).replace(/^\d{4}년 /, "")),
+        h("small",{}, NOTES[d] ? "공개 노트" : "내 브라우저에만 저장")),
+      h("p",{}, [NOTES[d], loc[d]].filter(Boolean).join("\n\n"))))
+      : [h("li",{}, h("span",{}, ""), h("p",{}, "아직 노트가 없어요. 브리핑 옆 노트 칸에 그날의 해석을 적어 보세요."))]));
+  }
+
+  /* ---------- 관심 브랜드 ---------- */
+  const WATCH_PUB = DATA.watch || [];
+  const getWatchLocal = () => { try { return JSON.parse(localStorage.getItem("watch") || "[]"); } catch(e){ return []; } };
+  const setWatchLocal = l => { try { localStorage.setItem("watch", JSON.stringify(l)); return true; } catch(e){ return false; } };
+  const watchList = () => [...new Set([...WATCH_PUB, ...getWatchLocal()])];
+  const isWatched = b => watchList().some(x => norm(x) === norm(b));
+  function toggleWatch(b){
+    const l = getWatchLocal();
+    if (isWatched(b)){ setWatchLocal(l.filter(x => norm(x) !== norm(b))); }
+    else setWatchLocal([...l, b]);
+    renderWatch(); if (histKw) renderHistory();
+  }
+  function brandBest(d, b){
+    let best = null, n = new Set();
+    for (const a of ages) kwsOf(d, a).forEach((k, i) => { if (isBrandKw(k, b)){ n.add(k); if (!best || i + 1 < best.rk) best = {rk: i + 1, a, k}; } });
+    return {best, n: n.size};
+  }
+  function spark(vals){
+    const W = 300, H = 40, okv = vals.filter(v => v != null); if (!okv.length) return null;
+    const mx = Math.max(...okv, 10), x = i => vals.length === 1 ? W/2 : i * W / (vals.length - 1), y = v => 4 + (v - 1) * (H - 8) / Math.max(1, mx - 1);
+    let d = "", pen = false; vals.forEach((v, i) => { if (v == null){ pen = false; return; } d += (pen ? "L" : "M") + x(i).toFixed(1) + "," + y(v).toFixed(1); pen = true; });
+    const NS = "http://www.w3.org/2000/svg", svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("class", "spark"); svg.setAttribute("preserveAspectRatio", "none");
+    svg.setAttribute("role", "img"); svg.setAttribute("aria-label", "최근 최고 순위 추이 (위로 갈수록 높은 순위)");
+    const p = document.createElementNS(NS, "path"); p.setAttribute("d", d); p.setAttribute("fill", "none"); p.setAttribute("stroke", "#D86784");
+    p.setAttribute("stroke-width", "2.5"); p.setAttribute("vector-effect", "non-scaling-stroke"); p.setAttribute("stroke-linejoin", "round"); svg.append(p);
+    return svg;
+  }
+  function renderWatch(){
+    const bl = $("brandList"); if (!bl.options.length) bl.replaceChildren(...BRANDS.slice().sort().map(b => h("option",{value:b})));
+    const list = watchList(), i = dates.indexOf(state.date), weekAgo = i >= 7 ? dates[i - 7] : null;
+    const recent = dates.slice(Math.max(0, i - 13), i + 1);
+    $("watchList").replaceChildren(...list.map(b => {
+      const {best, n} = brandBest(state.date, b), wk = weekAgo ? brandBest(weekAgo, b).n : null;
+      const local = !WATCH_PUB.includes(b);
+      const main = WATCH_PUB[0] === b;
+      return h("li",{class:"wcard" + (main ? " main" : "")},
+        h("div",{class:"wtop"}, h("button",{class:"wname", onclick:() => showHistory(b)}, b),
+          local ? h("button",{class:"wx", title:"관심 브랜드에서 빼기", onclick:() => toggleWatch(b)}, "빼기") : main ? h("span",{class:"wtag"}, "지원 브랜드") : h("span",{class:"wmeta"}, "비교 브랜드")),
+        h("p",{class:"wmeta", style:"margin:0"}, best ? h("span",{}, "상품 검색어 ", h("b",{}, `${n}개`), ` 순위권 · 최고 ${who(best.a)} ${best.rk}위 ‘${best.k}’`) : `${when()}은 순위권에 든 검색어가 없어요.`),
+        (() => { const ks = new Set(); ages.forEach(a => brandHits(state.date, a, b).forEach(x => ks.add(x.k)));
+          const c = {}; ks.forEach(k => { const p = pcOf(k); c[p] = (c[p] || 0) + 1; });
+          const parts = Object.entries(c).sort((x,y) => y[1] - x[1]);
+          return parts.length ? h("div",{class:"wmix"}, parts.map(([p, n]) => h("span",{}, h("i",{style:`background:${PCOL[p] || "#C9C3CC"}`}), `${p} ${n}`))) : null; })(),
+        h("div",{class:"wages"}, ages.map(a => { const l = brandHits(state.date, a, b);
+          return h("span",{class: l.length ? "" : "no", style:`--sh:${SHADE[a][0]}`}, AGE_NAME[a].replace("대 이상", "+"), h("b",{}, l.length ? l[0].rk : "–")); })),
+        spark(recent.map(d => brandBest(d, b).best?.rk ?? null)),
+        h("div",{class:"wfoot"}, h("span",{}, `최근 ${recent.length}일 최고 순위`),
+          h("span",{}, wk == null ? "" : n - wk > 0 ? `일주일 전보다 검색어 +${n - wk}` : n - wk < 0 ? `일주일 전보다 검색어 ${n - wk}` : "일주일 전과 같음")));
+    }));
+    $("watchEmpty").hidden = list.length > 0;
+  }
+  function addWatchFromInput(){ const v = $("watchIn").value.trim(); if (!v) return; if (!isWatched(v)) toggleWatch(v); $("watchIn").value = ""; }
+  $("watchBtn").onclick = addWatchFromInput;
+  $("watchIn").addEventListener("keydown", e => { if (e.key === "Enter") addWatchFromInput(); });
+
+  /* ---------- 주간 흐름 ---------- */
+  let wkAge = null;
+  function renderWeekly(){
+    if (!wkAge || !day().ages[wkAge]) wkAge = state.age;
+    $("wkTabs").replaceChildren(...ages.filter(a => day().ages[a]).map(a => h("button",{"aria-pressed": String(wkAge === a), onclick:() => { wkAge = a; renderWeekly(); }},
+      h("i",{style:`background:${SHADE[a][0]}`}), AGE_NAME[a])));
+    const i = dates.indexOf(state.date), cur = dates.slice(Math.max(0, i - 6), i + 1), prev = dates.slice(Math.max(0, i - 13), Math.max(0, i - 6));
+    $("wkLead").textContent = prev.length >= 3
+      ? `${shortDate(cur[0])}~${shortDate(cur[cur.length - 1])}(이번 주)와 ${shortDate(prev[0])}~${shortDate(prev[prev.length - 1])}(지난주)의 평균 순위를 비교했어요. 하루짜리 반짝 변동은 걸러져요.`
+      : `주간 비교는 기록이 2주 쌓이면 정확해져요. 지금은 ${dates.slice(0, i + 1).length}일치예요.`;
+    if (prev.length < 3){ $("wkGrid").replaceChildren(); return; }
+    const OUT = LIMIT + 1, a = wkAge;
+    const avg = (ds, k) => ds.reduce((s, d) => s + (rankOf(d, a, k) ?? OUT), 0) / ds.length;
+    const cnt = (ds, k) => ds.filter(d => rankOf(d, a, k)).length;
+    // 화면에 보여 줄 평균은 순위권에 든 날만으로 계산 (정렬은 빠진 날을 ${LIMIT+1}위로 쳐서 공정하게)
+    const seenAvg = (ds, k) => { const v = ds.map(d => rankOf(d, a, k)).filter(Boolean); return v.length ? v.reduce((x, y) => x + y, 0) / v.length : null; };
+    const pool = new Set(); [...cur, ...prev].forEach(d => kwsOf(d, a).forEach(k => pool.add(k)));
+    const rows = [...pool].map(k => ({k, c: avg(cur, k), p: avg(prev, k), nc: cnt(cur, k), np: cnt(prev, k), sc: seenAvg(cur, k), sp: seenAvg(prev, k)}));
+    const fmt = v => v == null ? "순위 밖" : `${Math.round(v)}위`;
+    const gap = r => (r.sp ?? OUT) - (r.sc ?? OUT);
+    const up = rows.filter(r => r.nc >= 4 && r.np >= 2 && r.p - r.c >= 3 && gap(r) > 0).sort((x,y) => gap(y) - gap(x)).slice(0, 8);
+    const fresh = rows.filter(r => r.nc >= Math.min(5, cur.length) - 1 && r.np <= 1).sort((x,y) => x.c - y.c).slice(0, 8);
+    const down = rows.filter(r => r.np >= 4 && r.c - r.p >= 3 && gap(r) < 0).sort((x,y) => gap(x) - gap(y)).slice(0, 8);
+    const col = (title, sub, list, line) => h("div",{class:"wkcol"}, h("h3",{}, title), h("p",{class:"sub"}, sub),
+      list.length ? h("ol",{}, list.map(r => h("li",{}, h("button",{onclick:() => showHistory(r.k)}, r.k), line(r)))) : h("p",{class:"none"}, "해당하는 키워드가 없어요."));
+    $("wkGrid").replaceChildren(
+      col("꾸준히 오른 키워드", "평균 순위(순위권에 든 날 기준) 지난주 → 이번 주", up, r => h("span",{}, `${fmt(r.sp)} → ${fmt(r.sc)} `, h("b",{}, `▲${Math.max(1, Math.round((r.sp ?? OUT) - (r.sc ?? OUT)))}`))),
+      col("이번 주 새로 자리 잡은 키워드", "지난주엔 거의 없다가 이번 주 대부분 순위권", fresh, r => h("span",{}, `평균 ${fmt(r.sc)} · 7일 중 ${r.nc}일`)),
+      col("주춤한 키워드", "평균 순위(순위권에 든 날 기준) 지난주 → 이번 주", down, r => h("span",{}, `${fmt(r.sp)} → ${fmt(r.sc)} `, h("b",{class:"dn"}, `▼${Math.max(1, Math.round((r.sc ?? OUT) - (r.sp ?? OUT)))}`))));
+  }
+
+  /* ---------- 시작 ---------- */
+  function renderAll(){
+    $("heroTitle").textContent = T ? `${T}들이 가장 많이 검색한 뷰티 키워드` : `가장 많이 검색한 뷰티 키워드`;
+    $("riseTitle").textContent = `${when()} 가장 크게 오른 키워드`;
+    renderDatebar(); renderSwatches(); renderBrief(); renderWatch(); renderWeekly(); renderRanking(); renderRising(); renderCats(); renderBrandRank(); renderEvents(); renderCommon(); renderNotes(); renderArchive(); renderHistory(); }
+
+  $("brand").querySelector(".brand-mark").replaceChildren(...AGES.map(a => h("i",{style:`background:${SHADE[a][0]}`})));
+  $("brand").onclick = e => { e.preventDefault(); scrollTo({top:0}); };
+  document.querySelectorAll(".menu button").forEach(b => b.onclick = () => $(b.dataset.go).scrollIntoView());
+  $("demoBadge").hidden = !DATA.demo;
+  if (DATA.mode === "free") $("methodNote").textContent = "이유는 최근 기사와 블로그 글에 자주 나온 단어를 바탕으로 자동 분류했어요. 출처를 눌러 직접 확인할 수 있고, 흐린 글씨는 근거가 약한 분석입니다.";
+  if (T){ $("targetBadge").hidden = false; $("targetBadge").textContent = `${T} 타깃`;
+    $("rankTitle").textContent = `연령별 ${T} 인기 검색어`;
+    document.querySelector(".hero .lead").textContent = `네이버 쇼핑 화장품/미용 인기 검색어 중 ${T} 검색을 연령대별로 매일 모아, 무엇이 왜 뜨는지 정리했어요. 실제 판매량이나 SNS 화제성이 아니라 ‘네이버 쇼핑 검색 관심도’ 기준이에요.`;
+    document.querySelector("footer p").textContent = `순위는 네이버 데이터랩 쇼핑인사이트의 화장품/미용 인기 검색어 중 ${T} 검색 기준이며, 네이버 로그인 사용자 기준의 상대 지표입니다.`;
+    document.title = `검색 스와치 · ${T} 연령별 뷰티 검색 트렌드`; }
+  $("genNote").textContent = `최근 ${dates.length}일치 기록 · 마지막 업데이트 ${DATA.generated}`;
+
+  function fromHash(){ const m = location.hash.match(/^#d(\d{4})(\d{2})(\d{2})$/); return m ? `${m[1]}-${m[2]}-${m[3]}` : null; }
+  addEventListener("hashchange", () => { const d = fromHash(); if (d && d !== state.date) setDate(d, false); });
+  const start = fromHash(); if (start && DATA.days[start]) state.date = start;
+  if (!dates.length){ document.querySelector("main").replaceChildren(h("p",{class:"empty"},"아직 저장된 기록이 없어요. python main.py 를 실행하면 첫 기록이 생깁니다.")); return; }
+  renderAll();
+})();
+</script>
+</body>
+</html>
