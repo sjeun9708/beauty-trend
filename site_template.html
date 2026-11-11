@@ -301,6 +301,15 @@ section#brief{padding-top:48px}
 .ttags span{font-size:12px;font-weight:600;border:1px solid var(--line);border-radius:6px;padding:1px 7px;color:var(--soft)}
 .ttags .hit{border-color:var(--up);color:var(--up)}
 .ttags a{font-size:12px;color:var(--ink);margin-left:auto;text-decoration:underline;text-underline-offset:3px}
+.evnews{margin-top:20px;background:var(--paper);border-radius:14px;padding:16px 18px}
+.evnews h3{font-size:15px;font-weight:700;margin:0 0 8px}
+.evnews ul{list-style:none;margin:0;padding:0}
+.evnews li{display:grid;grid-template-columns:52px 88px 1fr;gap:10px;align-items:baseline;padding:8px 0;border-top:1px solid var(--line);font-size:14px}
+.evnews li .dt{color:var(--soft);font-size:12px;font-variant-numeric:tabular-nums}
+.evnews li .br{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.evnews li a{color:var(--ink);text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.evnews li a:hover{text-decoration:underline;text-underline-offset:3px}
+@media (max-width:760px){.evnews li{grid-template-columns:44px 1fr}.evnews li a{grid-column:1/-1;white-space:normal}}
 .ev-note{font-size:13px;color:var(--soft);margin:14px 0 0}
 @media (max-width:760px){.tickets{grid-template-columns:1fr}}
 
@@ -534,6 +543,10 @@ footer p{margin:0 0 6px;max-width:72ch}
     <div class="areas" id="evAreas" role="group" aria-label="지역"></div>
     <ul class="tickets" id="evList"></ul>
     <p class="empty" id="evEmpty" hidden>이날 진행 중이거나 곧 열리는 뷰티 행사가 없어요.</p>
+    <div class="evnews" id="evNewsBox" hidden>
+      <h3>최근 팝업 소식 <span class="wmeta">기간이 글에 안 적혀 있어 원문에서 확인이 필요한 소식이에요</span></h3>
+      <ul id="evNews"></ul>
+    </div>
     <p class="ev-note" id="evNote"></p>
   </section>
 
@@ -777,7 +790,8 @@ footer p{margin:0 0 6px;max-width:72ch}
   }
 
   /* ---------- 팝업·행사 ---------- */
-  const EVENTS = DATA.events || [];
+  const EVENTS = (DATA.events || []).filter(e => !e.u);
+  const EVNEWS = (DATA.events || []).filter(e => e.u);
   const ev = {f:"all", area:""};
   function evStatus(e){
     const r = dt(state.date), s = dt(e.s), en = e.e ? dt(e.e) : null, DAY = 864e5;
@@ -815,6 +829,12 @@ footer p{margin:0 0 6px;max-width:72ch}
             e.src && e.src[1] ? h("a",{href:e.src[1], target:"_blank", rel:"noopener"}, "출처 보기") : null)));
     }));
     $("evEmpty").hidden = list.length > 0;
+    // 기간 미확인 소식: 보고 있는 날짜 기준 최근 10일 안에 올라온 글
+    const r = dt(state.date), news = EVNEWS.filter(e => { const p = dt(e.s); return p <= r && (r - p) / 864e5 <= 10 && (!ev.area || e.a === ev.area); })
+      .sort((a, b) => b.s.localeCompare(a.s)).slice(0, 15);
+    $("evNewsBox").hidden = !news.length || ev.f === "soon";
+    $("evNews").replaceChildren(...news.map(e => h("li",{}, h("span",{class:"dt"}, shortDate(e.s)),
+      h("span",{class:"br"}, e.b || e.a), e.src && e.src[1] ? h("a",{href:e.src[1], target:"_blank", rel:"noopener", title:e.n}, e.n + " ↗") : h("span",{}, e.n))));
     $("evNote").textContent = (DATA.demo ? "행사 정보는 2026년 11월 10일에 웹에서 확인한 실제 일정이에요. " : "")
       + "일정과 혜택은 바뀔 수 있으니 방문 전에 공식 안내를 확인하세요.";
   }

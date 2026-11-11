@@ -68,10 +68,11 @@ ANTHROPIC_MODEL = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-5-5")
 
 # 뷰티 팝업스토어·행사 수집용 검색어 (네이버 뉴스·블로그)
 EVENT_QUERIES = [
-    "뷰티 팝업스토어", "화장품 팝업스토어", "성수 뷰티 팝업", "더현대 뷰티 팝업",
-    "올리브영 팝업", "코스메틱 팝업 오픈", "뷰티 브랜드 팝업 운영",
+    "뷰티 팝업스토어", "화장품 팝업스토어", "코스메틱 팝업", "뷰티 브랜드 팝업", "화장품 팝업 오픈",
+    "성수 뷰티 팝업", "성수 화장품 팝업", "더현대 뷰티 팝업", "여의도 팝업 화장품", "올리브영 팝업",
+    "무신사 뷰티 팝업", "향수 팝업스토어", "메이크업 팝업", "스킨케어 팝업", "뷰티 팝업 사전예약",
 ]
-EVENT_DAYS = 7            # 행사 기사·글을 찾는 기간
+EVENT_DAYS = 10           # 행사 기사·글을 찾는 기간
 EVENT_MAX_SOURCES = 40    # 한 번에 AI에게 넘길 기사·글 수
 
 # 품목 분류: 위에서부터 차례로 검사해서 처음 맞는 품목으로 정합니다 (구체적인 것을 위에)
@@ -149,6 +150,18 @@ def _load_known_brands():
 
 
 KNOWN_BRANDS = _load_known_brands()
+
+
+def brand_in_text(text: str):
+    """글 안에 들어 있는 알려진 브랜드 이름(가장 긴 것). 1글자 이름은 오인이 많아 제외."""
+    t = text.replace(" ", "").lower()
+    for alias, name in KNOWN_BRANDS:
+        if len(alias) >= 2 and alias in t:
+            return name
+    for name, words in BRAND_ALIASES.items():
+        if any(w.replace(" ", "").lower() in t for w in words if len(w) >= 3):
+            return name
+    return None
 
 
 def known_brand(keyword: str):

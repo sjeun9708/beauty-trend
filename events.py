@@ -17,12 +17,13 @@ def collect(conn, d: str, demo: bool = False) -> int:
         import evidence
         brain = __import__("rules" if config.ANALYZER == "free" else "analyzer")
         items, seen = [], set()
-        for q in config.EVENT_QUERIES:
-            for it in evidence.collect(q, d, days=config.EVENT_DAYS, limit=15):
+        queries = config.EVENT_QUERIES + [f"{b} 팝업" for b in config.WATCH_BRANDS[:5]]
+        for q in queries:
+            for it in evidence.collect(q, d, days=config.EVENT_DAYS, limit=100, display=100):
                 if it["link"] not in seen:
                     seen.add(it["link"])
                     items.append(it)
-        found = brain.extract_events(d, items[: config.EVENT_MAX_SOURCES])
+        found = brain.extract_events(d, items if config.ANALYZER == "free" else items[: config.EVENT_MAX_SOURCES])
     for e in found:
         db.save_event(conn, e, d)
     return len(found)

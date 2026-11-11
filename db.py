@@ -106,22 +106,30 @@ def report_dates(conn) -> list[str]:
     return [r["date"] for r in cur.fetchall()]
 
 
+def _ensure_event_cols(conn):
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(events)").fetchall()}
+    if "undated" not in cols:
+        conn.execute("ALTER TABLE events ADD COLUMN undated INTEGER DEFAULT 0")
+
+
 def save_event(conn, e: dict, seen: str):
     """같은 브랜드·장소·시작일이면 한 행사로 보고 최신 정보로 덮어씁니다."""
-    key = f"{e.get('brand','')}|{e.get('place','')}|{e['start']}"
+    _ensure_event_cols(conn)
+    key = f"{e.get('brand') or e['name'][:12]}|{e.get('place','')}|{e['start']}"
     old = conn.execute("SELECT first_seen FROM events WHERE key=?", (key,)).fetchone()
     conn.execute(
-        "INSERT OR REPLACE INTO events (key,name,brand,place,area,start,end,booking,summary,source_title,source_link,first_seen) "
-        "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+        "INSERT OR REPLACE INTO events (key,name,brand,place,area,start,end,booking,summary,source_title,source_link,first_seen,undated) "
+        "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
         (key, e["name"], e.get("brand"), e.get("place"), e.get("area"), e["start"], e.get("end"),
          e.get("booking"), e.get("summary"), e.get("source_title"), e.get("source_link"),
-         old["first_seen"] if old else seen),
+         old["first_seen"] if old else seen, int(bool(e.get("undated")))),
     )
     conn.commit()
 
 
 def get_events(conn, start: str, end: str) -> list[dict]:
     """start~end 기간과 하루라도 겹치는 행사."""
+    _ensure_event_cols(conn)
     cur = conn.execute(
         "SELECT * FROM events WHERE start <= ? AND (end IS NULL OR end >= ?) ORDER BY start",
         (end, start),

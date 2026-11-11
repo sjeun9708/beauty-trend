@@ -25,11 +25,11 @@ _TAG = re.compile(r"<[^>]+>")
 _cache: dict[tuple, list] = {}
 
 
-def collect(keyword: str, d: str, days: int = config.EVIDENCE_DAYS, limit: int = 12) -> list[dict]:
+def collect(keyword: str, d: str, days: int = config.EVIDENCE_DAYS, limit: int = 12, display: int = 20) -> list[dict]:
     """d 기준 최근 days일 안에 올라온 뉴스/블로그 글 목록."""
     if not config.HAS_SEARCH:
         return []
-    key = (keyword, d, days)
+    key = (keyword, d, days, limit, display)
     if key in _cache:
         return _cache[key]
 
@@ -37,7 +37,7 @@ def collect(keyword: str, d: str, days: int = config.EVIDENCE_DAYS, limit: int =
     start = end - timedelta(days=days)
     items: list[dict] = []
 
-    for it in _search(NEWS_URL, keyword):
+    for it in _search(NEWS_URL, keyword, display):
         try:
             pub = parsedate_to_datetime(it["pubDate"]).date()
         except (KeyError, TypeError, ValueError):
@@ -45,7 +45,7 @@ def collect(keyword: str, d: str, days: int = config.EVIDENCE_DAYS, limit: int =
         if start <= pub <= end:
             items.append(_item("뉴스", it, pub, it.get("originallink") or it.get("link")))
 
-    for it in _search(BLOG_URL, keyword):
+    for it in _search(BLOG_URL, keyword, display):
         try:
             pub = datetime.strptime(it["postdate"], "%Y%m%d").date()
         except (KeyError, ValueError):

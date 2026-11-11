@@ -7,7 +7,7 @@ AI만큼 자연스럽진 않지만, 비용이 들지 않고 근거가 투명합�
 """
 import re
 from collections import Counter
-from datetime import date
+from datetime import date, timedelta
 
 import config
 
@@ -151,39 +151,71 @@ VENUES = [
     ("가로수길", "강남"), ("홍대", "홍대"), ("연남", "홍대"), ("명동", "명동"), ("롯데월드몰", "잠실"),
     ("잠실", "잠실"), ("판교", "기타"), ("용산", "기타"), ("한남", "기타"),
 ]
-_RANGE_KR = re.compile(r"(\d{1,2})월\s*(\d{1,2})일\s*(?:\([^)]*\))?\s*(?:부터|~|-)\s*(?:(\d{1,2})월\s*)?(\d{1,2})일")
-_RANGE_NUM = re.compile(r"(?<!\d)(\d{1,2})[./](\d{1,2})\s*[~\-–]\s*(?:(\d{1,2})[./])?(\d{1,2})(?![\d./])")
-_POPUP = re.compile(r"팝업|팝업스토어|체험존|라운지|쇼룸")
+_SEP = r"\s*(?:부터|~|∼|〜|-|–)\s*"
+_DOW = r"\s*(?:\([^)]{1,4}\))?"
+# 11월 12일(수) ~ 19일 / 11월 12일부터 11월 19일까지
+_RANGE_KR = re.compile(r"(\d{1,2})월\s*(\d{1,2})일" + _DOW + _SEP + r"(?:(\d{1,2})월\s*)?(\d{1,2})일")
+# 2026.11.12 ~ 2026.11.19 / 11.12(수)~11.19 / 11/12~19
+_RANGE_NUM = re.compile(r"(?<![\d.])(?:20\d{2}[.\-/]\s*)?(\d{1,2})[./](\d{1,2})\.?" + _DOW + _SEP +
+                        r"(?:20\d{2}[.\-/]\s*)?(?:(\d{1,2})[./])?(\d{1,2})(?![\d])")
+# ~11월 30일까지 / 11.30까지 (끝나는 날만 있는 경우)
+_UNTIL = re.compile(r"(?:(\d{1,2})월\s*(\d{1,2})일|(?<![\d.])(\d{1,2})[./](\d{1,2}))" + _DOW + r"\s*까지")
+_POPUP = re.compile(r"팝업|팝업스토어|체험존|라운지|쇼룸|플래그십|브랜드\s*데이|원데이\s*클래스")
+_NOT_BEAUTY = re.compile(r"굿즈|캐릭터|포켓몬|애니|게임|카페|디저트|베이커리|빵|커피|의류|패션|신발|스니커즈|키링|피규어|웹툰|전시|굿즈샵|음료|맥주|와인|가구|리빙")
+_BEAUTY = re.compile(r"뷰티|화장품|코스메틱|스킨케어|메이크업|향수|퍼퓸|립|쿠션|세럼|앰플|크림|헤어|바디|네일|색조|디바이스|올리브영|피부|선크림|패드|토너|에센스|마스크팩|클렌징|파운데이션|틴트")
 
 
 def extract_events(d: str, items: list[dict]) -> list[dict]:
+    """글 제목·요약에서 뷰티 팝업을 찾음. 기간이 적힌 건 행사로, 기간이 없으면 '최근 소식'(undated)으로."""
     base = date.fromisoformat(d)
     found = {}
     for it in items:
-        text = f"{it['title']} {it['desc']}"
+        if it.get("ad"):
+            continue
+        text = re.sub(r"\s+", " ", f"{it['title']} {it['desc']}")
         if not _POPUP.search(text):
             continue
+        brand = config.brand_in_text(text)
+        # 검색어 자체가 뷰티 관련이라 대부분 뷰티 글이지만, 여러 팝업을 묶어 소개하는 글은 걸러냄
+        if not brand and not _BEAUTY.search(text) and _NOT_BEAUTY.search(text):
+            continue
+        pub = date.fromisoformat(it["date"])
+        start = end = None
         m = _RANGE_KR.search(text) or _RANGE_NUM.search(text)
-        if not m:
-            continue
-        sm, sd, em, ed = int(m.group(1)), int(m.group(2)), int(m.group(3) or m.group(1)), int(m.group(4))
         try:
-            start = _nearest(base, sm, sd)
-            end = _nearest(start, em, ed, after=True)
+            if m:
+                sm, sd = int(m.group(1)), int(m.group(2))
+                em, ed = int(m.group(3) or sm), int(m.group(4))
+                start = _nearest(pub, sm, sd)
+                end = _nearest(start, em, ed, after=True)
+            else:
+                u = _UNTIL.search(text)
+                if u:
+                    em, ed = (int(u.group(1)), int(u.group(2))) if u.group(1) else (int(u.group(3)), int(u.group(4)))
+                    end = _nearest(pub, em, ed, after=True)
+                    start = min(pub, end)
         except ValueError:
-            continue
+            start = end = None
+        if start and end and ((end - start).days > 120 or end < base - timedelta(days=30)):
+            start = end = None                         # 날짜를 잘못 읽었거나 너무 지난 행사
+        undated = start is None
+        if undated:
+            start = pub
         place, area = next(((v, a) for v, a in VENUES if v in text), (None, "기타"))
-        title = re.sub(r"\s+", " ", it["title"]).strip()
-        key = (title[:12], start)
+        title = re.sub(r"<[^>]+>", "", it["title"]).strip()
+        key = (brand or title[:14], start.isoformat(), undated)
         if key in found:
             continue
         found[key] = {
-            "name": title[:60], "brand": None, "place": place, "area": area,
-            "start": start.isoformat(), "end": end.isoformat(),
-            "booking": "사전예약" if "사전예약" in text else None,
+            "name": title[:70], "brand": brand, "place": place, "area": area,
+            "start": start.isoformat(), "end": end.isoformat() if end else None,
+            "booking": "사전예약" if "사전예약" in text or "예약" in text else None,
             "summary": None, "source_title": title, "source_link": it["link"],
+            "undated": undated,
         }
-    return list(found.values())
+    # 같은 브랜드의 기간 있는 행사가 있으면 기간 없는 소식은 뺌
+    dated_brands = {e["brand"] for e in found.values() if not e["undated"] and e["brand"]}
+    return [e for e in found.values() if not (e["undated"] and e["brand"] in dated_brands)]
 
 
 def _nearest(base: date, m: int, d: int, after: bool = False) -> date:

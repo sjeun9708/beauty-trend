@@ -66,7 +66,8 @@ def build_site(conn, ages: list[str], demo: bool = False) -> str:
         for e in db.get_events(conn, dates[0], last):
             evs.append({"n": e["name"], "b": e["brand"], "p": e["place"], "a": e["area"] or "기타",
                         "s": e["start"], "e": e["end"], "bk": e["booking"], "sm": e["summary"],
-                        "src": [e["source_title"] or "출처", e["source_link"]] if e["source_link"] else None})
+                        "src": [e["source_title"] or "출처", e["source_link"]] if e["source_link"] else None,
+                        "u": e.get("undated") or 0})
     all_kws = set()
     for p in days.values():
         for g in p["ages"].values():
