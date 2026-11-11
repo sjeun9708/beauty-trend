@@ -96,6 +96,9 @@ PRODUCT_CATEGORIES = [
 # 지원 브랜드(메디큐브) + 비교용 경쟁 브랜드
 #   달바: 화장품+디바이스, 전략이 가장 비슷 / 톰: 디바이스 직접 경쟁 / 리쥬란: PDRN·디바이스 양쪽 비교
 WATCH_BRANDS = ["메디큐브", "달바", "톰", "리쥬란"]
+_wf = BASE_DIR / "watch_brands.txt"          # 이 파일이 있으면 위 목록 대신 이 파일을 씀 (GitHub에서 고치기 쉬움)
+if _wf.exists():
+    WATCH_BRANDS = [l.strip() for l in _wf.read_text(encoding="utf-8").splitlines() if l.strip() and not l.strip().startswith("#")]
 
 # 디바이스 관심도(디지털/가전 분야)에서 브랜드 대신 검색할 대표 디바이스 이름
 DEVICE_TERMS = {"메디큐브": "에이지알"}

@@ -161,6 +161,12 @@ section#brief{padding-top:48px}
 .watch-add .find{min-width:180px}
 .watchlist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
 .wcard.main{box-shadow:inset 0 0 0 2px #D86784}
+.wacts{display:flex;align-items:center;gap:2px}
+.wstar{border:0;background:none;color:var(--soft);font-size:13px;font-weight:700;padding:2px 6px;border-radius:999px}
+.wstar:hover{color:var(--up)}
+.wstar.on{color:var(--up)}
+.wx{font-size:14px !important}
+.wnote{font-size:12px;color:var(--soft);margin:10px 0 0}
 .wtag{font-size:12px;font-weight:700;color:var(--up)}
 .wcard{background:var(--paper);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:10px}
 .wtop{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
@@ -442,7 +448,7 @@ footer p{margin:0 0 6px;max-width:72ch}
   <section class="block" id="watch" aria-labelledby="watchTitle">
     <div class="sec-head">
       <div><h2 id="watchTitle">관심 브랜드</h2>
-        <p>지원 브랜드와 비교 브랜드를 나란히 두고 매일 지켜봐요. 숫자는 연령대별 그 브랜드 검색어의 최고 순위예요.</p></div>
+        <p>브랜드를 자유롭게 넣고 빼며 매일 지켜봐요. ☆를 누르면 지원 브랜드로 강조돼요. 숫자는 연령대별 그 브랜드 검색어의 최고 순위예요.</p></div>
       <div class="watch-add">
         <label class="sr" for="watchIn">브랜드 추가</label>
         <input class="find" id="watchIn" list="brandList" placeholder="브랜드 이름 추가" autocomplete="off">
@@ -451,6 +457,7 @@ footer p{margin:0 0 6px;max-width:72ch}
       </div>
     </div>
     <ul class="watchlist" id="watchList"></ul>
+    <p class="wnote" id="watchNote"></p>
     <div class="btrend" id="bTrend" hidden>
       <div class="bt-head">
         <div><h3>관심도 추이 <span class="wmeta">순위와 상관없이 비교</span></h3>
@@ -1121,17 +1128,26 @@ footer p{margin:0 0 6px;max-width:72ch}
   }
 
   /* ---------- 관심 브랜드 ---------- */
+  // 관심 브랜드 목록: 처음엔 기본 목록(watch_brands.txt), 한 번이라도 바꾸면 이 브라우저의 목록을 씀
   const WATCH_PUB = DATA.watch || [];
-  const getWatchLocal = () => { try { return JSON.parse(localStorage.getItem("watch") || "[]"); } catch(e){ return []; } };
-  const setWatchLocal = l => { try { localStorage.setItem("watch", JSON.stringify(l)); return true; } catch(e){ return false; } };
-  const watchList = () => [...new Set([...WATCH_PUB, ...getWatchLocal()])];
-  const isWatched = b => watchList().some(x => norm(x) === norm(b));
-  function toggleWatch(b){
-    const l = getWatchLocal();
-    if (isWatched(b)){ setWatchLocal(l.filter(x => norm(x) !== norm(b))); }
-    else setWatchLocal([...l, b]);
-    renderWatch(); if (histKw) renderHistory();
+  const WKEY = "watch2";
+  function getWatch(){
+    try { const v = JSON.parse(localStorage.getItem(WKEY) || "null"); if (v && Array.isArray(v.list)) return {...v, custom: true}; } catch(e){}
+    return {list: WATCH_PUB.slice(), main: WATCH_PUB[0] || null, custom: false};
   }
+  function saveWatch(w){ try { localStorage.setItem(WKEY, JSON.stringify({list: w.list, main: w.main})); } catch(e){} }
+  const watchList = () => getWatch().list;
+  const watchMain = () => { const w = getWatch(); return w.list.includes(w.main) ? w.main : null; };
+  const isWatched = b => watchList().some(x => norm(x) === norm(b));
+  function afterWatchChange(){ renderWatch(); renderBTrend(); if (histKw) renderHistory(); }
+  function toggleWatch(b){
+    const w = getWatch();
+    if (isWatched(b)){ w.list = w.list.filter(x => norm(x) !== norm(b)); if (w.main && norm(w.main) === norm(b)) w.main = null; }
+    else w.list = [...w.list, b];
+    saveWatch(w); afterWatchChange();
+  }
+  function setMain(b){ const w = getWatch(); w.main = w.main === b ? null : b; saveWatch(w); afterWatchChange(); }
+  function resetWatch(){ try { localStorage.removeItem(WKEY); } catch(e){} afterWatchChange(); }
   function brandBest(d, b){
     let best = null, n = new Set();
     for (const a of ages) kwsOf(d, a).forEach((k, i) => { if (isBrandKw(k, b)){ n.add(k); if (!best || i + 1 < best.rk) best = {rk: i + 1, a, k}; } });
@@ -1154,11 +1170,12 @@ footer p{margin:0 0 6px;max-width:72ch}
     const recent = dates.slice(Math.max(0, i - 13), i + 1);
     $("watchList").replaceChildren(...list.map(b => {
       const {best, n} = brandBest(state.date, b), wk = weekAgo ? brandBest(weekAgo, b).n : null;
-      const local = !WATCH_PUB.includes(b);
-      const main = WATCH_PUB[0] === b;
+      const main = watchMain() === b;
       return h("li",{class:"wcard" + (main ? " main" : "")},
         h("div",{class:"wtop"}, h("button",{class:"wname", onclick:() => showHistory(b)}, b),
-          local ? h("button",{class:"wx", title:"관심 브랜드에서 빼기", onclick:() => toggleWatch(b)}, "빼기") : main ? h("span",{class:"wtag"}, "지원 브랜드") : h("span",{class:"wmeta"}, "비교 브랜드")),
+          h("span",{class:"wacts"},
+            h("button",{class:"wstar" + (main ? " on" : ""), title: main ? "지원 브랜드 표시 끄기" : "지원 브랜드로 표시", "aria-pressed": String(main), onclick:() => setMain(b)}, main ? "★ 지원 브랜드" : "☆"),
+            h("button",{class:"wx", title:"관심 브랜드에서 빼기", "aria-label":`${b} 빼기`, onclick:() => toggleWatch(b)}, "✕"))),
         h("p",{class:"wmeta", style:"margin:0"}, best ? h("span",{}, "상품 검색어 ", h("b",{}, `${n}개`), ` 순위권 · 최고 ${who(best.a)} ${best.rk}위 ‘${best.k}’`) : `${when()}은 순위권에 든 검색어가 없어요.`),
         (() => { const ks = new Set(); ages.forEach(a => brandHits(state.date, a, b).forEach(x => ks.add(x.k)));
           const c = {}; ks.forEach(k => { const p = pcOf(k); c[p] = (c[p] || 0) + 1; });
@@ -1171,6 +1188,9 @@ footer p{margin:0 0 6px;max-width:72ch}
           h("span",{}, wk == null ? "" : n - wk > 0 ? `일주일 전보다 검색어 +${n - wk}` : n - wk < 0 ? `일주일 전보다 검색어 ${n - wk}` : "일주일 전과 같음")));
     }));
     $("watchEmpty").hidden = list.length > 0;
+    const w = getWatch();
+    $("watchNote").replaceChildren(...(w.custom ? ["내가 바꾼 목록이에요. 이 브라우저에만 저장돼요. ",
+      h("button",{class:"more-link", onclick: resetWatch}, "처음 목록으로 되돌리기")] : []));
   }
   function addWatchFromInput(){ const v = $("watchIn").value.trim(); if (!v) return; if (!isWatched(v)) toggleWatch(v); $("watchIn").value = ""; }
   $("watchBtn").onclick = addWatchFromInput;
@@ -1194,8 +1214,12 @@ footer p{margin:0 0 6px;max-width:72ch}
     if (!keys.includes(btAge)) btAge = keys[0];
     $("btTabs").replaceChildren(...keys.map(a => h("button",{class:"sm", "aria-pressed": String(btAge === a), onclick:() => { btAge = a; renderBTrend(); }},
       a === "all" ? null : h("i",{style:`background:${SHADE[a][0]}`}), a === "all" ? (T ? `전체 ${T}` : "전체") : AGE_NAME[a])));
-    const snap = BT[btAge], names = Object.keys(snap.series), dts = snap.dates;
-    const col = n => BCOL[names.indexOf(n) % BCOL.length];
+    const snap = BT[btAge], dts = snap.dates, mine = watchList();
+    const names = Object.keys(snap.series).filter(n => mine.some(x => norm(x) === norm(n)));
+    const missing = mine.filter(b => !Object.keys(snap.series).some(n => norm(n) === norm(b)));
+    if (!names.length){ $("btChart").replaceChildren(); $("btLegend").replaceChildren();
+      $("btSum").textContent = "관심 브랜드 목록에 관심도 데이터가 있는 브랜드가 없어요. 매일 수집 대상은 GitHub의 watch_brands.txt에서 정해요."; return; }
+    const allN = Object.keys(snap.series), col = n => BCOL[allN.indexOf(n) % BCOL.length];
     // 차트: 위로 갈수록 관심도가 높음
     const el = $("btChart"); el.replaceChildren();
     const W = Math.max(280, el.clientWidth || 600), H = W < 500 ? 200 : 240, m = {l:34, r:12, t:12, b:26};
@@ -1209,7 +1233,7 @@ footer p{margin:0 0 6px;max-width:72ch}
     svg.append(g, ax);
     names.forEach(n => {
       const d = snap.series[n].map((v, i) => (i ? "L" : "M") + x(i).toFixed(1) + "," + y(v).toFixed(1)).join("");
-      svg.append(S("path",{d, fill:"none", stroke:col(n), "stroke-width": n === names[0] ? 3 : 2, "stroke-linejoin":"round", opacity: n === names[0] ? 1 : .85}));
+      svg.append(S("path",{d, fill:"none", stroke:col(n), "stroke-width": n === watchMain() ? 3.2 : 2, "stroke-linejoin":"round", opacity: n === watchMain() || !watchMain() ? 1 : .8}));
     });
     el.append(svg);
     $("btLegend").replaceChildren(...names.map(n => h("span",{}, h("i",{style:`background:${col(n)}`}), n)));
@@ -1221,7 +1245,8 @@ footer p{margin:0 0 6px;max-width:72ch}
     $("btSum").replaceChildren(`${who2} 기준 최근 7일 평균 관심도: `, ...rows.flatMap((r, i) => [
       i ? " · " : "", h("b",{style:`color:${col(r.n)}`}, r.n), ` ${Math.round(r.now)}`,
       r.ch == null ? "" : h("span",{class: r.ch >= 0 ? "up" : "dn"}, ` (${r.ch >= 0 ? "▲" : "▼"}${Math.abs(Math.round(r.ch))}%)`)]),
-      h("br"), h("span",{class:"wmeta"}, `괄호는 그 전 7일 대비 변화예요. 데이터 기준일 ${snap.fetched}.`));
+      h("br"), h("span",{class:"wmeta"}, `괄호는 그 전 7일 대비 변화예요. 데이터 기준일 ${snap.fetched}.` +
+        (missing.length ? ` ${missing.join(", ")}의 관심도는 아직 매일 수집 대상이 아니에요(watch_brands.txt에 추가하면 다음 날부터 보여요).` : "")));
   }
 
   /* ---------- 주간 흐름 ---------- */
